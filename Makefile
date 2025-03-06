@@ -11,3 +11,6 @@ down:
 
 stop:
 	docker compose  stop
+
+clean:
+	rm -rf ./srcs/RootCA/certs
