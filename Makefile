@@ -1,13 +1,13 @@
-all: up
+all:
+	docker compose  up --build
 
 up: 
-	docker compose -f up --build
-
+	docker compose  up
 build:
-	docker compose -f build
+	docker compose  build
 
 down:
-	docker compose -f down
+	docker compose  down
 
 stop:
-	docker compose -f stop
+	docker compose  stop

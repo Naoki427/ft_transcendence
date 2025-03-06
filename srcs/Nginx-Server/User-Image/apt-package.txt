@@ -1,0 +1,6 @@
+vim
+git
+wget
+nginx
+curl
+openssl

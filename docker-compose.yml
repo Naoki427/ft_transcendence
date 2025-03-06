@@ -1,0 +1,121 @@
+name: "Transcendence"
+
+services:
+  root-ca:
+    build:
+      context: srcs/RootCA
+      dockerfile: Dockerfile
+    container_name: RootCA
+    volumes:
+      - ./srcs/RootCA/certs:/certs
+    networks: []
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+  proxy:
+    build:
+      context: srcs/Proxy-Server/Public
+      dockerfile: Dockerfile
+    container_name: proxy
+    ports:
+      - "8443:443"
+    depends_on:
+      - ssr-django
+      - static-server
+      - user-image-server
+      - api-gateway
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - TNet 
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+
+  innerproxy:
+    build:
+      context: srcs/Proxy-Server/InnerProxy
+      dockerfile: Dockerfile
+    container_name: innerproxy
+    # depends_on:
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/innerproxy:/etc/ssl/certs/innerproxy
+    networks:
+      - TNet 
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+  api-gateway:
+    build:
+      context: srcs/API-Gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    env_file:
+      - .env
+    volumes:
+      - ./srcs/API-Gateway:/app
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/api-gateway:/etc/ssl/certs/api-gateway
+    restart: always
+    networks:
+      - TNet
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+  static-server:
+    build:
+      context: srcs/Nginx-Server/Static
+      dockerfile: Dockerfile
+    container_name: Static-Server
+    volumes:
+      - ./srcs/Nginx-Server/Static/assets/static:/usr/share/nginx/html/static
+    networks:
+      - TNet
+
+  user-image-server:
+    build:
+      context: srcs/Nginx-Server/User-Image
+      dockerfile: Dockerfile
+    container_name: User-Image-Server
+    volumes:
+      - ./srcs/Nginx-Server/User-Image/assets/media:/usr/share/nginx/html/media
+    # depends_on:
+    networks:
+      - TNet
+
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+  ssr-django:
+    build:
+      context: srcs/SSR_Django
+      dockerfile: Dockerfile
+    container_name: SSR-django
+    env_file:
+      - .env
+    volumes:
+      - ./srcs/SSR_Django:/app
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/ssr-django:/etc/ssl/certs/ssr-django
+    # depends_on:
+    restart: always
+    networks:
+      - TNet
+
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+networks:
+  TNet: 
+    driver: bridge

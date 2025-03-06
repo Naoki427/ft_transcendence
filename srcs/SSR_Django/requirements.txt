@@ -1,0 +1,7 @@
+Django==4.2
+gunicorn
+djangorestframework
+psycopg2-binary
+django-environ
+python-dotenv
+requests
