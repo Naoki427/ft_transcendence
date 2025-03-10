@@ -17,3 +17,5 @@ def django_render(url):
 def landing_page_view(request):
     return django_render("https://innerproxy/")
 
+def signup_page_view(request):
+    return django_render("https://innerproxy/signup")

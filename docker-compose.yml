@@ -25,6 +25,7 @@ services:
       - static-server
       - user-image-server
       - api-gateway
+      - user-service
     restart: always
     env_file:
       - .env
@@ -40,7 +41,8 @@ services:
       context: srcs/Proxy-Server/InnerProxy
       dockerfile: Dockerfile
     container_name: innerproxy
-    # depends_on:
+    depends_on:
+      - user-service
     restart: always
     env_file:
       - .env
@@ -88,7 +90,8 @@ services:
     container_name: User-Image-Server
     volumes:
       - ./srcs/Nginx-Server/User-Image/assets/media:/usr/share/nginx/html/media
-    # depends_on:
+    depends_on:
+      - user-service
     networks:
       - TNet
 
@@ -107,7 +110,8 @@ services:
       - ./srcs/SSR_Django:/app
       - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
       - ./srcs/RootCA/certs/ssr-django:/etc/ssl/certs/ssr-django
-    # depends_on:
+    depends_on:
+      - user-service
     restart: always
     networks:
       - TNet
@@ -115,6 +119,43 @@ services:
 
   #---------------------------------------------------------------------
   #---------------------------------------------------------------------
+
+  user-service:
+    build:
+      context: srcs/User-management/User_service
+      dockerfile: Dockerfile
+    container_name: User-Service
+    env_file:
+      - .env
+    volumes:
+      - ./srcs/User-management/User_service:/app
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/user-service:/etc/ssl/certs/user-service
+    restart: always
+    depends_on:
+      - user-db
+    networks:
+      - TNet
+
+  user-db:
+    build:
+      context: srcs/User-management/User_DB
+      dockerfile: Dockerfile
+    container_name: User-DB
+    environment:
+      POSTGRES_DB: ${POSTGRES_USER_DB}
+      POSTGRES_USER: ${POSTGRES_USER_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_USER_PASSWORD}
+    volumes:
+      - ./srcs/User-management/User_DB/data:/var/lib/postgresql/data
+    networks:
+      - TNet
+    restart: always
+
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
 
 networks:
   TNet: 

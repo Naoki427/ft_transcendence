@@ -10,3 +10,6 @@ import json
 
 def landing_page(request):
     return render(request, "Unauthorized/index.html") 
+
+def signup_page(request):
+    return render(request, "Unauthorized/signup.html")

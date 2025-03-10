@@ -1,0 +1,12 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.img-thumbnail {
+    display: block;
+    margin: 0 auto;
+}
+
+.loading #content {
+    display: none;
+}
