@@ -1,0 +1,9 @@
+Django==4.2
+djangorestframework
+django-otp
+qrcode
+pyotp
+python-dotenv
+psycopg2
+gunicorn
+requests

@@ -6,6 +6,7 @@ from django.conf import settings
 import requests
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail
+from .twoFAService.views import Register2FAInfo
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -26,6 +27,7 @@ def signup_view(request):
     email = request.data.get("email")
     password = request.data.get("password")
     language = request.data.get("language")
+    is_2fa_enabled = request.data.get("is_2fa_enabled", "false").lower() == "true"
     
     if not username or not email or not password or language is None:
         return error_response("All fields are required")
@@ -36,8 +38,15 @@ def signup_view(request):
 
     status, message, userid = RegisterUserInfo(username, email, language)
     if status != 200:
-        return error_response_from_other_service(message, status) 
+        return error_response_from_other_service(message, status)
+    
+    status = Register2FAInfo(userid, is_2fa_enabled)
+    is_2fa_success = True
+    if status != 200:
+        is_2fa_success = False
 
     return success_response("User registered successfully", {
         "userid": userid,
+        "is_2fa_enabled": is_2fa_enabled,
+        "is_2fa_success": is_2fa_success,
     })

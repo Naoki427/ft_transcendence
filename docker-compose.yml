@@ -26,6 +26,7 @@ services:
       - user-image-server
       - api-gateway
       - user-service
+      - 2fa-service
     restart: always
     env_file:
       - .env
@@ -43,6 +44,7 @@ services:
     container_name: innerproxy
     depends_on:
       - user-service
+      - 2fa-service
     restart: always
     env_file:
       - .env
@@ -156,6 +158,37 @@ services:
   #---------------------------------------------------------------------
   #---------------------------------------------------------------------
 
+  2fa-service:
+    build:
+      context: srcs/2FA/2FA_service
+      dockerfile: Dockerfile
+    container_name: 2FA-service
+    env_file:
+      - .env
+    volumes:
+      - ./srcs/2FA/2FA_service:/app
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/2fa-service:/etc/ssl/certs/2fa-service
+    restart: always
+    depends_on:
+      - 2fa-db
+    networks:
+      - TNet
+
+  2fa-db:
+    build:
+      context: srcs/2FA/2FA_DB
+      dockerfile: Dockerfile
+    container_name: 2FA-DB
+    environment:
+      POSTGRES_DB: ${POSTGRES_2FA_DB}
+      POSTGRES_USER: ${POSTGRES_2FA_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_2FA_PASSWORD}
+    volumes:
+      - ./srcs/2FA/2FA_DB/data:/var/lib/postgresql/data
+    networks:
+      - TNet
+    restart: always
 
 networks:
   TNet: 
