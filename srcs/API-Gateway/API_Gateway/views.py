@@ -6,6 +6,7 @@ from django.conf import settings
 import requests
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail
+from .AuthService.views import CheckPassword, RegisterAuthInfo
 from .twoFAService.views import Register2FAInfo
 
 def error_response(message, status=400):
@@ -36,8 +37,17 @@ def signup_view(request):
     if status != 200:
         return error_response_from_other_service(message, status)
 
+    status, message = CheckPassword(password)
+    if status != 200:
+        return error_response_from_other_service(message, status)
+
     status, message, userid = RegisterUserInfo(username, email, language)
     if status != 200:
+        return error_response_from_other_service(message, status)
+    
+    status, message = RegisterAuthInfo(userid, password)
+    if status != 200:
+        InitialDeleteUserInfo(userid, username, email, settings.INITDELAUTHINFOPASS)
         return error_response_from_other_service(message, status)
     
     status = Register2FAInfo(userid, is_2fa_enabled)

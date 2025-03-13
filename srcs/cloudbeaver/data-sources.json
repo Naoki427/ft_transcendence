@@ -1,0 +1,75 @@
+{
+	"folders": {},
+	"connections": {
+		"userPostgresDBL": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "User PostgreSQL Database",
+			"configuration": {
+				"host": "User-DB",
+				"port": "5432",
+				"database": "user_db",
+				"url": "jdbc:postgresql://User-DB:5432/user_db",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native",
+				"bootstrap": {
+					"autocommit": true
+				}
+			}
+		},
+		"2faPostgresDBL": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "2fa PostgreSQL Database",
+			"configuration": {
+				"host": "2FA-DB",
+				"port": "5432",
+				"database": "2fa_db",
+				"url": "jdbc:postgresql://2FA-DB:5432/2fa_db",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native",
+				"bootstrap": {
+					"autocommit": true
+				}
+			}
+		},
+		"authPostgresDBL": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "Auth PostgreSQL Database",
+			"configuration": {
+				"host": "Auth-DB",
+				"port": "5432",
+				"database": "auth_db",
+				"url": "jdbc:postgresql://Auth-DB:5432/auth_db",
+				"configurationType": "MANUAL",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"auth-model": "native",
+				"bootstrap": {
+					"autocommit": true
+				}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	}
+}

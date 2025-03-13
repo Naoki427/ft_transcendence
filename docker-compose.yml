@@ -27,6 +27,7 @@ services:
       - api-gateway
       - user-service
       - 2fa-service
+      - auth-service
     restart: always
     env_file:
       - .env
@@ -45,6 +46,7 @@ services:
     depends_on:
       - user-service
       - 2fa-service
+      - auth-service
     restart: always
     env_file:
       - .env
@@ -189,6 +191,64 @@ services:
     networks:
       - TNet
     restart: always
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+  auth-service:
+    build:
+      context: srcs/Authenticator/Auth_service
+      dockerfile: Dockerfile
+    container_name: Auth-service
+    env_file:
+      - .env
+    volumes:
+      - ./srcs/Authenticator/Auth_service:/app
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/auth-service:/etc/ssl/certs/auth-service
+    restart: always
+    depends_on:
+      - auth-db
+    networks:
+      - TNet
+
+  auth-db:
+    build:
+      context: srcs/Authenticator/Auth_DB
+      dockerfile: Dockerfile
+    container_name: Auth-DB
+    environment:
+      POSTGRES_DB: ${POSTGRES_AUTH_DB}
+      POSTGRES_USER: ${POSTGRES_AUTH_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_AUTH_PASSWORD}
+    volumes:
+      - ./srcs/Authenticator/Auth_DB/data:/var/lib/postgresql/data
+    networks:
+      - TNet
+    restart: always
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
+  cloudeaver:
+    build:
+      context: srcs/cloudbeaver
+      dockerfile: Dockerfile
+    container_name: CLOUDBEAVER
+    ports:
+      - "8080:8978"
+    depends_on:
+      - user-service
+      - 2fa-service
+      - auth-service
+    networks:
+      - TNet
+    logging:
+      driver: "none"
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
+
 
 networks:
   TNet: 
