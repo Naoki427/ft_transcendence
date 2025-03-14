@@ -95,7 +95,7 @@ def login_view(request):
     else:
         ip_address = request.META.get("REMOTE_ADDR") 
 
-    status, message, is_2fa_needed, qr_url = get2FAstatus(userid, device_name, ip_address)
+    status, message, is_2fa_needed, img_url = get2FAstatus(userid, device_name, ip_address)
     if status != 200 or is_2fa_needed is None:
         return error_response_from_other_service(message, status)
 
@@ -108,5 +108,4 @@ def login_view(request):
         response = set_cookie(response, "refrefh_token", refresh_token)
         return response
 
-    return success_response("2FA auth is needed", data={"userid": userid, "is_2fa_needed": is_2fa_needed,"qr_url": qr_url})
-
+    return success_response("2FA auth is needed", data={"userid": userid, "is_2fa_needed": is_2fa_needed,"img_url": img_url})

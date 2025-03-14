@@ -11,10 +11,10 @@ export async function loginflow(email, password, deviceName) {
         console.log(loginData)
         if (loginData.is_2fa_needed) {
             const userid = loginData.userid
-            if (loginData.qr_url) {
-                const qrUrlEncoded = btoa(loginData.qr_url);
+            if (loginData.img_url) {
+                const qrUrlEncoded = btoa(loginData.img_url);
                 alert("qr_表示用ページへ")
-                // window.location.href = `${window.location.origin}/get_qr/${userid}/${qrUrlEncoded}`
+                window.location.href = `${window.location.origin}/get_qr/${userid}/${qrUrlEncoded}`
             } else {
                 alert("OTPへ")
                 

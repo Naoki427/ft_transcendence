@@ -13,6 +13,22 @@ def error_response(message, status=400):
 def success_response(message, data={}):
     return JsonResponse({"success": True, "message": message, **data}, status=200)
 
+def generate_qr_code(auth_url):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(auth_url)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    return img_str
+
 @csrf_exempt
 @api_view(["POST"])
 def register(request):
@@ -55,20 +71,20 @@ def Get2FAStatus(request):
             return error_response("User not found")
 
         if not twoFA.is_2fa_enabled:
-            return success_response("This User did'nt activate 2FA", data={"is_2fa_needed": False, "qr_url": None})
+            return success_response("This User did'nt activate 2FA", data={"is_2fa_needed": False, "img_url": None})
         
         device_name = data.get("device_name")
         ip_address = data.get("ip_address")
         device = Device.objects.filter(userid=userid, device_name=device_name, ip_address=ip_address)
         if device:
-            return success_response("This device is reliable", data={"is_2fa_needed": False, "qr_url": None})
+            return success_response("This device is reliable", data={"is_2fa_needed": False, "img_url": None})
 
         if not twoFA.first_login:
-            return success_response("Unknown device detected", data={"is_2fa_needed": True, "qr_url": None})
+            return success_response("Unknown device detected", data={"is_2fa_needed": True,"img_url": None})
 
-        # シークレットキーの作成と、qr_urlの取得
         qr_url = twoFA.get_qr_code_url()
-        return success_response("This is the first time to log in for this user", data={"is_2fa_needed": True, "qr_url": qr_url})
+        img_url = generate_qr_code(qr_url)
+        return success_response("This is the first time to log in for this user", data={"is_2fa_needed": True, "img_url": img_url})
 
     except json.JSONDecodeError:
         return error_response("Invalid JSON format")

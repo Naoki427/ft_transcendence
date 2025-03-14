@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA Setup</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/Unauthorized/qr.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body text-center">
+                <h2 class="card-title">Scan this QR Code</h2>
+                <p id="userid" class="card-text">User ID: 読み込み中...</p>
+                <p class="card-text">Scan this QR code to enable 2FA:</p>
+                <img id="qrImage" alt="QR Code" src="" class="img-fluid" style="width: 200px; height: 200px;"> <!-- JS で QRコードを表示 -->
+                <p class="card-text mt-3">Use Google Authenticator or Authy to scan this QR code.</p>
+               ="qr-ok-btn" class="btn btn-primary mt-3">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/Unauthorized/qr.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

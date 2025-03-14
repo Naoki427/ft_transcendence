@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from .views import signup_view, login_view
-from .SSR_Django.views import landing_page_view, signup_page_view
+from .SSR_Django.views import landing_page_view, signup_page_view, get_qr_page
 
 urlpatterns = [
     path('api/signup/', signup_view, name="signup_view"),
@@ -23,4 +23,5 @@ urlpatterns = [
 
     path('', landing_page_view, name="landing_page"),
     path('signup/', signup_page_view, name="signup_page"),
+    path('get_qr/<str:userid>/<str:img_url>', get_qr_page, name="qr_page"),
 ]
