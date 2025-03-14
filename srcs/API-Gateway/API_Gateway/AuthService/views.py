@@ -26,3 +26,19 @@ def RegisterAuthInfo(userid, password):
     data = {"userid": userid, "password": password}
     return normal_request(url, data)
 
+def AuthPassword(userid, password):
+    url = "https://innerproxy/auth/auth-password/"
+    data = {"password": password, "userid": userid}
+    return normal_request(url, data)
+
+def GetToken(userid):
+    url = "https://innerproxy/auth/get-token/"
+    data = {"userid": userid}
+    try:
+        response = requests.post(url, json=data)
+        message = response.json().get("message")
+        refresh_token = response.json().get("refresh_token")
+        access_token = response.json().get("access_token")
+        return response.status_code, message, refresh_token, access_token
+    except requests.RequestException as e:
+        return None, "something went wrong", None, None

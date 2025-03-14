@@ -1,5 +1,6 @@
 import { translations_format } from "/static/js/utils/translations.js";
 import { getDeviceName } from "/static/js/utils/getDeviceName.js";
+import { loginflow } from "/static/js/utils/loginflow.js";
 
 const translations = translations_format;
 const lang = localStorage.getItem("selected_language") || 0;
@@ -86,7 +87,7 @@ async function signupflow(username, email, password, is_2fa_enabled, language, d
         messageBox.textContent = data.message;
         if (response.ok) {
             deviceName = getDeviceName()
-            // loginflow(email, password, deviceName)
+            loginflow(email, password, deviceName)
         }
     } catch (error) {
         console.error("Error: ", error);

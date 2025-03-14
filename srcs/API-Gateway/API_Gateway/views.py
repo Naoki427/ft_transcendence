@@ -6,8 +6,8 @@ from django.conf import settings
 import requests
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail
-from .AuthService.views import CheckPassword, RegisterAuthInfo
-from .twoFAService.views import Register2FAInfo
+from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken
+from .twoFAService.views import Register2FAInfo, get2FAstatus
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -20,6 +20,16 @@ def error_response_from_other_service(message, ret_status):
 
 def success_response(message, data={}):
     return JsonResponse({"success": True, "message": message, **data}, status=200)
+
+def set_cookie(response, key, value, httponly=True, secure=True, samesite="Lax"):
+    response.set_cookie(
+        key=key,
+        value=value,
+        httponly=httponly,
+        secure=secure,
+        samesite=samesite
+    )
+    return response
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -60,3 +70,43 @@ def signup_view(request):
         "is_2fa_enabled": is_2fa_enabled,
         "is_2fa_success": is_2fa_success,
     })
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def login_view(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+    device_name = request.data.get("device_name")
+
+    if not email or not password:
+        return error_response("All fields are required")
+
+    status, userid, message = getUserIDbyEmail(email)
+    if status != 200 or not userid:
+        return error_response_from_other_service(message, status)
+
+    status, message = AuthPassword(userid, password)
+    if status != 200:
+        return error_response_from_other_service(message, status)
+
+    ip_address = request.META.get("HTTP_X_FORWARDED_FOR")
+    if ip_address:
+        ip_address = ip_address.split(",")[0]
+    else:
+        ip_address = request.META.get("REMOTE_ADDR") 
+
+    status, message, is_2fa_needed, qr_url = get2FAstatus(userid, device_name, ip_address)
+    if status != 200 or is_2fa_needed is None:
+        return error_response_from_other_service(message, status)
+
+    if not is_2fa_needed:
+        status, message, refresh_token, access_token = GetToken(userid)
+        if status != 200 or not refresh_token or not access_token:
+            return error_response("Something went wrong")
+        response = JsonResponse({"message": "Login successful", "is_2fa_needed": False }) 
+        response = set_cookie(response, "access_token", access_token)
+        response = set_cookie(response, "refrefh_token", refresh_token)
+        return response
+
+    return success_response("2FA auth is needed", data={"userid": userid, "is_2fa_needed": is_2fa_needed,"qr_url": qr_url})
+

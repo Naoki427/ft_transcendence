@@ -59,3 +59,54 @@ def register(request):
         return error_response(str(e))
 
 
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def AuthPassword(request):
+    try:
+        data = json.loads(request.body)
+        userid = data.get("userid")
+        password = data.get("password")
+
+        if not userid or not password:
+            return error_response("userid and password are required")
+
+        auth_user = AuthUser.objects.filter(userid=userid).first()
+        
+        if not auth_user:
+            return error_response("User not found")
+
+        if not auth_user.check_password(password):
+            return error_response("Invalid password")
+
+        print(f"Debug: Authentication successful for userid={userid}")
+
+        return success_response("Authentication successful")
+
+    except json.JSONDecodeError:
+        return error_response("Invalid JSON format")
+    except Exception as e:
+        print(f"Error: {e}")
+        return error_response(str(e))
+
+
+@csrf_exempt
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def GetToken(request):
+    try:
+        data = request.data
+        userid = data.get("userid")
+        if not userid:
+            return error_response("Userid Missing")
+        user = AuthUser.objects.get(userid=userid)
+        if not user:
+            return error_response("User is Missing")
+
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+        
+        return success_response("Token created successfully", data={"access_token": access_token, "refresh_token": refresh_token})
+    except Exception as e:
+        return error_response(str(e))

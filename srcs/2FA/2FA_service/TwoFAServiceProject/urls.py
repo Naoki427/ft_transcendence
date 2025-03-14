@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import register
+from .views import register, Get2FAStatus
 
 urlpatterns = [
     path("register-2fa-info/", register, name="register-2fa"),
+    path("get-2fa-status/", Get2FAStatus, name="get2FAstatus"),
 ]
 
