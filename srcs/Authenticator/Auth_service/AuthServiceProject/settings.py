@@ -26,7 +26,7 @@ os.environ["REQUESTS_CA_BUNDLE"] = SSL_CERT_FILE
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mu+@*25um6dwx=%m5ykgh&p&dwapiy=(4hyco2_0qnw^)53k10'
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "default-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"

@@ -7,3 +7,4 @@ django-cors-headers
 django-environ
 python-dotenv
 requests
+PyJWT

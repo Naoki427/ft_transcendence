@@ -6,7 +6,7 @@ from django.conf import settings
 import requests
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail
-from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken
+from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh
 from .twoFAService.views import Register2FAInfo, get2FAstatus, AuthOtp
 
 def error_response(message, status=400):
@@ -105,7 +105,7 @@ def login_view(request):
             return error_response("Something went wrong")
         response = JsonResponse({"message": "Login successful", "is_2fa_needed": False }) 
         response = set_cookie(response, "access_token", access_token)
-        response = set_cookie(response, "refrefh_token", refresh_token)
+        response = set_cookie(response, "refresh_token", refresh_token)
         return response
 
     return success_response("2FA auth is needed", data={"userid": userid, "is_2fa_needed": is_2fa_needed,"img_url": img_url})
@@ -125,7 +125,27 @@ def login2fa_view(request):
             return error_response(message)
         response = JsonResponse({"message": "Login successful"}) 
         response = set_cookie(response, "access_token", access_token)
-        response = set_cookie(response, "refrefh_token", refresh_token)
+        response = set_cookie(response, "refresh_token", refresh_token)
         return response
     except Exception as e:
         return JsonResponse({'message': str(e)}, status=500)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def check_auth_view(request):
+    access_token = request.COOKIES.get("access_token")
+    if not access_token:
+        return error_response("Access token not found")
+    status, message = checkJwt(access_token)
+    if status == 200:
+        return success_response("The access token was authenticated", data={"access_token": access_token})
+    refresh_token = request.COOKIES.get("refresh_token")
+    if not refresh_token:
+        return error_response("Refresh token not found")
+    status, message, new_refresh_token, new_access_token = refresh(refresh_token)
+    if refresh_response.status_code == 200:
+        response = JsonResponse({"message": "The new access token was authenticated", "access_token": new_access_token})
+        response = set_cookie(response, "access_token", new_access_token)
+        response = set_cookie(response, "refresh_token", new_refresh_token)
+        return response
+    return error_response("Something went wrong")

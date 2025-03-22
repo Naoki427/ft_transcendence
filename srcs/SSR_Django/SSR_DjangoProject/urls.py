@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import landing_page,signup_page, get_qr_page, otp_page
+from .views import landing_page,signup_page, get_qr_page, otp_page, home_view
 
 
 urlpatterns = [
     path('', landing_page, name="landing_page"),
     path('signup/', signup_page, name="signup_page"),
     path('get_qr/<str:userid>/<str:img_url>', get_qr_page, name="qr_page"),
-    path('otp/<str:userid>/', otp_page, name="otp_page")
+    path('otp/<str:userid>/', otp_page, name="otp_page"),
+
+    path("home/", home_view, name="home_page"), 
 ]

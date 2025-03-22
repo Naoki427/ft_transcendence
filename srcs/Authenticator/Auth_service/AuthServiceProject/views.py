@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 import re
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+import jwt
+from django.conf import settings
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -110,3 +112,38 @@ def GetToken(request):
         return success_response("Token created successfully", data={"access_token": access_token, "refresh_token": refresh_token})
     except Exception as e:
         return error_response(str(e))
+
+@csrf_exempt
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def CheckJWT(request):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return JsonResponse({"message": "Authorization header missing"}, status=401)
+    
+    token = auth_header.split(" ")[1]
+    secret_key = settings.SECRET_KEY
+    try:    
+        decoded_token = jwt.decode(token, secret_key, algorithms=["HS256"])
+        return JsonResponse({"message": "Token is valid"}, status=200)
+    except jwt.ExpiredSignatureError:
+        return JsonResponse({"message": "Token has expired"}, status=401)
+    except jwt.InvalidTokenError:
+        return JsonResponse({"message": "Token is invalid"}, status=401)
+
+@csrf_exempt
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def Refresh(request):
+    refresh_token = request.data.get("refresh_token")
+    if not refresh_token:
+        return Response({"message": "Refresh token is missing"}, status=400)
+    try:
+        # リフレッシュトークンをデコードして検証
+        token = RefreshToken(refresh_token)
+        # 新しいアクセストークンを生成
+        new_access_token = str(token.access_token)
+        new_refresh_token = str(token)
+        return Response({"access_token": new_access_token, "refresh_token": new_refresh_token}, status=200)
+    except TokenError as e:
+        return Response({"message": "Invalid refresh token"}, status=401)

@@ -25,3 +25,6 @@ def get_qr_page(request, userid, img_url):
 
 def otp_page(request, userid):
     return django_render(f"https://innerproxy/otp/{userid}/")
+
+def home_page(request):
+    return django_render("https://innerproxy/pages/home/")

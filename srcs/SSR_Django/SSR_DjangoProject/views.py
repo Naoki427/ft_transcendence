@@ -19,4 +19,7 @@ def get_qr_page(request, userid, img_url):
     return render(request, "Unauthorized/qr.html", {"userid": userid, "img_url": decoded_img_url})
 
 def otp_page(request, userid):
-    return render(request, "Unauthorized/otp.html",  {"userid": userid}) 
+    return render(request, "Unauthorized/otp.html",  {"userid": userid})
+
+def home_view(request):
+    return render(request, "Authorized/home.html")

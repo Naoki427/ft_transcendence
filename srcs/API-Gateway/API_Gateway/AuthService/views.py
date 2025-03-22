@@ -42,3 +42,32 @@ def GetToken(userid):
         return response.status_code, message, refresh_token, access_token
     except requests.RequestException as e:
         return None, "something went wrong", None, None
+
+def AuthPassword(userid, password):
+    url = "https://innerproxy/auth/auth-password/"
+    data = {"password": password, "userid": userid}
+    return normal_request(url, data)
+
+def checkJwt(access_token):
+    url = "https://innerproxy/auth/check-jwt/"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    try:
+        response = requests.get(url, headers=headers)
+        message = response.json().get("message", "Something went wrong")
+        return response.status_code, message
+    except requests.RequestException as e:
+        return None, str(e)
+    return response
+
+def refresh(refresh_token):
+    url = "https://innerproxy/auth/refresh/"
+    data = {"refresh_token": refresh_token}
+    try:
+        response = requests.get(url, json=data)
+        message = response.json().get("message", "Something went wrong")
+        new_refresh_token = response.json().get("refresh_token")
+        new_access_token = response.json().get("access_token")
+        return response.status_code, message, new_refresh_token, new_access_token
+    except requests.RequestException as e:
+        return None, str(e)
+    return response

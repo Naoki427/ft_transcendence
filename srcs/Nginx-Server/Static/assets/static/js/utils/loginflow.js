@@ -17,13 +17,9 @@ export async function loginflow(email, password, deviceName) {
                 window.location.href = `${window.location.origin}/get_qr/${userid}/${qrUrlEncoded}`
             } else {
                 alert("OTPへ")
-                
+                window.location.href = `${window.location.origin}/otp/${userid}/`;
             }
         } else {
-            const userid = loginData.userid
-            localStorage.setItem("access_token", loginData.access_token);
-            localStorage.setItem("refresh_token", loginData.refresh_token);
-            localStorage.setItem("language", loginData.lang);
             window.location.href = `${window.location.origin}/pages/home/`
         }
     } else {

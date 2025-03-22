@@ -20,6 +20,7 @@ async function AuthByOtp(token) {
 
         if (response.ok) {
             console.log("Login successful:", data);
+            window.location.href = `${window.location.origin}/pages/home/`
         } else {
             console.error("Login failed:", data);
             alert(data.message);
