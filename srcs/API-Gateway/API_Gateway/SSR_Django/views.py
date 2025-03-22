@@ -22,3 +22,6 @@ def signup_page_view(request):
 
 def get_qr_page(request, userid, img_url):
     return django_render(f"https://innerproxy/get_qr/{userid}/{img_url}")
+
+def otp_page(request, userid):
+    return django_render(f"https://innerproxy/otp/{userid}/")

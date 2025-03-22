@@ -7,7 +7,7 @@ import requests
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail
 from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken
-from .twoFAService.views import Register2FAInfo, get2FAstatus
+from .twoFAService.views import Register2FAInfo, get2FAstatus, AuthOtp
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -109,3 +109,23 @@ def login_view(request):
         return response
 
     return success_response("2FA auth is needed", data={"userid": userid, "is_2fa_needed": is_2fa_needed,"img_url": img_url})
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def login2fa_view(request):
+    try:
+        userid = request.data.get("userid")
+        token = request.data.get("token")
+
+        status, message = AuthOtp(userid, token)
+        if status != 200:
+            return error_response(message)
+        status, message, refresh_token, access_token = GetToken(userid)
+        if status != 200 or not refresh_token or not access_token:
+            return error_response(message)
+        response = JsonResponse({"message": "Login successful"}) 
+        response = set_cookie(response, "access_token", access_token)
+        response = set_cookie(response, "refrefh_token", refresh_token)
+        return response
+    except Exception as e:
+        return JsonResponse({'message': str(e)}, status=500)

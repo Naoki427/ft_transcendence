@@ -6,6 +6,7 @@ import json
 import qrcode
 import base64
 from io import BytesIO
+import onetimepass
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -50,7 +51,7 @@ def register(request):
     except json.JSONDecodeError:
         return error_response("Invalid JSON format")
     except Exception as e:
-        print(f"Error in 2FA register: {e}")  # ✅ エラーログ
+        print(f"Error in 2FA register: {e}")
         return error_response(str(e))
 
 @csrf_exempt
@@ -60,7 +61,7 @@ def Get2FAStatus(request):
         data = json.loads(request.body)
         userid = data.get("userid")
 
-        print(f"Debug: Received Get2FAStatus request for userid={userid}")  # ✅ デバッグログ
+        print(f"Debug: Received Get2FAStatus request for userid={userid}")
 
         if userid is None:
             return error_response("Missing userid")
@@ -89,5 +90,28 @@ def Get2FAStatus(request):
     except json.JSONDecodeError:
         return error_response("Invalid JSON format")
     except Exception as e:
-        print(f"Error in Get2FAStatus: {e}")  # ✅ エラーログ
+        print(f"Error in Get2FAStatus: {e}")
+        return error_response(str(e))
+
+@csrf_exempt
+@api_view(["POST"])
+def AuthOtp(request):
+    try:
+        data = json.loads(request.body)
+        userid = data.get("userid")
+        token = data.get("token")
+
+        twoFA = TwoFactorAuth.objects.filter(userid=userid).first()
+
+        if not twoFA:
+            return error_response("User not found")
+        
+        if not twoFA.is_2fa_enabled:
+            return success_response("This User did'nt activate 2FA")
+        
+        if int(token) != onetimepass.get_totp(twoFA.secret_key):
+            return error_response("The token does not match the server's token.")
+        
+        return success_response("2FA authentication successful")
+    except Exception as e:
         return error_response(str(e))

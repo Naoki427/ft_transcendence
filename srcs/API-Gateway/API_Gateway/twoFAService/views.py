@@ -32,3 +32,8 @@ def get2FAstatus(userid, device_name, ip_address):
         return response.status_code, response.json().get("message"), response.json().get("is_2fa_needed"), response.json().get("img_url")
     except requests.RequestException as e:
         return None, str(e), None, None
+
+def AuthOtp(userid,token):
+    url = "https://innerproxy/2fa/auth-otp/"
+    data = {"userid": userid, "token": token}
+    return normal_request(url, data)

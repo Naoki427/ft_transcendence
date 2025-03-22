@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import register, Get2FAStatus
+from .views import register, Get2FAStatus, AuthOtp
 
 urlpatterns = [
     path("register-2fa-info/", register, name="register-2fa"),
     path("get-2fa-status/", Get2FAStatus, name="get2FAstatus"),
+    path("auth-otp/", AuthOtp, name="get2FAstatus"),
 ]
 

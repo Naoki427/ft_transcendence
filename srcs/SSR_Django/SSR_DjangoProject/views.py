@@ -15,5 +15,8 @@ def signup_page(request):
     return render(request, "Unauthorized/signup.html")
 
 def get_qr_page(request, userid, img_url):
-    decoded_img_url = base64.b64decode(img_url).decode('utf-8')  # URLデコード
+    decoded_img_url = base64.b64decode(img_url).decode('utf-8')
     return render(request, "Unauthorized/qr.html", {"userid": userid, "img_url": decoded_img_url})
+
+def otp_page(request, userid):
+    return render(request, "Unauthorized/otp.html",  {"userid": userid}) 
