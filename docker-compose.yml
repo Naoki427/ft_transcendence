@@ -249,6 +249,37 @@ services:
   #---------------------------------------------------------------------
   #---------------------------------------------------------------------
 
+  websocket:
+    build:
+      context: srcs/Websocket
+      dockerfile: Dockerfile
+    container_name: websocket
+    volumes:
+      - ./srcs/Websocket:/app
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/websocket:/etc/ssl/certs/websocket
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      - redis
+    networks:
+      - TNet
+
+  redis:
+    build:
+      context: srcs/Redis
+      dockerfile: Dockerfile
+    container_name: REDIS
+    volumes:
+      - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
+      - ./srcs/RootCA/certs/redis:/etc/ssl/certs/redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    networks:
+      - TNet
+
+  #---------------------------------------------------------------------
+  #---------------------------------------------------------------------
 
 networks:
   TNet: 
