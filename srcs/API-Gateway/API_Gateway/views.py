@@ -143,7 +143,7 @@ def check_auth_view(request):
     if not refresh_token:
         return error_response("Refresh token not found")
     status, message, new_refresh_token, new_access_token = refresh(refresh_token)
-    if refresh_response.status_code == 200:
+    if status == 200:
         response = JsonResponse({"message": "The new access token was authenticated", "access_token": new_access_token})
         response = set_cookie(response, "access_token", new_access_token)
         response = set_cookie(response, "refresh_token", new_refresh_token)

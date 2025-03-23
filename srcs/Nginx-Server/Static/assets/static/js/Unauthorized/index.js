@@ -1,5 +1,7 @@
-// import { checkAuth } from "/static/js/utils/checkAuth.js";
 import { translations_landingpage } from "/static/js/utils/translations.js"
+import { redirectIfAuthenticated } from "/static/js/utils/authJWT.js";
+
+document.addEventListener('DOMContentLoaded', redirectIfAuthenticated);
 
 const translations = translations_landingpage
 

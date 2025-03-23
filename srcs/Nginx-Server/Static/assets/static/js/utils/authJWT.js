@@ -20,3 +20,24 @@ export function checkAuthorization() {
         window.location.href = `${window.location.origin}`;
     });
 }
+
+export function redirectIfAuthenticated() {
+
+    fetch('/api/jwt/', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.access_token) {
+            window.location.href = `${window.location.origin}/pages/home/`;
+        } else {
+            console.log(data);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        window.location.href = `${window.location.origin}`;
+    });
+}
+
