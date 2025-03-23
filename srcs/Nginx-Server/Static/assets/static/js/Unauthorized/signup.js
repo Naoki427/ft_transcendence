@@ -62,7 +62,6 @@ passwordInput.oninput = function(event) {
 };
 
 
-const messageBox = document.getElementById("message");
 
 async function signupflow(username, email, password, is_2fa_enabled, language, deviceName) {
     const formData = new FormData();
@@ -77,6 +76,7 @@ async function signupflow(username, email, password, is_2fa_enabled, language, d
             alert("ユーザーネームは１〜１０文字以内で入力してください")
             return ;
         }
+        document.getElementById("loading-screen").classList.remove("d-none");
         console.log("Sending data:", Object.fromEntries(formData.entries())); // 🔍 送信データを確認
         const response = await fetch(`${window.location.origin}/api/signup/`, {
             method: "POST",
@@ -84,14 +84,12 @@ async function signupflow(username, email, password, is_2fa_enabled, language, d
         });
 
         const data = await response.json()
-        messageBox.textContent = data.message;
         if (response.ok) {
             deviceName = getDeviceName()
             loginflow(email, password, deviceName)
         }
     } catch (error) {
         console.error("Error: ", error);
-        message.textContent = "SignUp Failed";
     }
 }
 

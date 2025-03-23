@@ -13,10 +13,8 @@ export async function loginflow(email, password, deviceName) {
             const userid = loginData.userid
             if (loginData.img_url) {
                 const qrUrlEncoded = btoa(loginData.img_url);
-                alert("qr_表示用ページへ")
                 window.location.href = `${window.location.origin}/get_qr/${userid}/${qrUrlEncoded}`
             } else {
-                alert("OTPへ")
                 window.location.href = `${window.location.origin}/otp/${userid}/`;
             }
         } else {

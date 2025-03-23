@@ -60,7 +60,7 @@ def signup_view(request):
         InitialDeleteUserInfo(userid, username, email, settings.INITDELAUTHINFOPASS)
         return error_response_from_other_service(message, status)
     
-    status = Register2FAInfo(userid, is_2fa_enabled)
+    status = Register2FAInfo(userid, username, is_2fa_enabled)
     is_2fa_success = True
     if status != 200:
         is_2fa_success = False

@@ -36,6 +36,7 @@ def register(request):
     try:
         data = json.loads(request.body)
         userid = data.get("userid")
+        username = data.get("username")
         is_2fa_enabled = data.get("is_2fa_enabled")
 
         if userid is None or is_2fa_enabled is None:
@@ -43,7 +44,7 @@ def register(request):
         
         print(f"DEBUG: IS_2FA_ENABLED: {is_2fa_enabled}")
 
-        twoFA = TwoFactorAuth(userid=userid, is_2fa_enabled=is_2fa_enabled)
+        twoFA = TwoFactorAuth(userid=userid, username=username, is_2fa_enabled=is_2fa_enabled)
         twoFA.save()
 
         return success_response("2FA registered successfully")

@@ -18,9 +18,9 @@ def normal_request(url, data):
     except requests.RequestException as e:
         return None, str(e)
 
-def Register2FAInfo(userid, is_2fa_enabled):
+def Register2FAInfo(userid,username, is_2fa_enabled):
     url = "https://innerproxy/2fa/register-2fa-info/"
-    data = {"userid": userid, "is_2fa_enabled": is_2fa_enabled}
+    data = {"userid": userid,  "username": username, "is_2fa_enabled": is_2fa_enabled}
     return normal_request(url, data)
 
 

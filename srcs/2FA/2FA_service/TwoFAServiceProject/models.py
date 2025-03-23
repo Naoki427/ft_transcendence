@@ -7,6 +7,7 @@ from django.http import HttpResponse
 
 class TwoFactorAuth(models.Model):
     userid = models.IntegerField(unique=True)  # UserManagement から受け取る
+    username = models.CharField(max_length=255, unique=True)
     is_2fa_enabled = models.BooleanField(default=False)  # 2FA の有効・無効
     secret_key = models.CharField(max_length=255, null=True, blank=True)  # 2FA の秘密鍵
     first_login = models.BooleanField(default=True)
@@ -24,7 +25,7 @@ class TwoFactorAuth(models.Model):
     def get_qr_code_url(self, issuer_name="FT_TRANSCENDENCE"):
         if not self.secret_key:
             self.generate_secret_key()
-        return pyotp.totp.TOTP(self.secret_key).provisioning_uri(name=str(self.userid), issuer_name=issuer_name)
+        return pyotp.totp.TOTP(self.secret_key).provisioning_uri(name=str(self.username), issuer_name=issuer_name)
 
 class Device(models.Model):
     userid = models.IntegerField()
