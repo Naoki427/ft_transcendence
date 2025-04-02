@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import landing_page,signup_page, get_qr_page, otp_page, home_view, matchmaking_page, matchgame_page
+from .views import landing_page,signup_page, get_qr_page, otp_page, home_view, matchmaking_page, matchgame_page, tournament_page
 
 
 urlpatterns = [
@@ -27,4 +27,5 @@ urlpatterns = [
     path("home/", home_view, name="home_page"), 
     path('matchmaking/', matchmaking_page, name='matchmaking_page'),
     path('match-game/<str:room_name>/', matchgame_page, name='matchgame_page'),
+    path('tournament/', tournament_page, name='tournament_page'),
 ]

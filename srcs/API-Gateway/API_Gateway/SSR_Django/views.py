@@ -34,3 +34,6 @@ def matchmaking_page(request):
 
 def matchgame_page(request, room_name):
     return django_render(f"https://innerproxy/pages/match-game/{room_name}/")
+
+def tournament_page(request):
+    return django_render("https://innerproxy/pages/tournament/")

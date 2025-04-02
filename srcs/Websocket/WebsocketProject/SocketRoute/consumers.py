@@ -236,3 +236,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'paddle_position': paddle_position
         }))
+
+    
+class TournamentConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+    

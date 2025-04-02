@@ -8,7 +8,7 @@ const translations = translations_format[lang];
 
 
 document.getElementById("title").textContent = translations.gamemenu;
-document.getElementById("cpu-battle-btn").textContent = translations.cpumatch;
+document.getElementById("tournament-btn").textContent = translations.cpumatch;
 document.getElementById("random-match-btn").textContent = translations.randommatch;
 document.getElementById("friend-battle-btn").textContent = translations.friendmatch;
 document.getElementById("settings-btn").textContent = translations.setting;
@@ -17,8 +17,8 @@ document.getElementById("friend-list-btn").textContent = translations.friendlist
 function handleClick(page) {
     let url = '';
     switch (page) {
-        case 'CPU Battle':
-            url = '/cpu-battle/';
+        case 'Tournament Battle':
+            url = '/pages/tournament/';
             break;
         case 'Random Match':
             url = '/pages/matchmaking/';

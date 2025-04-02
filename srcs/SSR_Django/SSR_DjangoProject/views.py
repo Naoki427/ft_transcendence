@@ -29,3 +29,6 @@ def matchmaking_page(request):
 
 def matchgame_page(request, room_name):
     return render(request, "Authorized/match-game.html", {'room_name': room_name})
+
+def tournament_page(request):
+    return render(request, "Authorized/tournament.html")
