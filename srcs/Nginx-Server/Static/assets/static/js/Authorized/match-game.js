@@ -13,20 +13,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let gameState = GAME_IN_PROGRESS;
 
 
-    // 開始のカウントダウン
     function gameStart() {
         let countdown = 3;
         countdownElement.style.display = 'block';
         countdownElement.innerHTML = 'READY';
 
-        // const countdownInterval = setInterval(() => {
-        //     countdown -= 1;
-        //     if (countdown == 0) {
-        //         clearInterval(countdownInterval);
-        //         countdownElement.style.display = 'none';
-        //         startWebSocketConnection();
-        //     }
-        // }, 1000);
+        const countdownInterval = setInterval(() => {
+            countdown -= 1;
+            if (countdown == 0) {
+                clearInterval(countdownInterval);
+                countdownElement.style.display = 'none';
+                startWebSocketConnection();
+            }
+        }, 1000);
     }
 
     function startWebSocketConnection() {

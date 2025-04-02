@@ -8,7 +8,7 @@ const translations = translations_format[lang];
 
 
 document.getElementById("title").textContent = translations.gamemenu;
-document.getElementById("tournament-btn").textContent = translations.cpumatch;
+document.getElementById("tournament-btn").textContent = translations.tournament;
 document.getElementById("random-match-btn").textContent = translations.randommatch;
 document.getElementById("friend-battle-btn").textContent = translations.friendmatch;
 document.getElementById("settings-btn").textContent = translations.setting;
