@@ -43,22 +43,23 @@ class MatchConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_add(group_name, user1_info['channel_name'])
             await self.channel_layer.group_add(group_name, user2_info['channel_name'])
 
-            match_url = f'/pages/match-game/{uuid1}_{uuid2}/'
+            # match_url = f'/pages/match-game/{uuid1}_{uuid2}/'
             await self.channel_layer.group_send(
                 group_name,
                 {
                     'type': 'match_message',
                     'message': f'User {uuid1} matched with User {uuid2}',
-                    'url': match_url
+                    'room_name' : f'{uuid1}_{uuid2}'
+                    # 'url': match_url
                 }
             )
 
     async def match_message(self, event):
         message = event['message']
-        url = event['url']
+        room_name = event['room_name']
         await self.send(text_data=json.dumps({
             'message': message,
-            'url': url
+            'room_name': room_name
         }))
         await self.close()
 

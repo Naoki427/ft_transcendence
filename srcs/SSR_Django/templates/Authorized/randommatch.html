@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pong Game</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/randommatch.css' %}">
+</head>
+<body>
+    <div class="container" id="matchmakingContainer">
+        <div id="status">戦うんだbro</div>
+        <button id="matchButton">対戦</button>
+    </div>
+
+    <div class="container hidden" id="gameContainer">
+        <div id="countdown">3</div>
+        <div id="message" class="hidden"></div>
+        <div id="score-container">
+            <div id="score-player1" class="score-box">
+                <span class="player-label">Player 1</span>
+                <span class="player-score">0</span>
+            </div>
+            <div id="score-player2" class="score-box">
+                <span class="player-label">Player 2</span>
+                <span class="player-score">0</span>
+            </div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="{% static 'js/Authorized/randommatch.js' %}"></script>
+</body>
+</html>

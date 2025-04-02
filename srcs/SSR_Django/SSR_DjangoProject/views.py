@@ -24,8 +24,8 @@ def otp_page(request, userid):
 def home_view(request):
     return render(request, "Authorized/home.html")
 
-def matchmaking_page(request):
-    return render(request, "Authorized/matchmaking.html")
+def randommatch_page(request):
+    return render(request, "Authorized/randommatch.html")
 
 def matchgame_page(request, room_name):
     return render(request, "Authorized/match-game.html", {'room_name': room_name})

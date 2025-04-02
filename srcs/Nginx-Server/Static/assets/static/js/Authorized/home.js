@@ -21,7 +21,7 @@ function handleClick(page) {
             url = '/pages/tournament/';
             break;
         case 'Random Match':
-            url = '/pages/matchmaking/';
+            url = '/pages/randommatch/';
             break;
         case 'Friend Battle':
             url = '/friend-battle/';

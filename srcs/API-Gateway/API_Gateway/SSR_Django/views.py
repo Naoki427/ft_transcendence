@@ -29,8 +29,8 @@ def otp_page(request, userid):
 def home_page(request):
     return django_render("https://innerproxy/pages/home/")
 
-def matchmaking_page(request):
-    return django_render("https://innerproxy/pages/matchmaking/")
+def randommatch_page(request):
+    return django_render("https://innerproxy/pages/randommatch/")
 
 def matchgame_page(request, room_name):
     return django_render(f"https://innerproxy/pages/match-game/{room_name}/")

@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path
 from django.urls import re_path
 from .views import signup_view, login_view, login2fa_view, check_auth_view
-from .SSR_Django.views import landing_page_view, signup_page_view, get_qr_page, otp_page, home_page,  matchmaking_page, matchgame_page, tournament_page
+from .SSR_Django.views import landing_page_view, signup_page_view, get_qr_page, otp_page, home_page,  randommatch_page, matchgame_page, tournament_page
 
 urlpatterns = [
     path('api/signup/', signup_view, name="signup_view"),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('otp/<str:userid>/', otp_page, name="otp_page"),
 
     path('pages/home/', home_page, name="home_page"),
-    path('pages/matchmaking/', matchmaking_page, name='matchmaking_page'),
+    path('pages/randommatch/', randommatch_page, name='randommatch_page'),
     path('pages/match-game/<str:room_name>/', matchgame_page, name='matchgame_page'),
     path('pages/tournament/', tournament_page, name='tournament_page'),
 ]

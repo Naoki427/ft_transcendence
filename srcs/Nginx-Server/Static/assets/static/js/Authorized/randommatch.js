@@ -1,3 +1,5 @@
+import { pongGame } from "/static/js/utils/game.js";
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const matchButton = document.getElementById('matchButton');
     const statusDiv = document.getElementById('status');
@@ -21,10 +23,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
             matchSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
+                console.log("reieve data",data);
                 statusDiv.innerText = data.message;
-                if (data.url) {
-                    window.location.href = data.url;  // 対戦ページにリダイレクト
+                if(data.room_name) {
+                    document.getElementById('matchmakingContainer').classList.add('hidden');
+                    document.getElementById('gameContainer').classList.remove('hidden');
+                    pongGame(data.room_name);
                 }
+                // if (data.url) {
+                //     window.location.href = data.url;  // 対戦ページにリダイレクト
+                // }
             };
 
             matchSocket.onclose = function(e) {
