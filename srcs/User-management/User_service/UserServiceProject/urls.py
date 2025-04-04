@@ -16,13 +16,14 @@ Including another URLconf
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, GetUserIDbyEmail
+from .views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, GetUserIDbyEmail, GetUserInfo
 
 urlpatterns = [
     path('check-user-info/', CheckUserInfo, name="CheckUserInfo"),
     path('register-user-info/', RegisterUserInfo, name="RegisterUserInfo"),
     path('inital-delete-user-info/', InitialDeleteUserInfo, name="InitialDeleteUserInfo"),
     path('get-id-by-email/', GetUserIDbyEmail, name="getuserIDbyEmail"),
+    path('get-user-info/',  GetUserInfo, name="GetUserInfo")
 ]
 
 

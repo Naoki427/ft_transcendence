@@ -30,9 +30,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     document.getElementById('gameContainer').classList.remove('hidden');
                     pongGame(data.room_name);
                 }
-                // if (data.url) {
-                //     window.location.href = data.url;  // 対戦ページにリダイレクト
-                // }
             };
 
             matchSocket.onclose = function(e) {

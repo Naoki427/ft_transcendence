@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from django.urls import re_path
-from .views import signup_view, login_view, login2fa_view, check_auth_view
+from .views import signup_view, login_view, login2fa_view, check_auth_view, get_user_info_view
 from .SSR_Django.views import landing_page_view, signup_page_view, get_qr_page, otp_page, home_page,  randommatch_page, matchgame_page, tournament_page
 
 urlpatterns = [
@@ -23,6 +23,7 @@ urlpatterns = [
     path('api/login/', login_view, name="login_view"),
     path('api/login2fa/',login2fa_view, name="login2fa_view"),
     path('api/jwt/',check_auth_view, name="check_auth_view"),
+    path('api/get_user_info/',get_user_info_view, name="get_user_info_view"),
 
     path('', landing_page_view, name="landing_page"),
     path('signup/', signup_page_view, name="signup_page"),

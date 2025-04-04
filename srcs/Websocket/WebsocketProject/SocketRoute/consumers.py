@@ -43,14 +43,12 @@ class MatchConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_add(group_name, user1_info['channel_name'])
             await self.channel_layer.group_add(group_name, user2_info['channel_name'])
 
-            # match_url = f'/pages/match-game/{uuid1}_{uuid2}/'
             await self.channel_layer.group_send(
                 group_name,
                 {
                     'type': 'match_message',
                     'message': f'User {uuid1} matched with User {uuid2}',
                     'room_name' : f'{uuid1}_{uuid2}'
-                    # 'url': match_url
                 }
             )
 
@@ -238,12 +236,12 @@ class GameConsumer(AsyncWebsocketConsumer):
             'paddle_position': paddle_position
         }))
 
-    
 class TournamentConsumer(AsyncWebsocketConsumer):
     waiting_users_4 = []
     waiting_users_8 = []
     waiting_users_16 = []
     user_info = {}
+    pair = []
 
     async def connect(self):
         await self.accept()
@@ -255,32 +253,35 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         }
     
     async def disconnect(self, close_code):
-        if self.channel_id in self.waiting_users:
-            self.waiting_users.remove(self.channel_id)
+        if self.channel_id in self.waiting_users_4:
+            self.waiting_users_4.remove(self.channel_id)
+        if self.channel_id in self.waiting_users_8:
+            self.waiting_users_8.remove(self.channel_id)
+        if self.channel_id in self.waiting_users_16:
+            self.waiting_users_16.remove(self.channel_id)
         if self.channel_id in self.user_info:
             del self.user_info[self.channel_id]
     
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message_type = text_data_json['type']
-        tournament_size = text_data_json.get('size')
-
-        if action == 'join_tournament':
-            await self.handle_join_tournament(tournament_size)
+        data = json.loads(text_data)
+        if data['alias']:
+            self.user_info[self.channel_id]['alias'] = data['alias']
+        if data['type'] == 'join_tournament':
+            await self.handle_join_tournament(data['size'])
 
     async def handle_join_tournament(self, size):
         if size == 4:
-            self.waiting_users_4.append(self)
+            self.waiting_users_4.append(self.user_info[self.channel_id] )
             if len(self.waiting_users_4) == 4:
                 await self.start_tournament(self.waiting_users_4)
                 self.waiting_users_4 = []
         elif size == 8:
-            self.waiting_users_8.append(self)
+            self.waiting_users_8.append(self.user_info[self.channel_id] )
             if len(self.waiting_users_8) == 8:
                 await self.start_tournament(self.waiting_users_8)
                 self.waiting_users_8 = []
         elif size == 16:
-            self.waiting_users_16.append(self)
+            self.waiting_users_16.append(self.user_info[self.channel_id])
             if len(self.waiting_users_16) == 16:
                 await self.start_tournament(self.waiting_users_16)
                 self.waiting_users_16 = []
@@ -288,3 +289,32 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({"message": "Invalid tournament size"}))
 
     
+    async def start_tournament(self,waiting_users):
+        await self.send_participants_info(waiting_users)
+
+
+    async def send_participants_info(self,waiting_users):
+        group_name = 'participants'
+        participants_info = []
+        for i in range(0, len(waiting_users)):
+            user = {
+                'index': i,
+                'user_id': waiting_users[i]['channel_name'],
+                'alias': waiting_users[i]['alias']
+            }
+            participants_info.append(user)
+            await self.channel_layer.group_add(group_name, waiting_users[i]['channel_name'])
+
+        await self.channel_layer.group_send(
+                group_name,
+                {
+                    'type': 'participants_message',
+                    'participants_info' : participants_info
+                }
+            )
+
+    async def participants_message(self, event):
+        participants_info = event['participants_info']
+        await self.send(text_data=json.dumps({
+            'participants_info': participants_info
+        }))

@@ -3,11 +3,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const tournamentSize = document.getElementById('tournamentSize').value;
-        const tournamentSocket = new WebSocket('ws://localhost:8000/ws/custom/');
+        getUserInfo();
+        const tournamentSize = parseInt(document.getElementById('tournamentSize').value, 10);
+        const userAlias = document.getElementById('userAlias').value;
+        const url = "wss://" + window.location.host + "/ws/tournament/";
+        const tournamentSocket = new WebSocket(url);
 
         tournamentSocket.onopen = function(e) {
-            const initMessage = { type: 'join_tournament', size: tournamentSize };
+            const initMessage = { type: 'join_tournament', size: tournamentSize ,alias: userAlias};
             tournamentSocket.send(JSON.stringify(initMessage));
             console.log('WebSocket connection established and tournament size sent');
         };
@@ -27,3 +30,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
         };
     });
 });
+
+async function getUserInfo() {
+    try {
+        const response = await fetch(`${window.location.origin}/api/get_user_info/`, {
+            method: "GET",
+        });
+
+        const data = await response.json()
+        console.log('recieved data:',data)
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+}

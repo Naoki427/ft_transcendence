@@ -10,6 +10,7 @@ from django.conf import settings
 import json
 from django.utils.timezone import now
 from datetime import timedelta
+from django.contrib.auth import login
 
 
 
@@ -113,10 +114,31 @@ def GetUserIDbyEmail(request):
         if not user:
             return error_response("User not found")
 
-        return success_response("User found", data={"userid": user.id})
+        return success_response("User found", data={"userid": user.id, "username": user.username})
     except json.JSONDecodeError:
         return error_response("Invalid JSON format")
     except Exception as e:
         print(f"Error: {e}")  # ✅ エラーログを追加
         return error_response(str(e))
 
+
+@csrf_exempt
+@api_view(["POST"])
+def GetUserInfo(request):
+    try:
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        print("user_id = ", user_id)
+        user = CustomUser.objects.filter(id=user_id).first()
+        user_info = {
+            'username': user.username,
+            'email': user.email,
+            'language': user.language,
+            'color': user.color,
+            'profile_image_url': user.profile_image_url,
+            'groups': [group.name for group in user.groups.all()],
+            'user_permissions': [perm.codename for perm in user.user_permissions.all()]
+        }
+        return JsonResponse(user_info, safe=False)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

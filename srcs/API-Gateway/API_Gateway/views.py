@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from django.conf import settings
 import requests
 import os
-from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail
-from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh
+from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail, GetUserInfo
+from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh, GetIdByToken
 from .twoFAService.views import Register2FAInfo, get2FAstatus, AuthOtp
 
 def error_response(message, status=400):
@@ -81,7 +81,7 @@ def login_view(request):
     if not email or not password:
         return error_response("All fields are required")
 
-    status, userid, message = getUserIDbyEmail(email)
+    status, userid, username, message = getUserIDbyEmail(email)
     if status != 200 or not userid:
         return error_response_from_other_service(message, status)
 
@@ -100,7 +100,7 @@ def login_view(request):
         return error_response_from_other_service(message, status)
 
     if not is_2fa_needed:
-        status, message, refresh_token, access_token = GetToken(userid)
+        status, message, refresh_token, access_token = GetToken(userid,username,password)
         if status != 200 or not refresh_token or not access_token:
             return error_response("Something went wrong")
         response = JsonResponse({"message": "Login successful", "is_2fa_needed": False }) 
@@ -149,3 +149,13 @@ def check_auth_view(request):
         response = set_cookie(response, "refresh_token", new_refresh_token)
         return response
     return error_response("Something went wrong")
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_user_info_view(request):
+    access_token = request.COOKIES.get("access_token")
+    if not access_token:
+        return error_response("Access token not found")
+    status, message, user_id = GetIdByToken(access_token)
+    print("user_id in view = ",user_id)
+    return GetUserInfo(user_id)

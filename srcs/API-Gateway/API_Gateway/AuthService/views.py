@@ -31,9 +31,9 @@ def AuthPassword(userid, password):
     data = {"password": password, "userid": userid}
     return normal_request(url, data)
 
-def GetToken(userid):
+def GetToken(userid,username,password):
     url = "https://innerproxy/auth/get-token/"
-    data = {"userid": userid}
+    data = {"userid": userid,"username": username,"password": password}
     try:
         response = requests.post(url, json=data)
         message = response.json().get("message")
@@ -68,6 +68,18 @@ def refresh(refresh_token):
         new_refresh_token = response.json().get("refresh_token")
         new_access_token = response.json().get("access_token")
         return response.status_code, message, new_refresh_token, new_access_token
+    except requests.RequestException as e:
+        return None, str(e)
+    return response
+
+def GetIdByToken(access_token):
+    url = "https://innerproxy/auth/get-id/"
+    headers = {"Authorization": f"Bearer {access_token}"}
+    try:
+        response = requests.get(url, headers=headers)
+        message = response.json().get("message", "Something went wrong")
+        user_id = response.json().get("user_id")
+        return response.status_code, message, user_id
     except requests.RequestException as e:
         return None, str(e)
     return response

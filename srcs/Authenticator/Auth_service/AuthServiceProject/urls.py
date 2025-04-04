@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import password_check, register, AuthPassword, GetToken, CheckJWT, Refresh
+from .views import password_check, register, AuthPassword, GetToken, CheckJWT, Refresh, GetIdByToken
 
 urlpatterns = [
     path("password-check/", password_check, name="password-check"),
@@ -24,4 +24,5 @@ urlpatterns = [
 
     path("check-jwt/", CheckJWT, name="chekc-jwt"),
     path("refresh/", Refresh, name="refresh"),
+    path("get-id/", GetIdByToken, name="get-id"),
 ]

@@ -40,7 +40,33 @@ def getUserIDbyEmail(email):
     data = {"email": email}
     try:
         response = requests.post(url, json=data)
-        return response.status_code, response.json().get("userid"), response.json().get("message", "something went wrong")
+        return response.status_code, response.json().get("userid"), response.json().get("username"),response.json().get("message", "something went wrong")
     except requests.RequestException as e:
         return None, None, str(e)
+
+import requests
+from django.http import JsonResponse
+
+def GetUserInfo(user_id):
+    url = "https://innerproxy/user/get-user-info/"
+    data = {"user_id": user_id}
+    try:
+        response = requests.post(url, json=data)
+        response.raise_for_status()
+        json_data = response.json()
+        
+        user_info = {
+            'status_code': response.status_code,
+            'username': json_data.get('username'),
+            'email': json_data.get('email'),
+            'language': json_data.get('language'),
+            'color': json_data.get('color'),
+            'profile_image_url': json_data.get('profile_image_url')
+        }
+        
+        return JsonResponse(user_info, safe=False)
+    except requests.RequestException as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
