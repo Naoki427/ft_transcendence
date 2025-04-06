@@ -56,6 +56,7 @@ def GetUserInfo(user_id):
         json_data = response.json()
         
         user_info = {
+            'userid': user_id,
             'status_code': response.status_code,
             'username': json_data.get('username'),
             'email': json_data.get('email'),

@@ -239,17 +239,14 @@ class GameConsumer(AsyncWebsocketConsumer):
 class TournamentConsumer(AsyncWebsocketConsumer):
     waiting_users_4 = []
     waiting_users_8 = []
-    waiting_users_16 = []
     user_info = {}
     pair = []
 
     async def connect(self):
         await self.accept()
-        self.user_id = self.scope['user'].id
         self.channel_id = str(uuid.uuid4())
         self.user_info[self.channel_id] = {
             'channel_name': self.channel_name,
-            'user_id': self.user_id
         }
     
     async def disconnect(self, close_code):
@@ -257,8 +254,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             self.waiting_users_4.remove(self.channel_id)
         if self.channel_id in self.waiting_users_8:
             self.waiting_users_8.remove(self.channel_id)
-        if self.channel_id in self.waiting_users_16:
-            self.waiting_users_16.remove(self.channel_id)
         if self.channel_id in self.user_info:
             del self.user_info[self.channel_id]
     
@@ -266,6 +261,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         if data['alias']:
             self.user_info[self.channel_id]['alias'] = data['alias']
+        if data['userid']:
+            self.user_info[self.channel_id]['userid'] = data['userid']
+        if data['image']:
+            self.user_info[self.channel_id]['image'] = data['image']
         if data['type'] == 'join_tournament':
             await self.handle_join_tournament(data['size'])
 
@@ -280,11 +279,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
             if len(self.waiting_users_8) == 8:
                 await self.start_tournament(self.waiting_users_8)
                 self.waiting_users_8 = []
-        elif size == 16:
-            self.waiting_users_16.append(self.user_info[self.channel_id])
-            if len(self.waiting_users_16) == 16:
-                await self.start_tournament(self.waiting_users_16)
-                self.waiting_users_16 = []
         else:
             await self.send(text_data=json.dumps({"message": "Invalid tournament size"}))
 
@@ -296,14 +290,18 @@ class TournamentConsumer(AsyncWebsocketConsumer):
     async def send_participants_info(self,waiting_users):
         group_name = 'participants'
         participants_info = []
-        for i in range(0, len(waiting_users)):
+        participants_num = len(waiting_users)
+        for i in range(0, participants_num):
             user = {
                 'index': i,
-                'user_id': waiting_users[i]['channel_name'],
-                'alias': waiting_users[i]['alias']
+                'userid': waiting_users[0]['userid'],
+                'alias': waiting_users[0]['alias'],
+                'image': waiting_users[0]['image'],
             }
             participants_info.append(user)
-            await self.channel_layer.group_add(group_name, waiting_users[i]['channel_name'])
+            await self.channel_layer.group_add(group_name, waiting_users[0]['channel_name'])
+            waiting_users.pop(0)
+
 
         await self.channel_layer.group_send(
                 group_name,

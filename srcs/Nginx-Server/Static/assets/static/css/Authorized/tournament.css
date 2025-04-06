@@ -1,0 +1,122 @@
+
+.background {
+	width: 100vw;
+	height: 100vh;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#tournamentContainer {
+	width: 1440px;
+	height: 1080px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#userLeft4 {
+	height: 100%;
+	width: 288px;
+	background-color: red;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+#firstLeft4 {
+    height: 100%;
+	width: 144px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+#lastLeft4 {
+    height: 100%;
+	width: 144px;
+    background-color: green;
+}
+
+#Trophy4 {
+    height: 100%;
+	width: 288px;
+    background-color: gold;
+}
+
+#lastRight4 {
+    height: 100%;
+	width: 144px;
+    background-color: purple;
+}
+
+#firstRight4 {
+    height: 100%;
+	width: 144px;
+    background-color: orange;
+}
+
+#userRight4 {
+    height: 100%;
+	width: 288px;
+    background-color: pink;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+.userinfo {
+	height: 96px;
+	width:100%;
+	display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.username {
+	height: 100%;
+	width: 192px;
+	background-color: green;
+}
+
+.userimage {
+	height: 100%;
+	width: 96px;
+    background-color: purple;
+}
+
+#barContainerUnder {
+	height: 360px;
+	display: flex;
+    flex-direction: column;
+    justify-content: flex-end
+}
+
+#barContainerOver{
+	height: 360px;
+	width: 100%;
+	display: flex;
+    flex-direction: column;
+    justify-content: flex-start
+}
+
+.bar {
+	width: 100%;
+	height: 30px;
+	background-color: white;
+}
+
+#verticalBarContainer {
+	height: 360px;
+	width: 100%;
+	display: flex;
+    justify-content: flex-end;
+    align-items: center
+}
+
+.vbar {
+	height: 100%;
+	width: 30px;
+	background-color: white;
+}
