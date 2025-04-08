@@ -19,51 +19,41 @@
 #userLeft4 {
 	height: 100%;
 	width: 288px;
-	background-color: red;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#brockLeft4 {
+	height: 100%;
+	width: 288px;
 	display: flex;
     flex-direction: column;
     justify-content: space-around
-}
-
-#firstLeft4 {
-    height: 100%;
-	width: 144px;
-	display: flex;
-    flex-direction: column;
-    justify-content: space-around
-}
-
-#lastLeft4 {
-    height: 100%;
-	width: 144px;
-    background-color: green;
 }
 
 #Trophy4 {
     height: 100%;
 	width: 288px;
-    background-color: gold;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
 }
 
-#lastRight4 {
-    height: 100%;
-	width: 144px;
-    background-color: purple;
-}
-
-#firstRight4 {
-    height: 100%;
-	width: 144px;
-    background-color: orange;
+#brockRight4 {
+	height: 100%;
+	width: 288px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
 }
 
 #userRight4 {
     height: 100%;
 	width: 288px;
-    background-color: pink;
 	display: flex;
     flex-direction: column;
-    justify-content: space-around
+    justify-content: space-evenly;
 }
 
 .userinfo {
@@ -74,49 +64,65 @@
     align-items: center;
 }
 
-.username {
+.usernameLeft {
 	height: 100%;
 	width: 192px;
-	background-color: green;
+	background-color: white;
+	border-radius: 10px 0 0 10px;
+	overflow: hidden;
+	display: flex;
+    justify-content: center;
+    align-items: center;     
+    font-size: 24px
 }
 
-.userimage {
+.userimageLeft {
 	height: 100%;
 	width: 96px;
     background-color: purple;
-}
-
-#barContainerUnder {
-	height: 360px;
+	border-radius: 0 10px 10px 0;
+	overflow: hidden;
 	display: flex;
-    flex-direction: column;
-    justify-content: flex-end
+	justify-content: center;
+	align-items: center;
 }
 
-#barContainerOver{
-	height: 360px;
-	width: 100%;
-	display: flex;
-    flex-direction: column;
-    justify-content: flex-start
-}
-
-.bar {
-	width: 100%;
-	height: 30px;
-	background-color: white;
-}
-
-#verticalBarContainer {
-	height: 360px;
-	width: 100%;
-	display: flex;
-    justify-content: flex-end;
-    align-items: center
-}
-
-.vbar {
+.usernameRight {
 	height: 100%;
-	width: 30px;
+	width: 192px;
 	background-color: white;
+	border-radius: 0 10px 10px 0;
+	overflow: hidden;
+	display: flex;
+    justify-content: center;
+    align-items: center;     
+    font-size: 24px
 }
+
+.userimageRight {
+	height: 100%;
+	width: 96px;
+    background-color: purple;
+	border-radius: 10px 0 0 10px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.userimage {
+	height: 144px;
+	width: 144px;
+	object-fit: contain; 
+}
+
+#match_countdown {
+	display: none;
+	position: absolute;
+	top: 75%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 48px;
+	color: white;
+}
+

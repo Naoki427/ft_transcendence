@@ -43,6 +43,10 @@
     <title>トーナメント参加</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/tournament.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/game.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Trade+Winds&family=Yuji+Syuku&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="background" id="backcolor">
@@ -66,44 +70,53 @@
             <div id="tournamentContainer">
                 <div id="userLeft4">
                     <div id="userinfoLeft4-1" class="userinfo">
-                        <div id="usernameLeft4-1", class="username"></div>
-                        <div id="userimageLeft4-1", class="userimage"></div>
+                        <div id="usernameLeft4-1", class="usernameLeft"></div>
+                        <div id="userimageLeft4-1", class="userimageLeft">
+                        </div>
                     </div>
                     <div id="userinfoLeft4-2" class="userinfo">
-                        <div id="usernameLeft4-2", class="username"></div>
-                        <div id="userimageLeft4-2", class="userimage"></div>
+                        <div id="usernameLeft4-2", class="usernameLeft"></div>
+                        <div id="userimageLeft4-2", class="userimageLeft">
+                        </div>
                     </div>
                 </div>
-                <div id="firstLeft4">
-                    <div id="barContainerUnder">
-                        <div id="barfirstLeft1", class="bar"></div>
-                    </div>
-                    <div id ="verticalBarContainer">
-                        <div id="vbarfirstLeft1" class="vbar"></div>
-                        <div id="vbarfirstLeft2" class="vbar"></div>
-                    </div>
-                    <div id="barContainerOver">
-                        <div id="barfirstLeft2", class="bar"></div>
-                    </div>
+                <div id="brockLeft4">
+                    <img src="{% static 'images/Left-n.png' %}" alt="LeftBrock" id="LeftBrokcImage">
                 </div>
-                <div id="lastLeft4"></div>
-                <div id="Trophy4"></div>
-                <div id="lastRight4"></div>
-                <div id="firstRight4"></div>
+                <div id="Trophy4">
+                    <img src="{% static 'images/Trophy.png' %}" alt="Trophy">
+                </div>
+                <div id="brockRight4">
+                    <img src="{% static 'images/Right-n.png' %}" alt="RightRrock" id="RightBrokcImage">
+                </div>
                 <div id="userRight4">
 					<div id="userinfoRight4-1" class="userinfo">
-                        <div id="userimageRight4-1", class="userimage"></div>
-                        <div id="usernameRight4-1", class="username"></div>
+                        <div id="userimageRight4-1", class="userimageRight"></div>
+                        <div id="usernameRight4-1", class="usernameRight">
+                        </div>
                     </div>
                     <div id="userinfoRight4-2" class="userinfo">
-                        <div id="userimageRight4-2", class="userimage"></div>
-                        <div id="usernameRight4-2", class="username"></div>
+                        <div id="userimageRight4-2", class="userimageRight"></div>
+                        <div id="usernameRight4-2", class="usernameRight">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container mt-5" id="tournamentTableEight" style="display: none;">
-            
+
+        <div id="match_countdown"></div>
+
+        <div id="gameContainer">
+            <div id="countdown">READY</div>
+            <div id="message" class="hidden"></div>
+            <div id="score-container">
+                <div id="score-board">
+                    <span id="score-player1">0</span>
+                    <span class="score-bar">-</span>
+                    <span id="score-player2">0</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
         </div>
     </div>
 
@@ -111,5 +124,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="module" src="{% static 'js/Authorized/tournament.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </body>
 </html>

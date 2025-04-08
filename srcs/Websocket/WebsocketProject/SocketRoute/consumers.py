@@ -238,22 +238,21 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 class TournamentConsumer(AsyncWebsocketConsumer):
     waiting_users_4 = []
-    waiting_users_8 = []
     user_info = {}
-    pair = []
+    tournaments = {}
+    aliveusers = {}
 
     async def connect(self):
         await self.accept()
         self.channel_id = str(uuid.uuid4())
         self.user_info[self.channel_id] = {
             'channel_name': self.channel_name,
+            'channel_id': self.channel_id,
         }
     
     async def disconnect(self, close_code):
         if self.channel_id in self.waiting_users_4:
             self.waiting_users_4.remove(self.channel_id)
-        if self.channel_id in self.waiting_users_8:
-            self.waiting_users_8.remove(self.channel_id)
         if self.channel_id in self.user_info:
             del self.user_info[self.channel_id]
     
@@ -272,47 +271,75 @@ class TournamentConsumer(AsyncWebsocketConsumer):
         if size == 4:
             self.waiting_users_4.append(self.user_info[self.channel_id] )
             if len(self.waiting_users_4) == 4:
-                await self.start_tournament(self.waiting_users_4)
+                await self.start_tournament(self.waiting_users_4,size)
                 self.waiting_users_4 = []
-        elif size == 8:
-            self.waiting_users_8.append(self.user_info[self.channel_id] )
-            if len(self.waiting_users_8) == 8:
-                await self.start_tournament(self.waiting_users_8)
-                self.waiting_users_8 = []
         else:
             await self.send(text_data=json.dumps({"message": "Invalid tournament size"}))
 
     
-    async def start_tournament(self,waiting_users):
-        await self.send_participants_info(waiting_users)
+    async def start_tournament(self,waiting_users,size):
+        await self.send_participants_info(waiting_users,size)
+        self.set_aliveusers(waiting_users,size)
+        await self.send_roomname(self.aliveusers[self.tournaments[self.channel_id]],size)
 
 
-    async def send_participants_info(self,waiting_users):
+    async def send_participants_info(self,waiting_users,size):
         group_name = 'participants'
         participants_info = []
-        participants_num = len(waiting_users)
-        for i in range(0, participants_num):
+        for i in range(0, 4):
             user = {
                 'index': i,
-                'userid': waiting_users[0]['userid'],
-                'alias': waiting_users[0]['alias'],
-                'image': waiting_users[0]['image'],
+                'userid': waiting_users[i]['userid'],
+                'alias': waiting_users[i]['alias'],
+                'image': waiting_users[i]['image'],
             }
             participants_info.append(user)
-            await self.channel_layer.group_add(group_name, waiting_users[0]['channel_name'])
-            waiting_users.pop(0)
+            await self.channel_layer.group_add(group_name, waiting_users[i]['channel_name'])
 
 
         await self.channel_layer.group_send(
-                group_name,
-                {
-                    'type': 'participants_message',
-                    'participants_info' : participants_info
-                }
-            )
+            group_name,
+            {
+                'type': 'participants_message',
+                'participants_info' : participants_info
+            }
+        )
 
     async def participants_message(self, event):
         participants_info = event['participants_info']
         await self.send(text_data=json.dumps({
             'participants_info': participants_info
+        }))
+
+    def set_aliveusers(self,waiting_users,size):
+        tournaments_name = ""
+        for i in range(0, size):
+            tournaments_name += f"{waiting_users[i]['channel_id']}_"
+        self.aliveusers[tournaments_name] = []
+        for i in range(0, size):
+            self.tournaments[waiting_users[0]['channel_id']] = tournaments_name
+            self.aliveusers[tournaments_name].append(waiting_users[0])
+            waiting_users.pop(0)
+
+    async def send_roomname(self,aliveusers,size):
+        for i in range(0, size, 2):
+            uuid1 = aliveusers[i]['channel_id']
+            name1 = aliveusers[i]['channel_name']
+            uuid2 = aliveusers[i + 1]['channel_id']
+            name2 = aliveusers[i + 1]['channel_name']
+            group_name = f'match_{uuid1}_{uuid2}'
+            await self.channel_layer.group_add(group_name, name1)
+            await self.channel_layer.group_add(group_name, name2)
+            await self.channel_layer.group_send(
+                group_name,
+                {
+                    'type': 'room_message',
+                    'room_name' : f'{uuid1}_{uuid2}'
+                }
+            )
+
+    async def room_message(self, event):
+        room_name = event['room_name']
+        await self.send(text_data=json.dumps({
+            'room_name': room_name
         }))
