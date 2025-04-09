@@ -54,7 +54,11 @@ export const translations_format = {
         changeprofile: "Change Profile Picture",
         savechanges: "Save Changes",
         battlehistory: "Battle History",
-        battlestats_description: "Your battle statistics and history will be displayed here."
+        battlestats_description: "Your battle statistics and history will be displayed here.",
+        // QR code page
+        scan_qr_code: "Scan this QR Code",
+        scan_qr_instruction: "Scan this QR code to enable 2FA:",
+        scan_qr_app_instruction: "Use Google Authenticator or Authy to scan this QR code."
     },
     1: { // 日本語 (Japanese)
         signup: "サインアップ",
@@ -91,6 +95,10 @@ export const translations_format = {
         savechanges: "変更を保存",
         battlehistory: "戦歴",
         battlestats_description: "あなたのバトル統計と履歴がここに表示されます。",
+        // QR code page
+        scan_qr_code: "このQRコードをスキャンしてください",
+        scan_qr_instruction: "2FAを有効にするには、このQRコードをスキャンしてください：",
+        scan_qr_app_instruction: "Google AuthenticatorまたはAuthyを使用してこのQRコードをスキャンしてください。",
         // username_length
     },
     2: { // Français (French)
@@ -127,6 +135,10 @@ export const translations_format = {
         changeprofile: "Changer la photo de profil",
         savechanges: "Enregistrer les modifications",
         battlehistory: "Historique des batailles",
-        battlestats_description: "Vos statistiques de bataille et votre historique seront affichés ici."
+        battlestats_description: "Vos statistiques de bataille et votre historique seront affichés ici.",
+        // QR code page
+        scan_qr_code: "Scannez ce code QR",
+        scan_qr_instruction: "Scannez ce code QR pour activer la 2FA :",
+        scan_qr_app_instruction: "Utilisez Google Authenticator ou Authy pour scanner ce code QR."
     }
 };

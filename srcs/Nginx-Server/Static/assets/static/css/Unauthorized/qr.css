@@ -1,0 +1,127 @@
+/* Retro Game Style CSS for QR page */
+body {
+    background-color: #000;
+    font-family: 'Press Start 2P', cursive, Arial, sans-serif;
+    color: #fff;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    position: relative;
+}
+
+.card {
+    background-color: #111;
+    border: 3px solid #444;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3), inset 0 0 8px rgba(0, 255, 0, 0.1);
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #0f0, transparent);
+    opacity: 0.7;
+}
+
+.card-title {
+    color: #0f0;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px #0f0;
+    position: relative;
+}
+
+.card-text {
+    color: #0f0;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 0.7rem;
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+}
+
+.btn-primary {
+    background-color: #000;
+    color: #0f0;
+    border: 2px solid #0f0;
+    padding: 8px 15px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.btn-primary:hover {
+    background-color: #0f0;
+    color: #000;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #0f0;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+#qrImage {
+    border: 2px solid #0f0;
+    padding: 8px;
+    background-color: #000;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    margin: 10px auto;
+    width: 150px;
+    height: 150px;
+}
+
+/* Scanline effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+    background-size: 100% 4px;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+/* Animation */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
