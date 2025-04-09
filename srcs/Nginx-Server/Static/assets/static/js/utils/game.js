@@ -1,15 +1,21 @@
-export function pongGame(roomName) {
+export function pongGame(roomName, userid, pair , tournamentSocket = null) {
 	const url = `wss://${window.location.host}/ws/game/${roomName}/`;
     console.log(`WebSocket URL: ${url}`);
     let playerRole = null;
     const countdownElement = document.getElementById('countdown');
-    const scorePlayer1Element = document.querySelector('#score-player1 .player-score');
-    const scorePlayer2Element = document.querySelector('#score-player2 .player-score');
+    const scoreContainer = document.getElementById('score-container');
+    const scorePlayer1Element = document.getElementById('player1score');
+    const scorePlayer2Element = document.getElementById('player2score');
+    const namePlayer1Element = document.getElementById('player1name');
+    const namePlayer2Element = document.getElementById('player2name');
     const GAME_IN_PROGRESS = 'in_progress';
     const PLAYER1_WINS = 'player1_wins';
     const PLAYER2_WINS = 'player2_wins';
     let gameState = GAME_IN_PROGRESS;
-
+    let myIndex = null;
+    let enemyIndex = null;
+    let myAlias = null;
+    let enemyAlias = null;
 
     function gameStart() {
         let countdown = 3;
@@ -21,10 +27,41 @@ export function pongGame(roomName) {
             if (countdown == 0) {
                 clearInterval(countdownInterval);
                 countdownElement.style.display = 'none';
+                scoreContainer.style.display = "block";
                 startWebSocketConnection();
             }
         }, 1000);
     }
+
+    function setNameAndIndex() {
+        if (pair.user1.userid === userid) {
+            myIndex = pair.user1.index;
+            myAlias = pair.user1.alias;
+            enemyIndex = pair.user2.index;
+            enemyAlias = pair.user2.alias;
+            if (playerRole === 'player1') {
+                namePlayer1Element.textContent = myAlias + '(You)';
+                namePlayer2Element.textContent = enemyAlias;
+            } else {
+                namePlayer1Element.textContent = enemyAlias
+                namePlayer2Element.textContent = myAlias + '(You)';
+            }
+        } else {
+            myIndex = pair.user2.index;
+            myAlias = pair.user2.alias;
+            enemyIndex = pair.user1.index;
+            enemyAlias = pair.user1.alias;
+            if (playerRole === 'player1') {
+                namePlayer1Element.textContent = myAlias + '(You)';
+                namePlayer2Element.textContent = enemyAlias;
+            } else {
+                namePlayer1Element.textContent = enemyAlias;
+                namePlayer2Element.textContent = myAlias + '(You)';
+            }
+        }
+    }
+
+
 
     function startWebSocketConnection() {
         const socket = new WebSocket(url);
@@ -41,6 +78,7 @@ export function pongGame(roomName) {
                 if (data.message.startsWith('You are')) {
                     const playerInfo = data.message.split(' ');
                     playerRole = playerInfo[2];
+                    setNameAndIndex();
                     console.log(`You are assigned as ${playerRole}`);
                     if (playerRole === 'player1') {
                         camera.position.set(300, 0, 400);
@@ -71,12 +109,12 @@ export function pongGame(roomName) {
                 }
                 if(ballPosition.y <= 0 && gameState === PLAYER2_WINS) {
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = 'Player2 Wins!';
+                    messageElement.textContent = 'Player2\nWins!';
                     messageElement.classList.remove('hidden');
                     socket.close();
                 } else if ((ballPosition.y >= 800 && gameState === PLAYER1_WINS)) {
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = 'Player1 Wins!';
+                    messageElement.textContent = 'Player1\nWins!';
                     messageElement.classList.remove('hidden');
                     socket.close();
                 }
@@ -97,6 +135,18 @@ export function pongGame(roomName) {
                 const data = JSON.parse(e.data);
                 scorePlayer1Element.textContent = data.score.player1;
                 scorePlayer2Element.textContent = data.score.player2;
+                if(playerRole === 'player1') {
+                    tournamentSocket.send(JSON.stringify({
+                        'type': 'score',
+                        'score': {
+                            'player1_score': data.score.player1,
+                            'player2_score': data.score.player2,
+                            'player1_alias': myAlias,
+                            'player2_alias': enemyAlias,
+                            "room_name": roomName
+                        }
+                    }));
+                }
                 if (data.score.player1 === 5) {
                     gameState = PLAYER1_WINS;
                 }

@@ -1,0 +1,128 @@
+
+.background {
+	width: 100vw;
+	height: 100vh;
+	background-color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#tournamentContainer {
+	width: 1440px;
+	height: 1080px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#userLeft4 {
+	height: 100%;
+	width: 288px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#brockLeft4 {
+	height: 100%;
+	width: 288px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+#Trophy4 {
+    height: 100%;
+	width: 288px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+#brockRight4 {
+	height: 100%;
+	width: 288px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-around
+}
+
+#userRight4 {
+    height: 100%;
+	width: 288px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.userinfo {
+	height: 96px;
+	width:100%;
+	display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.usernameLeft {
+	height: 100%;
+	width: 192px;
+	background-color: white;
+	border-radius: 10px 0 0 10px;
+	overflow: hidden;
+	display: flex;
+    justify-content: center;
+    align-items: center;     
+    font-size: 24px
+}
+
+.userimageLeft {
+	height: 100%;
+	width: 96px;
+    background-color: purple;
+	border-radius: 0 10px 10px 0;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.usernameRight {
+	height: 100%;
+	width: 192px;
+	background-color: white;
+	border-radius: 0 10px 10px 0;
+	overflow: hidden;
+	display: flex;
+    justify-content: center;
+    align-items: center;     
+    font-size: 24px
+}
+
+.userimageRight {
+	height: 100%;
+	width: 96px;
+    background-color: purple;
+	border-radius: 10px 0 0 10px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.userimage {
+	height: 144px;
+	width: 144px;
+	object-fit: contain; 
+}
+
+#match_countdown {
+	display: none;
+	position: absolute;
+	top: 75%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 48px;
+	color: white;
+}
+

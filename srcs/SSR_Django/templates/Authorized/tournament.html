@@ -7,28 +7,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>トーナメント参加</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/tournament.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/game.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Mochiy+Pop+P+One&family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center">トーナメントに参加</h1>
-        <form>
-            <div class="form-group">
-                <label for="tournamentSize">トーナメントサイズを選択してください:</label>
-                <select class="form-control" id="tournamentSize">
-                    <option value="4">4人</option>
-                    <option value="8">8人</option>
-                    <option value="16">16人</option>
-                </select>
-                <label for="userAlias">ユーザーエイリアスを入力してください:</label>
-                <input type="text" class="form-control mb-3" id="userAlias" placeholder="no name">
+    <div class="background" id="backcolor">
+        <div class="container" id="formContainer">
+            <h1 class="text-center" id=>トーナメントに参加</h1>
+            <form id="tournamentForm">
+                <div class="form-group">
+                    <label for="tournamentSize">トーナメントサイズを選択してください:</label>
+                    <select class="form-control" id="tournamentSize">
+                        <option value="4">4人</option>
+                        <option value="8">8人</option>
+                    </select>
+                    <label for="userAlias">ユーザーエイリアスを入力してください:</label>
+                    <input type="text" class="form-control mb-3" id="userAlias" placeholder="no name">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">トーナメントに参加</button>
+            </form>
+        </div>
+
+        <div  id="tournamentTableFour" style="display: none;">
+            <div id="tournamentContainer">
+                <div id="userLeft4">
+                    <div id="userinfoLeft4-1" class="userinfo">
+                        <div id="usernameLeft4-1", class="usernameLeft"></div>
+                        <div id="userimageLeft4-1", class="userimageLeft">
+                        </div>
+                    </div>
+                    <div id="userinfoLeft4-2" class="userinfo">
+                        <div id="usernameLeft4-2", class="usernameLeft"></div>
+                        <div id="userimageLeft4-2", class="userimageLeft">
+                        </div>
+                    </div>
+                </div>
+                <div id="brockLeft4">
+                    <img src="{% static 'images/Left-n.png' %}" alt="LeftBrock" id="LeftBrokcImage">
+                </div>
+                <div id="Trophy4">
+                    <img src="{% static 'images/Trophy.png' %}" alt="Trophy">
+                </div>
+                <div id="brockRight4">
+                    <img src="{% static 'images/Right-n.png' %}" alt="RightRrock" id="RightBrokcImage">
+                </div>
+                <div id="userRight4">
+					<div id="userinfoRight4-1" class="userinfo">
+                        <div id="userimageRight4-1", class="userimageRight"></div>
+                        <div id="usernameRight4-1", class="usernameRight">
+                        </div>
+                    </div>
+                    <div id="userinfoRight4-2" class="userinfo">
+                        <div id="userimageRight4-2", class="userimageRight"></div>
+                        <div id="usernameRight4-2", class="usernameRight">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">トーナメントに参加</button>
-        </form>
+        </div>
+
+        <div id="match_countdown"></div>
+
+        <div id="gameContainer">
+            <div id="countdown">READY</div>
+            <div id="message" class="hidden"></div>
+            <div id="score-container">
+                <div class="playerContainer">
+                    <div id="player1name" class="playername">unkoman(あなた)</div>
+                    <div id="player1score" class="playerscore"></div>
+                </div>
+                <div class="playerContainer">
+                    <div id="player2name" class="playername"></div>
+                    <div id="player2score" class="playerscore"></div>
+                </div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+        </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script type="module" src="{% static 'js/Authorized/tournament.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </body>
 </html>

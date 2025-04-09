@@ -80,13 +80,20 @@ async function signupflow(username, email, password, is_2fa_enabled, language, d
             return ;
         }
         document.getElementById("loading-screen").classList.remove("d-none");
-        console.log("Sending data:", Object.fromEntries(formData.entries())); // 🔍 送信データを確認
+        console.log("Sending data:", Object.fromEntries(formData.entries()));
         const response = await fetch(`${window.location.origin}/api/signup/`, {
             method: "POST",
             body: formData
         });
 
         const data = await response.json()
+        console.log("data message",data.message);
+        if(data.status != 200) {
+          document.getElementById("loading-screen").classList.add("d-none");
+          const messageDiv = document.getElementById('message');
+          messageDiv.textContent = data.message;
+          messageDiv.style.color = 'red';
+        }
         if (response.ok) {
             deviceName = getDeviceName()
             loginflow(email, password, deviceName)
