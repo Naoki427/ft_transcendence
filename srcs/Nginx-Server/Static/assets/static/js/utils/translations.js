@@ -78,7 +78,22 @@ export const translations_format = {
         tournament_title: "Join Tournament",
         tournament_size: "Select tournament size:",
         tournament_alias: "Enter your alias:",
-        tournament_join: "Join Tournament"
+        tournament_join: "Join Tournament",
+        // Settings page
+        profileSettings: "Profile Settings",
+        profileImage: "Profile Image",
+        saveProfile: "Save Profile",
+        languageSettings: "Language Settings",
+        accountSettings: "Account Settings",
+        twoFactorAuth: "Two-Factor Authentication",
+        backToHome: "Back to Home",
+        enabled: "Enabled",
+        disabled: "Disabled",
+        profileUpdated: "Profile updated successfully",
+        updateFailed: "Failed to update profile",
+        languageChanged: "Language changed successfully",
+        twoFactorEnabled: "Two-Factor Authentication enabled",
+        twoFactorDisabled: "Two-Factor Authentication disabled"
     },
     1: { // 日本語 (Japanese)
         signup: "サインアップ",
@@ -138,8 +153,22 @@ export const translations_format = {
         tournament_title: "トーナメントに参加",
         tournament_size: "トーナメントサイズを選択してください:",
         tournament_alias: "ユーザーエイリアスを入力してください:",
-        tournament_join: "トーナメントに参加"
-        // username_length
+        tournament_join: "トーナメントに参加",
+        // Settings page
+        profileSettings: "プロフィール設定",
+        profileImage: "プロフィール画像",
+        saveProfile: "プロフィールを保存",
+        languageSettings: "言語設定",
+        accountSettings: "アカウント設定",
+        twoFactorAuth: "二要素認証",
+        backToHome: "ホームに戻る",
+        enabled: "有効",
+        disabled: "無効",
+        profileUpdated: "プロフィールが更新されました",
+        updateFailed: "プロフィールの更新に失敗しました",
+        languageChanged: "言語が正常に変更されました",
+        twoFactorEnabled: "二要素認証が有効になりました",
+        twoFactorDisabled: "二要素認証が無効になりました"
     },
     2: { // Français (French)
         signup: "S'inscrire",
@@ -199,6 +228,21 @@ export const translations_format = {
         tournament_title: "Rejoindre le tournoi",
         tournament_size: "Sélectionnez la taille du tournoi :",
         tournament_alias: "Entrez votre alias :",
-        tournament_join: "Rejoindre le tournoi"
+        tournament_join: "Rejoindre le tournoi",
+        // Settings page
+        profileSettings: "Paramètres du Profil",
+        profileImage: "Image de Profil",
+        saveProfile: "Enregistrer le Profil",
+        languageSettings: "Paramètres de Langue",
+        accountSettings: "Paramètres du Compte",
+        twoFactorAuth: "Authentification à Deux Facteurs",
+        backToHome: "Retour à l'Accueil",
+        enabled: "Activé",
+        disabled: "Désactivé",
+        profileUpdated: "Profil mis à jour avec succès",
+        updateFailed: "Échec de la mise à jour du profil",
+        languageChanged: "Langue changée avec succès",
+        twoFactorEnabled: "Authentification à deux facteurs activée",
+        twoFactorDisabled: "Authentification à deux facteurs désactivée"
     }
 };

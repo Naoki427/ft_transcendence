@@ -116,3 +116,32 @@ def AuthOtp(request):
         return success_response("2FA authentication successful")
     except Exception as e:
         return error_response(str(e))
+
+@csrf_exempt
+@api_view(["POST"])
+def Toggle2FA(request):
+    try:
+        data = json.loads(request.body)
+        userid = data.get("userid")
+        enable = data.get("enable")
+        
+        if userid is None or enable is None:
+            return error_response("Missing userid or enable parameter")
+            
+        twoFA = TwoFactorAuth.objects.filter(userid=userid).first()
+        
+        if not twoFA:
+            # ユーザーが見つからない場合は新しく作成
+            twoFA = TwoFactorAuth(userid=userid, is_2fa_enabled=enable)
+            twoFA.save()
+            return success_response("2FA setting created and updated successfully")
+        
+        # 現在の状態と異なる場合のみ更新
+        if twoFA.is_2fa_enabled != enable:
+            twoFA.is_2fa_enabled = enable
+            twoFA.save()
+            
+        status = "enabled" if enable else "disabled"
+        return success_response(f"2FA has been {status} successfully")
+    except Exception as e:
+        return error_response(str(e))
