@@ -5,51 +5,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>ft_transcendence - Sign Up</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/Unauthorized/signup.css' %}">
+    <!-- Google Fonts for Retro Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
     <div id="loading-screen" class="d-none">
-        <div class="spinner-border text-primary" role="status">
+        <div class="spinner-border text-success" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <h1 class="text-white">処理中...</h1>
+        <h1 class="loading-text">処理中...</h1>
     </div>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <h2 class="text-center" id="signup-label">Sign Up</h2>
-                        <form id="signupForm">
-                            <div class="mb-3">
-                                <label id="username-label" for="username" class="form-label">Username</label>
-                                <input type="text" id="username" class="form-control" placeholder="Enter username" required maxlength="10">
-                            </div>
-                            <div class="mb-3">
-                                <label id="email-label" for="email" class="form-label">Email</label>
-                                <input type="email" id="email" class="form-control" placeholder="example@mail.com" required>
-                            </div>
-                            <div class="form-group">
-                                <label id="password-label" for="password">Password</label>
-                                <input type="password" class="form-control" id="password" 
-                                       placeholder="********" required
-                                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$">
-                            </div>
-                            <div class="form-check mb-3">
-                                <input type="checkbox" class="form-check-input" id="enable-2fa">
-                                <label id="2fa-label" for="enable-2fa" class="form-check-label">Enable Two-Factor Authentication (2FA)</label>
-                            </div>
-                            <button type="submit" id="signupBtn-label" class="btn btn-primary w-100">Sign Up</button>
-                            <div class="d-flex justify-content-center align-items-center">
-                                <div id="message"></div>
-                            </div>
-                        </form>
-                    </div>
+    <div class="retro-container">
+        <h1 class="game-title">ft_transcendence</h1>
+        <div class="game-console">
+            <h2 class="menu-title" id="signup-label">Sign Up</h2>
+            <form id="signupForm" class="retro-form">
+                <div class="form-group mb-3">
+                    <label id="username-label" for="username" class="retro-label">Username</label>
+                    <input type="text" id="username" class="retro-input" placeholder="Enter username" required maxlength="10">
                 </div>
-            </div>
+                <div class="form-group mb-3">
+                    <label id="email-label" for="email" class="retro-label">Email</label>
+                    <input type="email" id="email" class="retro-input" placeholder="example@mail.com" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label id="password-label" for="password" class="retro-label">Password</label>
+                    <input type="password" class="retro-input" id="password" 
+                           placeholder="********" required
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$">
+                </div>
+                <div class="form-group mb-3 retro-checkbox-container">
+                    <input type="checkbox" class="retro-checkbox" id="enable-2fa">
+                    <label id="2fa-label" for="enable-2fa" class="retro-label">Enable Two-Factor Authentication (2FA)</label>
+                </div>
+                <button type="submit" id="signupBtn-label" class="retro-btn w-100">Sign Up</button>
+                <div class="message-container">
+                    <div id="message" class="retro-message"></div>
+                </div>
+            </form>
         </div>
     </div>
     <script type="module" src="{% static 'js/Unauthorized/signup.js' %}"></script>

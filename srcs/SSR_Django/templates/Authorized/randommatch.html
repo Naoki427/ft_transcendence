@@ -3,18 +3,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pong Game</title>
+    <title>ft_transcendence - Pong Game</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/randommatch.css' %}">
+    <!-- Google Fonts for Retro Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container" id="matchmakingContainer">
-        <div id="status">戦うんだbro</div>
-        <button id="matchButton">対戦</button>
+    <div class="retro-container" id="matchmakingContainer">
+        <h1 class="game-title">ft_transcendence</h1>
+        <div class="game-console">
+            <div id="status" class="retro-status">戦うんだbro</div>
+            <button id="matchButton" class="retro-btn">対戦</button>
+        </div>
     </div>
 
-    <div class="container hidden" id="gameContainer">
-        <div id="countdown">3</div>
-        <div id="message" class="hidden"></div>
+    <div class="retro-container hidden" id="gameContainer">
+        <div id="countdown" class="retro-countdown">3</div>
+        <div id="message" class="hidden retro-message"></div>
         <div id="score-container">
             <div id="score-player1" class="score-box">
                 <span class="player-label">Player 1</span>

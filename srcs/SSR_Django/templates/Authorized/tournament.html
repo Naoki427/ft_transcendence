@@ -5,30 +5,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>トーナメント参加</title>
+    <title>ft_transcendence - トーナメント参加</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/tournament.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/game.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Mochiy+Pop+P+One&family=Tomorrow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Google Fonts for Retro Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="background" id="backcolor">
-        <div class="container" id="formContainer">
-            <h1 class="text-center" id=>トーナメントに参加</h1>
-            <form id="tournamentForm">
-                <div class="form-group">
-                    <label for="tournamentSize">トーナメントサイズを選択してください:</label>
-                    <select class="form-control" id="tournamentSize">
-                        <option value="4">4人</option>
-                        <option value="8">8人</option>
-                    </select>
-                    <label for="userAlias">ユーザーエイリアスを入力してください:</label>
-                    <input type="text" class="form-control mb-3" id="userAlias" placeholder="no name">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">トーナメントに参加</button>
-            </form>
+        <div class="retro-container" id="formContainer">
+            <h1 class="game-title">ft_transcendence</h1>
+            <div class="game-console">
+                <h2 class="menu-title">トーナメントに参加</h2>
+                <form id="tournamentForm" class="retro-form">
+                    <div class="form-group">
+                        <label for="tournamentSize" class="retro-label">トーナメントサイズを選択してください:</label>
+                        <select class="retro-select" id="tournamentSize">
+                            <option value="4">4人</option>
+                            <option value="8">8人</option>
+                        </select>
+                        <label for="userAlias" class="retro-label">ユーザーエイリアスを入力してください:</label>
+                        <input type="text" class="retro-input" id="userAlias" placeholder="no name">
+                    </div>
+                    <button type="submit" class="retro-btn">トーナメントに参加</button>
+                </form>
+            </div>
         </div>
 
         <div  id="tournamentTableFour" style="display: none;">
