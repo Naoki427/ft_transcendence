@@ -22,17 +22,18 @@
         <div id="message" class="hidden retro-message"></div>
         <div id="score-container">
             <div id="score-player1" class="score-box">
-                <span class="player-label">Player 1</span>
+                <span class="player-label" id="player1-label">Player 1</span>
                 <span class="player-score">0</span>
             </div>
             <div id="score-player2" class="score-box">
-                <span class="player-label">Player 2</span>
+                <span class="player-label" id="player2-label">Player 2</span>
                 <span class="player-score">0</span>
             </div>
         </div>
         <canvas id="gameCanvas"></canvas>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="{% static 'js/utils/translations.js' %}"></script>
     <script type="module" src="{% static 'js/Authorized/randommatch.js' %}"></script>
 </body>
 </html>

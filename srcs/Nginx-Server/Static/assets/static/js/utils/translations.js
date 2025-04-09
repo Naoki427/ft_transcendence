@@ -58,7 +58,25 @@ export const translations_format = {
         // QR code page
         scan_qr_code: "Scan this QR Code",
         scan_qr_instruction: "Scan this QR code to enable 2FA:",
-        scan_qr_app_instruction: "Use Google Authenticator or Authy to scan this QR code."
+        scan_qr_app_instruction: "Use Google Authenticator or Authy to scan this QR code.",
+        // OTP page
+        otp_title: "One-Time Password",
+        otp_label: "OTP",
+        otp_placeholder: "Enter your OTP",
+        otp_submit: "Submit",
+        // Random Match page
+        match_status: "Ready to battle",
+        match_button: "Match",
+        match_cancel: "Cancel",
+        match_searching: "Searching for opponent...",
+        match_canceled: "Search canceled.",
+        player1: "Player 1",
+        player2: "Player 2",
+        // Tournament page
+        tournament_title: "Join Tournament",
+        tournament_size: "Select tournament size:",
+        tournament_alias: "Enter your alias:",
+        tournament_join: "Join Tournament"
     },
     1: { // 日本語 (Japanese)
         signup: "サインアップ",
@@ -99,6 +117,24 @@ export const translations_format = {
         scan_qr_code: "このQRコードをスキャンしてください",
         scan_qr_instruction: "2FAを有効にするには、このQRコードをスキャンしてください：",
         scan_qr_app_instruction: "Google AuthenticatorまたはAuthyを使用してこのQRコードをスキャンしてください。",
+        // OTP page
+        otp_title: "ワンタイムパスワード入力",
+        otp_label: "OTP",
+        otp_placeholder: "OTPを入力してください",
+        otp_submit: "送信",
+        // Random Match page
+        match_status: "戦うんだbro",
+        match_button: "対戦",
+        match_cancel: "キャンセル",
+        match_searching: "対戦相手を探しています...",
+        match_canceled: "対戦相手の検索をキャンセルしました。",
+        player1: "プレイヤー 1",
+        player2: "プレイヤー 2",
+        // Tournament page
+        tournament_title: "トーナメントに参加",
+        tournament_size: "トーナメントサイズを選択してください:",
+        tournament_alias: "ユーザーエイリアスを入力してください:",
+        tournament_join: "トーナメントに参加"
         // username_length
     },
     2: { // Français (French)
@@ -139,6 +175,24 @@ export const translations_format = {
         // QR code page
         scan_qr_code: "Scannez ce code QR",
         scan_qr_instruction: "Scannez ce code QR pour activer la 2FA :",
-        scan_qr_app_instruction: "Utilisez Google Authenticator ou Authy pour scanner ce code QR."
+        scan_qr_app_instruction: "Utilisez Google Authenticator ou Authy pour scanner ce code QR.",
+        // OTP page
+        otp_title: "Mot de passe à usage unique",
+        otp_label: "OTP",
+        otp_placeholder: "Entrez votre OTP",
+        otp_submit: "Soumettre",
+        // Random Match page
+        match_status: "Prêt à combattre",
+        match_button: "Match",
+        match_cancel: "Annuler",
+        match_searching: "Recherche d'adversaire...",
+        match_canceled: "Recherche annulée.",
+        player1: "Joueur 1",
+        player2: "Joueur 2",
+        // Tournament page
+        tournament_title: "Rejoindre le tournoi",
+        tournament_size: "Sélectionnez la taille du tournoi :",
+        tournament_alias: "Entrez votre alias :",
+        tournament_join: "Rejoindre le tournoi"
     }
 };

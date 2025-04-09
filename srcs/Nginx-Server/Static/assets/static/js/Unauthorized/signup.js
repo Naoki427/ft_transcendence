@@ -6,7 +6,7 @@ import { redirectIfAuthenticated } from "/static/js/utils/authJWT.js";
 document.addEventListener('DOMContentLoaded', redirectIfAuthenticated);
 
 const translations = translations_format;
-const lang = localStorage.getItem("selected_language") || 0;
+const lang = localStorage.getItem("language") || 0;
 document.getElementById('signup-label').textContent = translations[lang].signup;
 document.getElementById('username-label').textContent = translations[lang].username;
 document.getElementById('email-label').textContent = translations[lang].email;

@@ -17,18 +17,18 @@
         <div class="retro-container" id="formContainer">
             <h1 class="game-title">ft_transcendence</h1>
             <div class="game-console">
-                <h2 class="menu-title">トーナメントに参加</h2>
+                <h2 class="menu-title" id="tournament-title">トーナメントに参加</h2>
                 <form id="tournamentForm" class="retro-form">
                     <div class="form-group">
-                        <label for="tournamentSize" class="retro-label">トーナメントサイズを選択してください:</label>
+                        <label for="tournamentSize" class="retro-label" id="tournament-size-label">トーナメントサイズを選択してください:</label>
                         <select class="retro-select" id="tournamentSize">
                             <option value="4">4人</option>
                             <option value="8">8人</option>
                         </select>
-                        <label for="userAlias" class="retro-label">ユーザーエイリアスを入力してください:</label>
+                        <label for="userAlias" class="retro-label" id="tournament-alias-label">ユーザーエイリアスを入力してください:</label>
                         <input type="text" class="retro-input" id="userAlias" placeholder="no name">
                     </div>
-                    <button type="submit" class="retro-btn">トーナメントに参加</button>
+                    <button type="submit" class="retro-btn" id="tournament-join-btn">トーナメントに参加</button>
                 </form>
             </div>
         </div>
