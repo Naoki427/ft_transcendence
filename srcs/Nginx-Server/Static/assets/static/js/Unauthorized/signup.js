@@ -13,6 +13,7 @@ document.getElementById('email-label').textContent = translations[lang].email;
 document.getElementById('password-label').textContent = translations[lang].password;
 document.getElementById('2fa-label').textContent = translations[lang].twofa;
 document.getElementById('signupBtn-label').textContent = translations[lang].signup;
+document.getElementById('loading-text').textContent = translations[lang].loading;
 
 const usernameInput = document.getElementById('username');
 usernameInput.oninvalid = function(event) {
