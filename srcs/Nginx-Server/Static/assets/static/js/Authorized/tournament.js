@@ -54,8 +54,9 @@ async function startTournament() {
                     document.getElementById(userNameComponents[i]).style.backgroundColor = '#00B7CE';
             }
     }
-        if(data.room_name) {
-            gameStart(data.room_name);
+        if(data.room_name && data.pair) {
+            console.log("data.pair",data.pair);
+            gameStart(data.room_name,userid,data.pair,tournamentSocket);
         }
     };
 
@@ -131,9 +132,9 @@ async function countdown(seconds) {
     countdownElement.style.display = 'none';
 }
 
-async function gameStart(room_name) {
+async function gameStart(room_name,pair,userid,tournamentSocket) {
     await countdown(5);
     document.getElementById('tournamentTableFour').style.display = 'none';
     document.getElementById('gameContainer').style.display = 'block';
-    pongGame(room_name);
+    pongGame(room_name,pair,userid,tournamentSocket);
 }
