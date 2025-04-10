@@ -135,7 +135,7 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                 const data = JSON.parse(e.data);
                 scorePlayer1Element.textContent = data.score.player1;
                 scorePlayer2Element.textContent = data.score.player2;
-                if(playerRole === 'player1') {
+                if(tournamentSocket && playerRole === 'player1') {
                     tournamentSocket.send(JSON.stringify({
                         'type': 'score',
                         'score': {
@@ -143,6 +143,8 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                             'player2_score': data.score.player2,
                             'player1_alias': myAlias,
                             'player2_alias': enemyAlias,
+                            'player1_index': myIndex,
+                            'player2_index': enemyIndex,
                             "room_name": roomName
                         }
                     }));

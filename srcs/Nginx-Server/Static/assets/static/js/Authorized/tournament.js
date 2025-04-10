@@ -19,7 +19,9 @@ async function startTournament() {
     const tournamentSize = parseInt(document.getElementById('tournamentSize').value, 10) || 4;
     const userAlias = document.getElementById('userAlias').value || "no name";
     const url = "wss://" + window.location.host + "/ws/tournament/";
+    const scoreContainerElement = document.getElementById('score-container');
     const tournamentSocket = new WebSocket(url);
+    let otherMatchies = [];
 
     tournamentSocket.onopen = function(e) {
         const initMessage = { type: 'join_tournament', size: tournamentSize ,alias: userAlias, userid: userid, image: userImage};
@@ -53,10 +55,23 @@ async function startTournament() {
                 if(players[i].userid == userid)
                     document.getElementById(userNameComponents[i]).style.backgroundColor = '#00B7CE';
             }
-    }
+        }
+        
         if(data.room_name && data.pair) {
             console.log("data.pair",data.pair);
             gameStart(data.room_name,userid,data.pair,tournamentSocket);
+        }
+
+        if(data.score) {
+            if(!otherMatchies.includes(data.score.room_name)) {
+                let newScoreElement = document.createElement('div');
+                newScoreElement.id = data.score.room_name;
+                newScoreElement.className = 'other-matcheis';
+                scoreContainerElement.appendChild(newScoreElement);
+                newScoreElement.textContent = `${data.score.player1_alias} : ${data.score.player1_score} - ${data.score.player2_score} : ${data.score.player2_alias}`;
+            } else {
+                document.getElementById(data.score.room_name).textContent = `${data.score.player1_alias} : ${data.score.player1_score} - ${data.score.player2_score} : ${data.score.player2_alias}`;
+            }
         }
     };
 

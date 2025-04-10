@@ -4,6 +4,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import uuid
 import asyncio
+import re
 
 class TournamentConsumer(AsyncWebsocketConsumer):
 	waiting_users_4 = []
@@ -27,16 +28,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		if data['alias']:
-			self.user_info[self.channel_id]['alias'] = data['alias']
-		if data['userid']:
-			self.user_info[self.channel_id]['userid'] = data['userid']
-		if data['image']:
-			self.user_info[self.channel_id]['image'] = data['image']
 		if data['type'] == 'join_tournament':
+			self.user_info[self.channel_id]['alias'] = data['alias']
+			self.user_info[self.channel_id]['userid'] = data['userid']
+			self.user_info[self.channel_id]['image'] = data['image']
 			await self.handle_join_tournament(data['size'])
-		if data['type'] == 'score'
-			
+		if data['type'] == 'score':
+			await self.send_score(data['score'])
 
 	async def handle_join_tournament(self, size):
 		if size == 4:
@@ -142,3 +140,33 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			'pair': pair
 		}))
 		
+	async def send_score(self,score):
+		tournament_now = self.tournaments[self.channel_id]
+		user_num = len(self.aliveusers[tournament_now])
+		group_name = f'score_{score['room_name']}'
+		sender_index1 = score['player1_index']
+		sender_index2 = score['player2_index']
+		for i in range(1, user_num):
+			if(i != sender_index1 and i != sender_index2):
+				await self.channel_layer.group_add(group_name, self.aliveusers[tournament_now][i]['channel_name'])
+		await self.channel_layer.group_send(
+			group_name,
+			{
+				'type': 'score_update',
+				'score': {
+					'player1_score': score['player1_score'],
+					'player2_score': score['player2_score'],
+					'player1_alias': score['player1_alias'],
+					'player2_alias': score['player2_alias'],
+					"room_name": score['room_name']
+				}
+			}
+		)
+	async def score_update(self, event):
+		score = event['score']
+		await self.send(text_data=json.dumps({
+			'score': score
+		}))
+
+def sanitize_group_name(name):
+	return re.sub(r'[^a-zA-Z0-9\-\._]', '', name)
