@@ -3,60 +3,19 @@ body {
     background-color: #000;
     font-family: 'Press Start 2P', cursive, Arial, sans-serif;
     color: #fff;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.img-thumbnail {
-    display: block;
-    margin: 0 auto;
-    border: 2px solid #0f0;
-    background-color: #111;
-    padding: 5px;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-}
-
-.loading #content {
-    display: none;
-}
-
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.loading-text {
-    color: #0f0;
-    text-shadow: 0 0 5px #0f0;
-    margin-top: 20px;
-    animation: pulse 2s infinite;
-}
-
-.spinner-border {
-    border-color: #0f0;
-    border-right-color: transparent;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
 .retro-container {
     width: 100%;
     max-width: 800px;
+    margin: 40px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 20px;
     position: relative;
 }
 
@@ -75,7 +34,7 @@ body {
     background-color: #111;
     border: 4px solid #444;
     border-radius: 10px;
-    padding: 40px;
+    padding: 30px;
     width: 100%;
     max-width: 600px;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1);
@@ -102,8 +61,29 @@ body {
     position: relative;
 }
 
+.settings-section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #0f0;
+    padding-bottom: 20px;
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+}
+
+.settings-section h3 {
+    color: #0f0;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 3px #0f0;
+}
+
 .retro-form {
     width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
 }
 
 .retro-label {
@@ -114,7 +94,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
 }
 
-.retro-input {
+.retro-input, .retro-select {
     background-color: #000;
     color: #0f0;
     border: 2px solid #0f0;
@@ -126,42 +106,22 @@ body {
     box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
 }
 
-.retro-input:focus {
+.retro-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%230f0' d='M0 0l4 4 4-4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 8px;
+    padding-right: 30px;
+}
+
+.retro-input:focus, .retro-select:focus {
     outline: none;
     box-shadow: 0 0 10px #0f0;
 }
 
-.retro-input::placeholder {
-    color: rgba(0, 255, 0, 0.5);
-}
-
-.retro-checkbox-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.retro-checkbox {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background-color: #000;
-    border: 2px solid #0f0;
-    margin-right: 10px;
-    position: relative;
-    cursor: pointer;
-}
-
-.retro-checkbox:checked::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 12px;
-    height: 12px;
-    background-color: #0f0;
-    box-shadow: 0 0 5px #0f0;
+.file-input {
+    padding: 8px;
 }
 
 .retro-btn {
@@ -170,7 +130,7 @@ body {
     border: 2px solid #0f0;
     padding: 15px 20px;
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -178,12 +138,14 @@ body {
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 .retro-btn:hover {
     background-color: #0f0;
     color: #000;
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 0 15px #0f0;
 }
 
@@ -191,15 +153,78 @@ body {
     transform: scale(0.98);
 }
 
-.message-container {
+.back-btn {
     margin-top: 20px;
-    min-height: 30px;
 }
 
-.retro-message {
+.image-preview-container {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #0f0;
+    margin-bottom: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+.profile-image-preview {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Toggle switch for 2FA */
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.retro-toggle {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+.toggle-label {
+    cursor: pointer;
+    width: 60px;
+    height: 30px;
+    background: #000;
+    border: 2px solid #0f0;
+    display: block;
+    border-radius: 30px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.toggle-label:after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #0f0;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.retro-toggle:checked + .toggle-label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+.toggle-status {
+    color: #f00;
+    font-size: 0.6rem;
+    text-shadow: 0 0 3px rgba(255, 0, 0, 0.5);
+}
+
+.retro-toggle:checked ~ .toggle-status {
     color: #0f0;
-    font-size: 0.7rem;
-    text-align: center;
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
 }
 
 /* Animation */
@@ -213,6 +238,22 @@ body {
     100% {
         opacity: 1;
     }
+}
+
+/* Loading screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
 }
 
 /* Scanline effect */

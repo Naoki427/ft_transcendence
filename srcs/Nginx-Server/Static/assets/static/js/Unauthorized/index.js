@@ -9,7 +9,7 @@ function updateLanguage(lang) {
     document.getElementById('welcome').textContent = translations[lang].welcome;
     document.getElementById('signup').textContent = translations[lang].signup;
     document.getElementById('login').textContent = translations[lang].login;
-    localStorage.setItem("selected_language", lang);
+    localStorage.setItem("language", lang);
 }
 
 document.getElementById('language').addEventListener('change', function() {

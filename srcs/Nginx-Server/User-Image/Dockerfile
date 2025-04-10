@@ -10,6 +10,15 @@ RUN	apt-get update && \
 	rm -rf /var/lib/apt/lists/*	 
 #不要なAPTキャッシュを消去しイメージを軽く
 
+# ディレクトリ構造を作成
+RUN mkdir -p /usr/share/nginx/html/media/profile_images
+
+# デフォルト画像をコピー
+COPY	./assets/media/profile_images/default.png /usr/share/nginx/html/media/profile_images/
+
+# ファイル権限を設定
+RUN chmod 644 /usr/share/nginx/html/media/profile_images/default.png
+
 COPY	./conf/nginx.conf etc/nginx/nginx.conf
 
 

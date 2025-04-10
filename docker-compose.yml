@@ -70,6 +70,7 @@ services:
       - ./srcs/API-Gateway:/app
       - ./srcs/RootCA/certs/rootCA:/etc/ssl/certs/rootCA
       - ./srcs/RootCA/certs/api-gateway:/etc/ssl/certs/api-gateway
+      - ./srcs/Nginx-Server/User-Image/assets/media:/app/host_media
     restart: always
     networks:
       - TNet

@@ -5,9 +5,9 @@ from django.http import JsonResponse
 from django.conf import settings
 import requests
 import os
-from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail, GetUserInfo
+from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail, GetUserInfo, UpdateUserInfo
 from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh, GetIdByToken
-from .twoFAService.views import Register2FAInfo, get2FAstatus, AuthOtp
+from .twoFAService.views import Register2FAInfo, get2FAstatus, AuthOtp, Toggle2FA
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -159,3 +159,85 @@ def get_user_info_view(request):
     status, message, user_id = GetIdByToken(access_token)
     print("user_id in view = ",user_id)
     return GetUserInfo(user_id)
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def update_user_info_view(request):
+    access_token = request.COOKIES.get("access_token")
+    if not access_token:
+        return error_response("Access token not found")
+    
+    status, message, user_id = GetIdByToken(access_token)
+    if status != 200:
+        return error_response("Invalid access token")
+    
+    # リクエストからフィールドを取得
+    username = request.data.get("username")
+    email = request.data.get("email")
+    language = request.data.get("language")
+    
+    # プロフィール画像の処理
+    profile_image = request.FILES.get("profile_image")
+    profile_image_url = None
+    
+    if profile_image:
+        # プロフィール画像の保存処理をここに実装
+        # 例: ファイルを保存してURLを生成
+        import os
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+        
+        # ファイル名を生成
+        filename = f"user_{user_id}_{profile_image.name}"
+        
+        # ホストマシン上の正しいディレクトリに直接保存
+        import shutil
+        import tempfile
+        
+        # ホストマシン上のパスを指定
+        host_media_dir = '/app/host_media/profile_images/'
+        os.makedirs(host_media_dir, exist_ok=True)
+        
+        # ファイルを保存
+        with open(os.path.join(host_media_dir, filename), 'wb') as f:
+            f.write(profile_image.read())
+        
+        # 相対URLを使用して、証明書エラーを回避
+        profile_image_url = f"/media/profile_images/{filename}"
+    
+    # ユーザー情報を更新
+    status, message = UpdateUserInfo(user_id, username, email, language, profile_image_url)
+    
+    if status == 200:
+        # 成功レスポンスにプロフィール画像のURLを含める
+        response_data = {
+            "message": "User information updated successfully",
+            "profile_image_url": profile_image_url
+        }
+        return JsonResponse(response_data, status=200)
+    else:
+        return error_response(message, status=status if status else 500)
+        
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def toggle_2fa_view(request):
+    access_token = request.COOKIES.get("access_token")
+    if not access_token:
+        return error_response("Access token not found")
+    
+    status, message, user_id = GetIdByToken(access_token)
+    if status != 200:
+        return error_response("Invalid access token")
+    
+    # リクエストから2FA有効/無効の設定を取得
+    enable = request.data.get("enable")
+    if enable is None:
+        return error_response("Missing enable parameter")
+    
+    # 2FA設定を更新
+    status, message = Toggle2FA(user_id, enable)
+    
+    if status == 200:
+        return success_response(message)
+    else:
+        return error_response(message, status=status if status else 500)

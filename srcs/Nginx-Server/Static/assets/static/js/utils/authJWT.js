@@ -1,5 +1,11 @@
+import { translations_format } from "/static/js/utils/translations.js";
+
 export function checkAuthorization() {
-    document.getElementById("loading-screen").innerHTML = "<h1>認証中...</h1>";
+    // 言語設定を取得
+    const lang = parseInt(localStorage.getItem("language"), 10) || 0;
+    const translations = translations_format[lang];
+    
+    document.getElementById("loading-screen").innerHTML = `<h1>${translations.authenticating}</h1>`;
 
     fetch('/api/jwt/', {
         method: 'GET',

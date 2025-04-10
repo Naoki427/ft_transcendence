@@ -70,4 +70,26 @@ def GetUserInfo(user_id):
         return JsonResponse({'error': str(e)}, status=500)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+        
+def UpdateUserInfo(user_id, username=None, email=None, language=None, profile_image_url=None):
+    url = "https://innerproxy/user/update-user-info/"
+    data = {
+        "user_id": user_id
+    }
+    
+    # 更新するフィールドのみデータに追加
+    if username is not None:
+        data["username"] = username
+    if email is not None:
+        data["email"] = email
+    if language is not None:
+        data["language"] = language
+    if profile_image_url is not None:
+        data["profile_image_url"] = profile_image_url
+        
+    try:
+        response = requests.post(url, json=data)
+        return response.status_code, response.json().get("message", "Something went wrong")
+    except requests.RequestException as e:
+        return None, str(e)
 

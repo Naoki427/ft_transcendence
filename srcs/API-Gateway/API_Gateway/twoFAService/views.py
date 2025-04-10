@@ -37,3 +37,8 @@ def AuthOtp(userid,token):
     url = "https://innerproxy/2fa/auth-otp/"
     data = {"userid": userid, "token": token}
     return normal_request(url, data)
+
+def Toggle2FA(userid, enable):
+    url = "https://innerproxy/2fa/toggle-2fa/"
+    data = {"userid": userid, "enable": enable}
+    return normal_request(url, data)

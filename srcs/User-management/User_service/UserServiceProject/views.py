@@ -142,3 +142,50 @@ def GetUserInfo(request):
         return JsonResponse(user_info, safe=False)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+@api_view(["POST"])
+def UpdateUserInfo(request):
+    try:
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+        username = data.get("username")
+        email = data.get("email")
+        language = data.get("language")
+        profile_image_url = data.get("profile_image_url")
+        
+        if not user_id:
+            return error_response("user_id is required")
+            
+        user = CustomUser.objects.filter(id=user_id).first()
+        if not user:
+            return error_response("User not found", status=404)
+            
+        # ユーザー名の更新（重複チェック）
+        if username and username != user.username:
+            if len(username) > 10:
+                return error_response("username too long")
+            if CustomUser.objects.filter(username=username).exists():
+                return error_response("Username already exists")
+            user.username = username
+            
+        # メールアドレスの更新（重複チェック）
+        if email and email != user.email:
+            if not is_email_valid(email):
+                return error_response("Invalid email")
+            if CustomUser.objects.filter(email=email).exists():
+                return error_response("Email already exists")
+            user.email = email
+            
+        # 言語設定の更新
+        if language is not None:
+            user.language = language
+            
+        # プロフィール画像の更新
+        if profile_image_url:
+            user.profile_image_url = profile_image_url
+            
+        user.save()
+        return success_response("User updated successfully")
+    except Exception as e:
+        return error_response(str(e))
