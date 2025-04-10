@@ -68,12 +68,23 @@ canvas {
 }
 
 .playerContainer {
-    width: 500px;
+    width: 600px;
     height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.playerimage {
+    width: 100px;
+    height: 100px;
+    background-color: #111;
+    border: 2px solid #0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .playername {

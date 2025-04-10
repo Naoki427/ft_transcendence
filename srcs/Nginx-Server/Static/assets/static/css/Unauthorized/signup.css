@@ -191,15 +191,18 @@ body {
     transform: scale(0.98);
 }
 
-.message-container {
-    margin-top: 20px;
-    min-height: 30px;
-}
-
 .retro-message {
-    color: #0f0;
-    font-size: 0.7rem;
-    text-align: center;
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    /* background-color: #f44336; */
+    display: none;
+    background-color: #4CAF50;
 }
 
 /* Animation */

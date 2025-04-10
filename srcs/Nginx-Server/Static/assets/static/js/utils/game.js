@@ -16,6 +16,8 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
     let enemyIndex = null;
     let myAlias = null;
     let enemyAlias = null;
+    let player1ID = null;
+    let player2ID = null;
 
     function gameStart() {
         let countdown = 3;
@@ -33,18 +35,26 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
         }, 1000);
     }
 
-    function setNameAndIndex() {
+    function setPairInfo() {
         if (pair.user1.userid === userid) {
             myIndex = pair.user1.index;
             myAlias = pair.user1.alias;
             enemyIndex = pair.user2.index;
             enemyAlias = pair.user2.alias;
             if (playerRole === 'player1') {
+                player1ID = userid;
+                player2ID = pair.user2.userid;
                 namePlayer1Element.textContent = myAlias + '(You)';
                 namePlayer2Element.textContent = enemyAlias;
+                setPlayerImage('player1image',pair.user1.image);
+                setPlayerImage('player2image',pair.user2.image);
             } else {
-                namePlayer1Element.textContent = enemyAlias
+                player1ID = pair.user2.userid;
+                player2ID = userid;
+                namePlayer1Element.textContent = enemyAlias;
                 namePlayer2Element.textContent = myAlias + '(You)';
+                setPlayerImage('player1image',pair.user2.image);
+                setPlayerImage('player2image',pair.user1.image);
             }
         } else {
             myIndex = pair.user2.index;
@@ -52,15 +62,31 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
             enemyIndex = pair.user1.index;
             enemyAlias = pair.user1.alias;
             if (playerRole === 'player1') {
+                player1ID = userid;
+                player2ID = pair.user1.userid;
                 namePlayer1Element.textContent = myAlias + '(You)';
                 namePlayer2Element.textContent = enemyAlias;
+                setPlayerImage('player1image',pair.user2.image);
+                setPlayerImage('player2image',pair.user1.image);
             } else {
+                player1ID = pair.user1.userid;
+                player2ID = userid;
                 namePlayer1Element.textContent = enemyAlias;
                 namePlayer2Element.textContent = myAlias + '(You)';
+                setPlayerImage('player1image',pair.user1.image);
+                setPlayerImage('player2image',pair.user2.image);
             }
         }
     }
 
+    function setPlayerImage(conponentName,image) {
+        const imageConponent = document.createElement('img');
+        imageConponent.src = `${window.location.origin}/${image}`;
+        imageConponent.alt = 'userimage';
+        imageConponent.className = 'userimage';
+        const conponent = document.getElementById(conponentName);
+        conponent.appendChild(imageConponent);
+    }
 
 
     function startWebSocketConnection() {
@@ -78,7 +104,7 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                 if (data.message.startsWith('You are')) {
                     const playerInfo = data.message.split(' ');
                     playerRole = playerInfo[2];
-                    setNameAndIndex();
+                    setPairInfo();
                     console.log(`You are assigned as ${playerRole}`);
                     if (playerRole === 'player1') {
                         camera.position.set(300, 0, 400);
@@ -108,13 +134,33 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                     }
                 }
                 if(ballPosition.y <= 0 && gameState === PLAYER2_WINS) {
+                    if(tournamentSocket instanceof WebSocket && playerRole === 'player1') {
+                        console.log('game finish')
+                        tournamentSocket.send(JSON.stringify({
+                            'type': 'lose',
+                            'loser-id': `${player1ID}`
+                        }));
+                    }
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = 'Player2\nWins!';
+                    if(playerRole === 'player2')
+                        messageElement.textContent = `${myAlias}\nWins!`;
+                    else
+                        messageElement.textContent = `${enemyAlias}\nWins!`;
                     messageElement.classList.remove('hidden');
                     socket.close();
                 } else if ((ballPosition.y >= 800 && gameState === PLAYER1_WINS)) {
+                    if(tournamentSocket instanceof WebSocket &&playerRole === 'player1') {
+                        console.log('game finish')
+                        tournamentSocket.send(JSON.stringify({
+                            'type': 'lose',
+                            'loser-id': `${player2ID}`
+                        }));
+                    }
                     const messageElement = document.getElementById('message');
-                    messageElement.textContent = 'Player1\nWins!';
+                    if(playerRole === 'player1')
+                        messageElement.textContent = `${myAlias}\nWins!`;
+                    else
+                        messageElement.textContent = `${enemyAlias}\nWins!`;
                     messageElement.classList.remove('hidden');
                     socket.close();
                 }
@@ -135,7 +181,7 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                 const data = JSON.parse(e.data);
                 scorePlayer1Element.textContent = data.score.player1;
                 scorePlayer2Element.textContent = data.score.player2;
-                if(tournamentSocket && playerRole === 'player1') {
+                if(tournamentSocket instanceof WebSocket && playerRole === 'player1') {
                     tournamentSocket.send(JSON.stringify({
                         'type': 'score',
                         'score': {

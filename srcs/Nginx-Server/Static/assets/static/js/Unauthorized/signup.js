@@ -92,8 +92,9 @@ async function signupflow(username, email, password, is_2fa_enabled, language, d
         if(data.status != 200) {
           document.getElementById("loading-screen").classList.add("d-none");
           const messageDiv = document.getElementById('message');
+          messageDiv.style.display = 'block'
           messageDiv.textContent = data.message;
-          messageDiv.style.color = 'red';
+          messageDiv.style.backgroundColor = '#f44336';
         }
         if (response.ok) {
             deviceName = getDeviceName()

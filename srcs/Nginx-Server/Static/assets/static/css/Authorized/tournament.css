@@ -255,3 +255,16 @@ body::after {
     pointer-events: none;
     opacity: 0.15;
 }
+
+
+.alert {
+    position: fixed;
+    top: 70%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    background-color: #f44336;
+}
