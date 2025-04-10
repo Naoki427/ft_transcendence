@@ -32,3 +32,6 @@ def matchgame_page(request, room_name):
 
 def tournament_page(request):
     return render(request, "Authorized/tournament.html")
+
+def setting_page(request):
+    return render(request, "Authorized/setting.html")

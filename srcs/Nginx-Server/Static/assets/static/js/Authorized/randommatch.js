@@ -1,14 +1,31 @@
 import { pongGame } from "/static/js/utils/game.js";
+import { translations_format } from "/static/js/utils/translations.js";
+
+const lang = parseInt(localStorage.getItem("language"), 10) || 0;
+const translations = translations_format[lang];
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const matchButton = document.getElementById('matchButton');
     const statusDiv = document.getElementById('status');
     let matchSocket = null;
+    
+    // 翻訳を適用
+    applyTranslations();
+
+function applyTranslations() {
+    // ステータステキストと対戦ボタンの翻訳を適用
+    document.getElementById('status').textContent = translations.match_status;
+    document.getElementById('matchButton').textContent = translations.match_button;
+    
+    // プレイヤーラベルの翻訳を適用
+    document.getElementById('player1-label').textContent = translations.player1;
+    document.getElementById('player2-label').textContent = translations.player2;
+}
 
     matchButton.addEventListener('click', () => {
-        if (matchButton.textContent === '対戦') {
-            statusDiv.textContent = '対戦相手を探しています...';
-            matchButton.textContent = 'キャンセル';
+        if (matchButton.textContent === translations.match_button) {
+            statusDiv.textContent = translations.match_searching;
+            matchButton.textContent = translations.match_cancel;
             matchButton.classList.add('cancel');
 
             const url = "wss://" + window.location.host + "/ws/match/";
@@ -35,9 +52,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             matchSocket.onclose = function(e) {
                 console.error('Match socket closed');
             };
-        } else if (matchButton.textContent === 'キャンセル') {
-            statusDiv.textContent = '対戦相手の検索をキャンセルしました。';
-            matchButton.textContent = '対戦';
+        } else if (matchButton.textContent === translations.match_cancel) {
+            statusDiv.textContent = translations.match_canceled;
+            matchButton.textContent = translations.match_button;
             matchButton.classList.remove('cancel');
             if (matchSocket) {
                 matchSocket.close();

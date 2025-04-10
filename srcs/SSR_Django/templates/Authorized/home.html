@@ -5,22 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title">Game Menu</title>
+    <title id="title">ft_transcendence</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/Authorized/home.css' %}">
+    <!-- Google Fonts for Retro Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="loading-screen">Loading...</div>
+    <div id="loading-screen"><h1 id="loading-text">Loading...</h1></div>
     <div class="container" style="display: none;">
-        <div class="row justify-content-center align-items-center" style="height: 100vh;">
-            <div class="col-md-6 text-center">
-                <h1 class="mb-4" id="title">Game Menu</h1>
-                <button id="tournament-btn" class="btn btn-primary btn-custom" onclick="handleClick('Tournament Battle')">トーナメント対戦</button><br>
-                <button id="random-match-btn" class="btn btn-success btn-custom" onclick="handleClick('Random Match')">ランダムマッチ</button><br>
-                <button id="friend-battle-btn" class="btn btn-info btn-custom" onclick="handleClick('Friend Battle')">友人対戦</button><br>
-                <button id="settings-btn" class="btn btn-warning btn-custom" onclick="handleClick('Settings')">設定</button><br>
-                <button id="friend-list-btn" class="btn btn-secondary btn-custom" onclick="handleClick('Friend List')">友人一覧</button>
+        <div class="retro-container">
+            <h1 class="game-title">ft_transcendence</h1>
+            <div class="game-console">
+                <h2 class="menu-title">Game Menu</h2>
+                <div class="button-container">
+                    <button id="tournament-btn" class="retro-btn" onclick="handleClick('Tournament Battle')">トーナメント対戦</button>
+                    <button id="random-match-btn" class="retro-btn" onclick="handleClick('Random Match')">ランダムマッチ</button>
+                    <button id="friend-battle-btn" class="retro-btn" onclick="handleClick('Friend Battle')">友人対戦</button>
+                    <button id="settings-btn" class="retro-btn" onclick="handleClick('Settings')">設定</button>
+                    <button id="friend-list-btn" class="retro-btn" onclick="handleClick('Friend List')">友人一覧</button>
+                </div>
             </div>
         </div>
     </div>

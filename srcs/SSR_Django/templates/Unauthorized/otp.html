@@ -5,28 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>OTP入力ページ</title>
+    <title>ft_transcendence - OTP入力</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for Retro Style -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/Unauthorized/otp.css' %}">
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="text-center mt-5">ワンタイムパスワード入力</h2>
-                <form method="post">
-                    <div class="form-group">
-                        <label for="otp">OTP</label>
-                        <input type="text" class="form-control" id="otp" name="otp" placeholder="OTPを入力してください" required>
-                    </div>
-                    <button id="submit-button" type="button" class="btn btn-primary btn-block">送信</button>
-               form>
-            </div>
+    <div class="retro-container">
+        <h1 class="game-title">ft_transcendence</h1>
+        <div class="game-console">
+            <h2 id="otp-title" class="menu-title">ワンタイムパスワード入力</h2>
+            <form method="post" class="retro-form">
+                <div class="form-group">
+                    <label id="otp-label" for="otp" class="retro-label">OTP</label>
+                    <input type="text" class="retro-input" id="otp" name="otp" placeholder="OTPを入力してください" required>
+                </div>
+                <button id="submit-button" type="button" class="retro-btn">送信</button>
+            </form>
         </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="{% static 'js/Unauthorized/otp.js' %}"></script>
+    <script type="module" src="{% static 'js/Unauthorized/otp.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

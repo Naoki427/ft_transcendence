@@ -10,45 +10,6 @@ body {
     height: 100vh;
 }
 
-.img-thumbnail {
-    display: block;
-    margin: 0 auto;
-    border: 2px solid #0f0;
-    background-color: #111;
-    padding: 5px;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-}
-
-.loading #content {
-    display: none;
-}
-
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.loading-text {
-    color: #0f0;
-    text-shadow: 0 0 5px #0f0;
-    margin-top: 20px;
-    animation: pulse 2s infinite;
-}
-
-.spinner-border {
-    border-color: #0f0;
-    border-right-color: transparent;
-}
-
 .retro-container {
     width: 100%;
     max-width: 800px;
@@ -131,39 +92,6 @@ body {
     box-shadow: 0 0 10px #0f0;
 }
 
-.retro-input::placeholder {
-    color: rgba(0, 255, 0, 0.5);
-}
-
-.retro-checkbox-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.retro-checkbox {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background-color: #000;
-    border: 2px solid #0f0;
-    margin-right: 10px;
-    position: relative;
-    cursor: pointer;
-}
-
-.retro-checkbox:checked::after {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 12px;
-    height: 12px;
-    background-color: #0f0;
-    box-shadow: 0 0 5px #0f0;
-}
-
 .retro-btn {
     background-color: #000;
     color: #0f0;
@@ -178,6 +106,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
     position: relative;
     overflow: hidden;
+    width: 100%;
 }
 
 .retro-btn:hover {
@@ -189,17 +118,6 @@ body {
 
 .retro-btn:active {
     transform: scale(0.98);
-}
-
-.message-container {
-    margin-top: 20px;
-    min-height: 30px;
-}
-
-.retro-message {
-    color: #0f0;
-    font-size: 0.7rem;
-    text-align: center;
 }
 
 /* Animation */

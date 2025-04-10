@@ -1,16 +1,29 @@
 import { pongGame } from "/static/js/utils/game.js";
+import { translations_format } from "/static/js/utils/translations.js";
+
 const domain = window.location.origin;
+const lang = parseInt(localStorage.getItem("language"), 10) || 0;
+const translations = translations_format[lang];
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const form = document.querySelector('form');
 
     setUserimage(domain);
+    applyTranslations();
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         startTournament()
     });
 });
+
+function applyTranslations() {
+    // トーナメントページの翻訳を適用
+    document.getElementById("tournament-title").textContent = translations.tournament_title;
+    document.getElementById("tournament-size-label").textContent = translations.tournament_size;
+    document.getElementById("tournament-alias-label").textContent = translations.tournament_alias;
+    document.getElementById("tournament-join-btn").textContent = translations.tournament_join;
+}
 
 async function startTournament() {
     const data = await getUserInfo();

@@ -13,6 +13,7 @@ document.getElementById("random-match-btn").textContent = translations.randommat
 document.getElementById("friend-battle-btn").textContent = translations.friendmatch;
 document.getElementById("settings-btn").textContent = translations.setting;
 document.getElementById("friend-list-btn").textContent = translations.friendlist;
+document.getElementById("loading-text").textContent = translations.loading;
 
 function handleClick(page) {
     let url = '';
