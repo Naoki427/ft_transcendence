@@ -116,49 +116,22 @@ async function fetchUserInfo() {
             document.getElementById('username').value = userData.username;
             
             // プロフィール画像を設定
-            if (userData.profile_image_url && userData.profile_image_url !== 'media/profile_images/default.png') {
-                console.log('Custom profile image URL found:', userData.profile_image_url);
+            if (userData.profile_image_url) {
+                console.log('Profile image URL found:', userData.profile_image_url);
                 // プロフィール画像のURLをローカルストレージに保存
                 localStorage.setItem('profile_image_url', userData.profile_image_url);
                 
-                // URLが絶対URLの場合は相対URLに変換
-                let imageUrl = userData.profile_image_url;
-                if (imageUrl.startsWith('http')) {
-                    // URLからパス部分だけを取得
-                    try {
-                        const urlObj = new URL(imageUrl);
-                        imageUrl = urlObj.pathname;
-                    } catch (e) {
-                        console.error('Invalid URL:', imageUrl);
-                    }
-                }
+                // tournament.jsと同様の方法で画像を表示
+                const domain = window.location.origin;
+                const imageUrl = `${domain}/${userData.profile_image_url}`;
                 
                 document.getElementById('profile-image-preview').src = imageUrl;
-                console.log('Set custom profile image:', imageUrl);
+                console.log('Set profile image with domain:', imageUrl);
             } else {
-                // ローカルストレージに保存されたカスタムプロフィール画像があれば使用
-                const storedImageUrl = localStorage.getItem('profile_image_url');
-                if (storedImageUrl && storedImageUrl !== 'media/profile_images/default.png') {
-                    console.log('Using stored custom profile image URL:', storedImageUrl);
-                    
-                    // URLが絶対URLの場合は相対URLに変換
-                    let imageUrl = storedImageUrl;
-                    if (imageUrl.startsWith('http')) {
-                        // URLからパス部分だけを取得
-                        try {
-                            const urlObj = new URL(imageUrl);
-                            imageUrl = urlObj.pathname;
-                        } catch (e) {
-                            console.error('Invalid URL:', imageUrl);
-                        }
-                    }
-                    
-                    document.getElementById('profile-image-preview').src = imageUrl;
-                    console.log('Set stored custom profile image:', imageUrl);
-                } else {
-                    console.log('No custom profile image found, default image will be used');
-                    // デフォルト画像はそのまま使用する
-                }
+                console.log('No profile image URL found, using default');
+                // デフォルト画像を設定
+                const domain = window.location.origin;
+                document.getElementById('profile-image-preview').src = `${domain}/media/profile_images/default.png`;
             }
             
             // 2FA状態を設定
@@ -238,19 +211,13 @@ function setupEventListeners() {
                         console.log('Updating stored profile image URL:', profileImageUrl);
                         localStorage.setItem('profile_image_url', profileImageUrl);
                         
-                        // URLが絶対URLの場合は相対URLに変換
-                        let imageUrl = profileImageUrl;
-                        if (imageUrl.startsWith('http')) {
-                            try {
-                                const urlObj = new URL(imageUrl);
-                                imageUrl = urlObj.pathname;
-                            } catch (e) {
-                                console.error('Invalid URL:', imageUrl);
-                            }
-                        }
+                        // tournament.jsと同様の方法で画像を表示
+                        const domain = window.location.origin;
+                        const imageUrl = `${domain}/${profileImageUrl}`;
                         
                         // プレビュー画像を更新
                         document.getElementById('profile-image-preview').src = imageUrl;
+                        console.log('Updated profile image with domain:', imageUrl);
                     }
                 }
                 
