@@ -79,15 +79,37 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
         }
     }
 
-    function setPlayerImage(conponentName,image) {
+    function setPlayerImage(conponentName, image) {
+        const conponent = document.getElementById(conponentName);
+        
+        const existingImage = conponent.querySelector('.userimage');
+        if (existingImage) {
+            existingImage.remove();
+        }
+        
         const imageConponent = document.createElement('img');
         imageConponent.src = `${window.location.origin}/${image}`;
         imageConponent.alt = 'userimage';
         imageConponent.className = 'userimage';
-        const conponent = document.getElementById(conponentName);
         conponent.appendChild(imageConponent);
     }
+    
 
+    function addHomeButton() {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        const homeButton = document.createElement('button');
+        homeButton.className = 'home-button';
+        homeButton.textContent = 'Back to Home';
+        homeButton.addEventListener('click', () => {
+            if (tournamentSocket instanceof WebSocket) {
+                tournamentSocket.close();
+            }
+            window.location.href = '/';
+        });
+        overlay.appendChild(homeButton);
+        document.body.appendChild(overlay);
+    }
 
     function startWebSocketConnection() {
         const socket = new WebSocket(url);
@@ -134,33 +156,35 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                     }
                 }
                 if(ballPosition.y <= 0 && gameState === PLAYER2_WINS) {
-                    if(tournamentSocket instanceof WebSocket && playerRole === 'player1') {
-                        console.log('game finish')
-                        tournamentSocket.send(JSON.stringify({
-                            'type': 'lose',
-                            'loser-id': `${player1ID}`
-                        }));
-                    }
                     const messageElement = document.getElementById('message');
-                    if(playerRole === 'player2')
-                        messageElement.textContent = `${myAlias}\nWins!`;
-                    else
+                    if(playerRole === 'player1') {
+                        addHomeButton()
                         messageElement.textContent = `${enemyAlias}\nWins!`;
+                        if (tournamentSocket instanceof WebSocket) {
+                            tournamentSocket.send(JSON.stringify({
+                                'type': 'lose',
+                                'loser-id': `${player1ID}`
+                            }));
+                        }
+                    }
+                    else
+                        messageElement.textContent = `${myAlias}\nWins!`;
                     messageElement.classList.remove('hidden');
                     socket.close();
                 } else if ((ballPosition.y >= 800 && gameState === PLAYER1_WINS)) {
-                    if(tournamentSocket instanceof WebSocket &&playerRole === 'player1') {
-                        console.log('game finish')
-                        tournamentSocket.send(JSON.stringify({
-                            'type': 'lose',
-                            'loser-id': `${player2ID}`
-                        }));
-                    }
                     const messageElement = document.getElementById('message');
-                    if(playerRole === 'player1')
-                        messageElement.textContent = `${myAlias}\nWins!`;
-                    else
+                    if(playerRole === 'player2') {
+                        addHomeButton()
                         messageElement.textContent = `${enemyAlias}\nWins!`;
+                        if (tournamentSocket instanceof WebSocket) {
+                            tournamentSocket.send(JSON.stringify({
+                                'type': 'lose',
+                                'loser-id': `${player2ID}`
+                            }));
+                        }
+                    }
+                    else
+                        messageElement.textContent = `${myAlias}\nWins!`;
                     messageElement.classList.remove('hidden');
                     socket.close();
                 }
@@ -298,35 +322,34 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
         }
     }
 
-
     const canvas = document.getElementById('gameCanvas');
     const renderer = new THREE.WebGLRenderer({ canvas });
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     const scene = new THREE.Scene();
 
-    //カメラ
+    // カメラ
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(300, 0, 400);
     camera.rotation.x = Math.PI / 6;
 
-    //ライト
+    // ライト
     const light = new THREE.PointLight(0xffffff, 3, 10000);
     light.position.set(300, 400, 1000);
     scene.add(light);
 
-    //台
+    // 台
     const boadGeometry = new THREE.BoxGeometry(600, 800, 0);
-    const boadMaterial = new THREE.MeshBasicMaterial({ color: 0x0095DD });
+    const boadMaterial = new THREE.MeshBasicMaterial({ color: 0x1E1E1E }); // ダークグレー
     const boad = new THREE.Mesh(boadGeometry, boadMaterial);
     boad.position.x = 300;
     boad.position.y = 400;
     boad.position.z = -5;
     scene.add(boad);
 
-    //横の壁
+    // 横の壁
     const sideGeometry = new THREE.BoxGeometry(10, 800, 10);
-    const sideMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    const sideMaterial = new THREE.MeshStandardMaterial({ color: 0x00FFFF }); // シアン
     const side1 = new THREE.Mesh(sideGeometry, sideMaterial);
     side1.position.x = 605;
     side1.position.y = 400;
@@ -338,41 +361,41 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
     side2.position.z = 0;
     scene.add(side2);
 
-    //中央の点線
-    const dotGeometry = new THREE.BoxGeometry(20,10,1);
-    const dotMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    // 中央の点線
+    const dotGeometry = new THREE.BoxGeometry(20, 10, 1);
+    const dotMaterial = new THREE.MeshStandardMaterial({ color: 0xFFD700 }); // ゴールド
     for (let i = 0; i < 20; i++) {
-        const dot = new THREE.Mesh(dotGeometry,dotMaterial);
-        dot.position.x = 15 + i*30;
+        const dot = new THREE.Mesh(dotGeometry, dotMaterial);
+        dot.position.x = 15 + i * 30;
         dot.position.y = 400;
         dot.position.z = -5;
         scene.add(dot);
     }
-    
-    //ボール
+
+    // ボール
     const radiusTop = 20; // 上面の半径
     const radiusBottom = 20; // 底面の半径
     const height = 10; // 高さ
     const radialSegments = 32; // 円周の分割数
     const cylinderGeometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments);
-    const cylinderMaterial = new THREE.MeshStandardMaterial({ color: 0xDD3300  });
+    const cylinderMaterial = new THREE.MeshStandardMaterial({ color: 0xFF4500 }); // オレンジレッド
     const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
     cylinder.rotation.x = Math.PI / 2;
     cylinder.position.x = 300;
     cylinder.position.y = 400;
-    scene.add(cylinder)
+    scene.add(cylinder);
 
-    //ボールのエッジ
+    // ボールのエッジ
     const cylinderEdgeGeometory = new THREE.EdgesGeometry(cylinderGeometry);
-    const cylinderEdgesMaterial = new THREE.LineBasicMaterial({ color: 0x8B0000});
-    const cylinderEdge = new THREE.LineSegments(cylinderEdgeGeometory,cylinderEdgesMaterial);
+    const cylinderEdgesMaterial = new THREE.LineBasicMaterial({ color: 0x00008B }); // ダークブルー
+    const cylinderEdge = new THREE.LineSegments(cylinderEdgeGeometory, cylinderEdgesMaterial);
     cylinderEdge.position.copy(cylinder.position);
     cylinderEdge.rotation.copy(cylinder.rotation);
     scene.add(cylinderEdge);
 
-    //パドル
+    // パドル
     const paddleGeometry = new THREE.BoxGeometry(120, 10, 10);
-    const paddleMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    const paddleMaterial = new THREE.MeshStandardMaterial({ color: 0x32CD32 }); // ライムグリーン
     const paddle1 = new THREE.Mesh(paddleGeometry, paddleMaterial);
     const paddle2 = new THREE.Mesh(paddleGeometry, paddleMaterial);
     paddle1.position.y = 20;
@@ -381,18 +404,18 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
     paddle2.position.y = 780;
     paddle2.position.x = 300;
     scene.add(paddle2);
-    //パドルのエッジ
+
+    // パドルのエッジ
     const paddleEdgeGeometory = new THREE.EdgesGeometry(paddleGeometry);
-    const paddleEdgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000});
-    const paddleEdge1 = new THREE.LineSegments(paddleEdgeGeometory,paddleEdgesMaterial);
-    const paddleEdge2 = new THREE.LineSegments(paddleEdgeGeometory,paddleEdgesMaterial);
+    const paddleEdgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000 }); // ブラック
+    const paddleEdge1 = new THREE.LineSegments(paddleEdgeGeometory, paddleEdgesMaterial);
+    const paddleEdge2 = new THREE.LineSegments(paddleEdgeGeometory, paddleEdgesMaterial);
     paddleEdge1.position.copy(paddle1.position);
     paddleEdge1.rotation.copy(paddle1.rotation);
     paddleEdge2.position.copy(paddle2.position);
     paddleEdge2.rotation.copy(paddle2.rotation);
     scene.add(paddleEdge1);
     scene.add(paddleEdge2);
-
     function animate() {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);

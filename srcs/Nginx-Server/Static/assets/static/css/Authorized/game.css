@@ -144,3 +144,127 @@ body::after {
     pointer-events: none;
     opacity: 0.15;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 30%;
+
+}
+
+.home-button {
+    padding: 15px 30px;
+    background-color: #000;
+    border: 2px solid #0f0;
+    color: #0f0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #0f0;
+    color: #000;
+    box-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+}
+
+
+
+.winner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.winner-info {
+    background-color: #111;
+    border: 4px solid #0f0;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    animation: glow 2s infinite alternate;
+    max-width: 600px;
+    width: 90%;
+}
+
+.winner-image {
+    width: 200px;
+    height: 200px;
+    background-color: #000;
+    border: 4px solid #0f0;
+    margin: 0 auto 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+    background-size: cover;
+    background-position: center;
+    animation: pulse 2s infinite;
+}
+
+.winner-src {
+    height: 44px;
+	width: 44px;
+	object-fit: contain; 
+}
+
+.winner-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    color: #0f0;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+    animation: blinkText 1.2s infinite;
+}
+
+.congratulations-message {
+    font-size: 32px;
+    color: #0f0;
+    font-family: 'Press Start 2P', cursive;
+    margin-bottom: 30px;
+    text-shadow: 0 0 5px #0f0;
+}
+
+@keyframes blinkText {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+    }
+    100% {
+        box-shadow: 0 0 20px #0f0, 0 0 30px #0f0;
+    }
+}

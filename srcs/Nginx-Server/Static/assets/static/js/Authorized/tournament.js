@@ -109,7 +109,12 @@ async function startTournament() {
         }
 
         if(data.finalist1 && data.finalist2) {
-            console.log("finalmatch start");
+            let elements = document.querySelectorAll('.other-matcheis');
+
+            elements.forEach(element => {
+                element.remove();
+            });
+            
             document.getElementById('message').textContent = '';
             document.getElementById('gameContainer').style.display = 'none';
             document.getElementById('tournamentTableFour').style.display  = 'block'
@@ -117,6 +122,21 @@ async function startTournament() {
             document.getElementById('LeftBrokcImage').src = tournamentImage[data.finalist1 - 1];
             document.getElementById('RightBrokcImage').src = tournamentImage[data.finalist2 - 1];
         }
+
+        if (data.winner_name && data.winner_image) {
+            document.getElementById('winnerContainer').style.display = 'flex';
+            
+            const winnerImageElement = document.getElementById('winnerImage');
+            winnerImageElement.innerHTML = '';
+            const imgElement = document.createElement('img');
+            imgElement.src = `${window.location.origin}/${data.winner_image}`;
+            imgElement.alt = 'Winner Image';
+            imgElement.className = 'winner-src';
+            winnerImageElement.appendChild(imgElement);
+            
+            document.getElementById('winnerName').textContent = data.winner_name;
+        }
+        
     };
 
     tournamentSocket.onclose = function(e) {
