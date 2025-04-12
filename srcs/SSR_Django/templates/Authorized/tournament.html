@@ -30,6 +30,9 @@
                     </div>
                     <button type="submit" class="retro-btn" id="tournament-join-btn">トーナメントに参加</button>
                 </form>
+                <div id="error-message" class="alert alert-danger" style="display: none;">
+                    ユーザーエイリアスは10文字以内で入力してください。
+                </div>
             </div>
         </div>
 
@@ -77,10 +80,12 @@
             <div id="countdown">READY</div>
             <div id="score-container">
                 <div class="playerContainer">
+                    <div id="player1image" class="playerimage"></div>
                     <div id="player1name" class="playername"></div>
                     <div id="player1score" class="playerscore"></div>
                 </div>
                 <div class="playerContainer">
+                    <div id="player2image" class="playerimage"></div>
                     <div id="player2name" class="playername"></div>
                     <div id="player2score" class="playerscore"></div>
                 </div>

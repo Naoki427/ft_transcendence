@@ -35,6 +35,17 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			await self.handle_join_tournament(data['size'])
 		if data['type'] == 'score':
 			await self.send_score(data['score'])
+		if data['type'] == 'lose':
+			tournament_now = self.tournaments[self.channel_id]
+			for user in self.aliveusers[tournament_now]:
+				if user['userid'] == int(data['loser-id']):
+					self.aliveusers[tournament_now].remove(user)
+					break
+			alive_num = len(self.aliveusers[tournament_now])
+			if alive_num == 2:
+				await self.send_players_to_final(self.aliveusers[tournament_now])
+				await self.send_roomname(self.aliveusers[tournament_now],2)
+
 
 	async def handle_join_tournament(self, size):
 		if size == 4:
@@ -53,16 +64,18 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 	async def send_participants_info(self,waiting_users,size):
-		group_name = 'participants'
+		group_name = ''
+		for i in range(0, 4):
+			group_name += f"{waiting_users[i]['userid']}_"
 		participants_info = []
 		for i in range(0, 4):
 			user = {
-				'index': i,
+				'index': i+1,
 				'userid': waiting_users[i]['userid'],
 				'alias': waiting_users[i]['alias'],
 				'image': waiting_users[i]['image'],
 			}
-			waiting_users[i]['index'] = i
+			waiting_users[i]['index'] = i+1
 			participants_info.append(user)
 			await self.channel_layer.group_add(group_name, waiting_users[i]['channel_name'])
 
@@ -166,6 +179,27 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		score = event['score']
 		await self.send(text_data=json.dumps({
 			'score': score
+		}))
+	
+	async def send_players_to_final(self,aliveusers):
+		group_name = f"{aliveusers[0]['userid']}_{aliveusers[1]['userid']}"
+		await self.channel_layer.group_add(group_name, aliveusers[0]['channel_name'])
+		await self.channel_layer.group_add(group_name, aliveusers[1]['channel_name'])
+		await self.channel_layer.group_send(
+			group_name,
+			{
+				'type': 'final_match',
+				'finalist1': aliveusers[0]['index'],
+				'finalist2': aliveusers[1]['index']
+			}
+		)
+
+	async def final_match(self,event):
+		player1_id = event['finalist1']
+		player2_id = event['finalist2']
+		await self.send(text_data=json.dumps({
+			'finalist1': player1_id,
+			'finalist2': player2_id
 		}))
 
 def sanitize_group_name(name):
