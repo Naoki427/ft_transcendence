@@ -21,8 +21,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		}
 		
 	async def disconnect(self, close_code):
-		if self.channel_id in self.waiting_users_4:
-			self.waiting_users_4.remove(self.channel_id)
+		user = self.user_info.get(self.channel_id)
+		if user and user in self.waiting_users_4:
+			self.waiting_users_4.remove(user)
 		if self.channel_id in self.user_info:
 			del self.user_info[self.channel_id]
 		
@@ -44,10 +45,24 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			alive_num = len(self.aliveusers[tournament_now])
 			if alive_num == 2:
 				await self.send_players_to_final(self.aliveusers[tournament_now])
+				self.reset_index(self.aliveusers[tournament_now])
 				await self.send_roomname(self.aliveusers[tournament_now],2)
-
+			if alive_num == 1:
+				await self.send_winner(self.aliveusers[tournament_now])
 
 	async def handle_join_tournament(self, size):
+		for i in range(0, len(self.waiting_users_4)):
+			if(self.user_info[self.channel_id]['userid'] == self.waiting_users_4[i]['userid']):
+				channel_layer = get_channel_layer()
+				channel_name = self.channel_name
+				await channel_layer.send(
+					channel_name,
+					{
+						'type': 'duplicate',
+						'dupmessage': 'this user already joined'
+					}
+				)
+				return
 		if size == 4:
 			self.waiting_users_4.append(self.user_info[self.channel_id] )
 			if len(self.waiting_users_4) == 4:
@@ -56,7 +71,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		else:
 			await self.send(text_data=json.dumps({"message": "Invalid tournament size"}))
 
-		
+	async def duplicate(self, event):
+		message = event['dupmessage']
+		await self.send(text_data=json.dumps({
+			'dupmessage': message
+		}))
+
+
 	async def start_tournament(self,waiting_users,size):
 		await self.send_participants_info(waiting_users,size)
 		self.set_aliveusers(waiting_users,size)
@@ -159,8 +180,8 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		group_name = f'score_{score['room_name']}'
 		sender_index1 = score['player1_index']
 		sender_index2 = score['player2_index']
-		for i in range(1, user_num):
-			if(i != sender_index1 and i != sender_index2):
+		for i in range(0, user_num):
+			if(i + 1 != sender_index1 and i + 1 != sender_index2):
 				await self.channel_layer.group_add(group_name, self.aliveusers[tournament_now][i]['channel_name'])
 		await self.channel_layer.group_send(
 			group_name,
@@ -200,6 +221,30 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		await self.send(text_data=json.dumps({
 			'finalist1': player1_id,
 			'finalist2': player2_id
+		}))
+
+	def reset_index(self, aliveusers):
+		for i in range(0, len(aliveusers)):
+			aliveusers[i]['index'] = i + 1
+
+	async def send_winner(self,aliveusers):
+		group_name = f"winner_{aliveusers[0]['userid']}"
+		await self.channel_layer.group_add(group_name, aliveusers[0]['channel_name'])
+		await self.channel_layer.group_send(
+			group_name,
+			{
+				'type': 'winner_info',
+				'winner_name': aliveusers[0]['alias'],
+				'winner_image': aliveusers[0]['image'],
+			}
+		)
+
+	async def winner_info(self,event):
+		winner_name = event['winner_name']
+		winner_image = event['winner_image']
+		await self.send(text_data=json.dumps({
+			'winner_name': winner_name,
+			'winner_image': winner_image
 		}))
 
 def sanitize_group_name(name):
