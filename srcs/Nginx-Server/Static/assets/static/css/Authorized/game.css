@@ -215,11 +215,12 @@ body::after {
     background-size: cover;
     background-position: center;
     animation: pulse 2s infinite;
+    overflow: hidden;
 }
 
 .winner-src {
-    height: 44px;
-	width: 44px;
+    height: 200px;
+	width: 200px;
 	object-fit: contain; 
 }
 

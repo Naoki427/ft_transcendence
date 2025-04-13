@@ -21,8 +21,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		}
 		
 	async def disconnect(self, close_code):
-		if self.channel_id in self.waiting_users_4:
-			self.waiting_users_4.remove(self.channel_id)
+		user = self.user_info.get(self.channel_id)
+		if user and user in self.waiting_users_4:
+			self.waiting_users_4.remove(user)
 		if self.channel_id in self.user_info:
 			del self.user_info[self.channel_id]
 		
@@ -50,6 +51,18 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 				await self.send_winner(self.aliveusers[tournament_now])
 
 	async def handle_join_tournament(self, size):
+		for i in range(0, len(self.waiting_users_4)):
+			if(self.user_info[self.channel_id]['userid'] == self.waiting_users_4[i]['userid']):
+				channel_layer = get_channel_layer()
+				channel_name = self.channel_name
+				await channel_layer.send(
+					channel_name,
+					{
+						'type': 'duplicate',
+						'dupmessage': 'this user already joined'
+					}
+				)
+				return
 		if size == 4:
 			self.waiting_users_4.append(self.user_info[self.channel_id] )
 			if len(self.waiting_users_4) == 4:
@@ -58,7 +71,13 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		else:
 			await self.send(text_data=json.dumps({"message": "Invalid tournament size"}))
 
-		
+	async def duplicate(self, event):
+		message = event['dupmessage']
+		await self.send(text_data=json.dumps({
+			'dupmessage': message
+		}))
+
+
 	async def start_tournament(self,waiting_users,size):
 		await self.send_participants_info(waiting_users,size)
 		self.set_aliveusers(waiting_users,size)

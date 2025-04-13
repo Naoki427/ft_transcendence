@@ -76,9 +76,13 @@ export const translations_format = {
         player2: "Player 2",
         // Tournament page
         tournament_title: "Join Tournament",
-        tournament_size: "Select tournament size:",
         tournament_alias: "Enter your alias:",
         tournament_join: "Join Tournament",
+        tournament_search: "Searching for an opponent...",
+        tournament_cancel: "Cancel",
+        tournament_dup: "This user is already participating",
+        tournament_alias_err: "User alias must be within 10 characters",
+        tournament_back_home: "Return to Home",
         // Settings page
         profileSettings: "Profile Settings",
         profileImage: "Profile Image",
@@ -151,9 +155,13 @@ export const translations_format = {
         player2: "プレイヤー 2",
         // Tournament page
         tournament_title: "トーナメントに参加",
-        tournament_size: "トーナメントサイズを選択してください:",
         tournament_alias: "ユーザーエイリアスを入力してください:",
         tournament_join: "トーナメントに参加",
+        tournament_search: "対戦相手を探しています...",
+        tournament_cancel: "キャンセル",
+        tournament_dup: "このユーザーはすでに参加しています",
+        tournament_alias_err: "ユーザーエイリアスは10文字以内で入力してください",
+        tournament_back_home: "ホームに戻る",
         // Settings page
         profileSettings: "プロフィール設定",
         profileImage: "プロフィール画像",
@@ -226,9 +234,13 @@ export const translations_format = {
         player2: "Joueur 2",
         // Tournament page
         tournament_title: "Rejoindre le tournoi",
-        tournament_size: "Sélectionnez la taille du tournoi :",
         tournament_alias: "Entrez votre alias :",
         tournament_join: "Rejoindre le tournoi",
+        tournament_search: "Recherche d'un adversaire...",
+        tournament_cancel: "Annuler",
+        tournament_dup: "Cet utilisateur participe déjà",
+        tournament_alias_err: "L'alias doit comporter 10 caractères maximum",
+        tournament_back_home: "Retour à l'accueil",
         // Settings page
         profileSettings: "Paramètres du Profil",
         profileImage: "Image de Profil",

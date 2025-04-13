@@ -4,6 +4,10 @@ import { translations_format } from "/static/js/utils/translations.js";
 const domain = window.location.origin;
 const lang = parseInt(localStorage.getItem("language"), 10) || 0;
 const translations = translations_format[lang];
+const spinner = document.getElementById('searchingContainer');
+const form = document.getElementById('tournamentForm');
+const errorMessage = document.getElementById('error-message');
+let tournamentSocket = null;
 
 document.addEventListener('DOMContentLoaded', (event) => {
     const form = document.querySelector('form');
@@ -14,43 +18,52 @@ document.addEventListener('DOMContentLoaded', (event) => {
         event.preventDefault();
 
     const userAlias = document.getElementById('userAlias').value || "no name";
-    const errorMessage = document.getElementById('error-message');
     if (userAlias.length > 10) {
             errorMessage.style.display = 'block';
+            errorMessage.textContent = translations.tournament_alias_err;
+            spinner.style.display = 'none';
+            form.style.display = 'block';
             setTimeout(() => {
                 errorMessage.style.display = 'none';
             }, 3000);
         } else {
-            const successMsg = document.createElement('div');
-            successMsg.className = 'alert alert-success';
-            successMsg.textContent = 'トーナメントに参加しました！';
-            successMsg.style.backgroundColor = '#4CAF50';
-            document.body.appendChild(successMsg);
+            form.style.display = 'none';
+            spinner.style.display = 'block';
+            errorMessage.style.display = 'none';
             startTournament()
-            setTimeout(() => {
-            document.body.removeChild(successMsg);
-            }, 3000);
-        
         }});
+});
+
+document.getElementById('cancelSearchBtn').addEventListener('click', function () {
+    if (tournamentSocket && tournamentSocket.readyState === WebSocket.OPEN) {
+        tournamentSocket.close();
+        console.log('WebSocket connection closed by user.');
+    }
+
+    document.getElementById('searchingContainer').style.display = 'none';
+    document.getElementById('tournamentForm').style.display = 'block';
 });
 
 function applyTranslations() {
     // トーナメントページの翻訳を適用
     document.getElementById("tournament-title").textContent = translations.tournament_title;
-    document.getElementById("tournament-size-label").textContent = translations.tournament_size;
     document.getElementById("tournament-alias-label").textContent = translations.tournament_alias;
     document.getElementById("tournament-join-btn").textContent = translations.tournament_join;
+    document.getElementById("search-message").textContent = translations.tournament_search;
+    document.getElementById("cancelSearchBtn").textContent = translations.tournament_cancel;
+    document.getElementById("homeButton").textContent = translations.tournament_back_home;
+    
 }
 
 async function startTournament() {
     const data = await getUserInfo();
     const userid = data.userid;
     const userImage = data.profile_image_url;
-    const tournamentSize = parseInt(document.getElementById('tournamentSize').value, 10) || 4;
+    const tournamentSize =  4;
     const userAlias = document.getElementById('userAlias').value || "no name";
     const url = "wss://" + window.location.host + "/ws/tournament/";
     const scoreContainerElement = document.getElementById('score-container');
-    const tournamentSocket = new WebSocket(url);
+    tournamentSocket = new WebSocket(url);
     let otherMatchies = [];
 
     tournamentSocket.onopen = function(e) {
@@ -67,7 +80,6 @@ async function startTournament() {
             document.getElementById('formContainer').style.display = 'none';
             document.getElementById('backcolor').style.backgroundColor = 'black'
             const tournamentTableFour = document.getElementById('tournamentTableFour');
-            const tournamentTableEight = document.getElementById('tournamentTableEight');
             if(tournamentSize == 4) {
                 tournamentTableFour.style.display = 'block';
             }
@@ -90,6 +102,19 @@ async function startTournament() {
                 }
             }
         }
+
+        if(data.dupmessage) {
+            form.style.display = 'block';
+            spinner.style.display = 'none';
+            const successMsg = document.createElement('div');
+            successMsg.className = 'alert alert-success';
+            successMsg.textContent = translations.tournament_dup;
+            successMsg.style.backgroundColor = '#f44336';
+            document.body.appendChild(successMsg);
+            setTimeout(() => {
+            document.body.removeChild(successMsg);
+            }, 1000);
+        }
         
         if(data.room_name && data.pair) {
             gameStart(data.room_name,userid,data.pair,tournamentSocket);
@@ -110,6 +135,8 @@ async function startTournament() {
 
         if(data.finalist1 && data.finalist2) {
             let elements = document.querySelectorAll('.other-matcheis');
+            document.getElementById('player1score').textContent = '0';
+            document.getElementById('player2score').textContent = '0';
 
             elements.forEach(element => {
                 element.remove();
@@ -124,6 +151,7 @@ async function startTournament() {
         }
 
         if (data.winner_name && data.winner_image) {
+            tournamentSocket.close();
             document.getElementById('winnerContainer').style.display = 'flex';
             
             const winnerImageElement = document.getElementById('winnerImage');

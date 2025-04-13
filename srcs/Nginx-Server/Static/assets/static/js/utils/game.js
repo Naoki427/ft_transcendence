@@ -1,3 +1,7 @@
+import { translations_format } from "/static/js/utils/translations.js";
+
+const lang = parseInt(localStorage.getItem("language"), 10) || 0;
+const translations = translations_format[lang];
 export function pongGame(roomName, userid, pair , tournamentSocket = null) {
 	const url = `wss://${window.location.host}/ws/game/${roomName}/`;
     console.log(`WebSocket URL: ${url}`);
@@ -99,7 +103,7 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         const homeButton = document.createElement('button');
-        homeButton.className = 'home-button';
+        homeButton.className = translations.tournament_back_home;
         homeButton.textContent = 'Back to Home';
         homeButton.addEventListener('click', () => {
             if (tournamentSocket instanceof WebSocket) {
@@ -271,44 +275,63 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                     paddleBounds.bottom > ballBounds.top);
         }
 
-        let lastMousePosition = { x: 0 };
-        let lastTimestamp = Date.now();
+        let paddleSpeed = 5;
+        let keysPressed = {
+            ArrowLeft: false,
+            ArrowRight: false
+        };
         let animationFrameId;
 
-        document.addEventListener('mousemove', function(event) {
-            const currentMousePosition = {
-                x: event.clientX,
-            };
-            const currentTime = Date.now();
-
-            const timeDiff = currentTime - lastTimestamp;
-            const deltaX = currentMousePosition.x - lastMousePosition.x;
-
-            const speedX = deltaX / timeDiff;
-            if (playerRole === 'player1') {
-                paddle1.position.x += speedX * 10;
-                if (paddle1.position.x < 60) {
-                    paddle1.position.x = 60;
-                } else if (paddle1.position.x > 540) {
-                    paddle1.position.x = 540;
+        // キーの押下・離上を監視
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                keysPressed[event.key] = true;
+                if (!animationFrameId) {
+                    animationFrameId = requestAnimationFrame(updatePaddle);
                 }
+            }
+        });
+
+        document.addEventListener('keyup', (event) => {
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                keysPressed[event.key] = false;
+            }
+        });
+
+        // パドルの位置を更新する関数
+        function updatePaddle() {
+            if (playerRole === 'player1') {
+                if (keysPressed.ArrowLeft) {
+                    paddle1.position.x += paddleSpeed;
+                }
+                if (keysPressed.ArrowRight) {
+                    paddle1.position.x -= paddleSpeed;
+                }
+                // 範囲制限
+                paddle1.position.x = Math.max(60, Math.min(540, paddle1.position.x));
                 paddleEdge1.position.copy(paddle1.position);
             } else if (playerRole === 'player2') {
-                paddle2.position.x -= speedX * 10;
-                if (paddle2.position.x < 60) {
-                    paddle2.position.x = 60;
-                } else if (paddle2.position.x > 540) {
-                    paddle2.position.x = 540;
+                if (keysPressed.ArrowLeft) {
+                    paddle2.position.x += paddleSpeed;
                 }
+                if (keysPressed.ArrowRight) {
+                    paddle2.position.x -= paddleSpeed;
+                }
+                paddle2.position.x = Math.max(60, Math.min(540, paddle2.position.x));
                 paddleEdge2.position.copy(paddle2.position);
             }
 
-            lastMousePosition = currentMousePosition;
-            lastTimestamp = currentTime; 
-            if (!animationFrameId) {
-                animationFrameId = requestAnimationFrame(sendPaddlePosition);
+            // 再描画が必要な場合はここで送信
+            sendPaddlePosition();
+
+            // どちらかのキーが押されていれば次のフレームへ
+            if (keysPressed.ArrowLeft || keysPressed.ArrowRight) {
+                animationFrameId = requestAnimationFrame(updatePaddle);
+            } else {
+                animationFrameId = null;
             }
-        });
+        }
+
 
         function sendPaddlePosition() {
             if (socket.readyState === WebSocket.OPEN) {

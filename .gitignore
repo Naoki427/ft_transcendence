@@ -10,3 +10,6 @@ __pycache__/
 
 certs/
 data/
+
+# プロフィール画像を全て無視！
+srcs/Nginx-Server/User-Image/assets/media/profile_images/*
