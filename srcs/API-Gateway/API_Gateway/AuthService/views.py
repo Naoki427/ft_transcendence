@@ -83,3 +83,14 @@ def GetIdByToken(access_token):
     except requests.RequestException as e:
         return None, str(e)
     return response
+
+def LogOut(refresh_token):
+    url = "https://innerproxy/auth/log-out/"
+    data = {"refresh_token": refresh_token}
+    try:
+        response = requests.get(url, json=data)
+        message = response.json().get("message", "Something went wrong")
+        return response.status_code, message
+    except requests.RequestException as e:
+        return None, str(e)
+    return response

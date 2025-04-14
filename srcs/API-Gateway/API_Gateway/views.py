@@ -6,7 +6,7 @@ from django.conf import settings
 import requests
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail, GetUserInfo, UpdateUserInfo
-from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh, GetIdByToken
+from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh, GetIdByToken, LogOut
 from .twoFAService.views import Register2FAInfo, get2FAstatus, AuthOtp, Toggle2FA
 
 def error_response(message, status=400):
@@ -239,5 +239,25 @@ def toggle_2fa_view(request):
     
     if status == 200:
         return success_response(message)
+    else:
+        return error_response(message, status=status if status else 500)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def logout_view(request):
+    refresh_token = request.COOKIES.get("refresh_token")
+    if not refresh_token:
+        return error_response("Refresh token not found")
+    
+    status, message = LogOut(refresh_token)
+
+    response = success_response(message)
+
+    response.delete_cookie("refresh_token")
+    response.delete_cookie("access_token")
+
+    if status == 200:
+            return response
     else:
         return error_response(message, status=status if status else 500)

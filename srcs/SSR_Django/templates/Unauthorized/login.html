@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>強broログイン</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/Unauthorized/login.css' %}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+  <div class="background">
+    <div class="retro-container">
+      <h1 class="game-title">💾 強bro Login 💾</h1>
+      <div class="game-console">
+        <h2 class="menu-title">🕹️ ACCESS PANEL</h2>
+        <form id="loginForm" class="retro-form">
+          <label for="email" class="retro-label">📧 メールアドレス</label>
+          <input type="email" id="email" class="retro-input" placeholder="you@cyber.jp" required />
+
+          <label for="password" class="retro-label">🔐 パスワード</label>
+          <input type="password" id="password" class="retro-input" placeholder="********" required
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+            title="8文字以上、大文字小文字・数字を含めてください" />
+
+          <button type="submit" class="retro-btn">▶︎ ログイン</button>
+        </form>
+      </div>
+      <p id="error-message" class="alert" style="display: none;">⚠️ エラーが発生しました</p>
+    </div>
+  </div>
+  <script type="module" src="{% static 'js/Unauthorized/login.js' %}" defer></script>
+</body>
+</html>

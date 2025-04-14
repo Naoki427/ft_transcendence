@@ -9,6 +9,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 import jwt
 from django.conf import settings
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework import status
+from django.http import JsonResponse
 
 def error_response(message, status=400):
     return JsonResponse({"success": False, "message": message}, status=status)
@@ -165,3 +169,24 @@ def GetIdByToken(request):
         return success_response("ID acquisition successful", data={"user_id": user_id})
     else:
         return error_response("Failed to get ID")
+
+@csrf_exempt
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def LogOut(request):
+    try:
+        refresh_token = request.data.get("refresh_token")
+
+        if not refresh_token:
+            return error_response("Refresh token required in cookies", status=400)
+
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+
+        response = success_response("Successfully logged out")
+
+        return response
+
+    except TokenError as e:
+        return error_response(str(e), status=400)
+

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',# CORS を許可する
     'AuthServiceProject',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 REST_FRAMEWORK = {

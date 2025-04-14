@@ -20,6 +20,9 @@ def landing_page_view(request):
 def signup_page_view(request):
     return django_render("https://innerproxy/signup")
 
+def login_page_view(request):
+    return django_render("https://innerproxy/login")
+
 def get_qr_page(request, userid, img_url):
     return django_render(f"https://innerproxy/get_qr/{userid}/{img_url}")
 
