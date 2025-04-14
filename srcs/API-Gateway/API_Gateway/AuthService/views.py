@@ -31,11 +31,11 @@ def AuthPassword(userid, password):
     data = {"password": password, "userid": userid}
     return normal_request(url, data)
 
-def GetToken(userid,username,password):
+def GetToken(userid, headers=None):
     url = "https://innerproxy/auth/get-token/"
-    data = {"userid": userid,"username": username,"password": password}
+    data = {"userid": userid}
     try:
-        response = requests.post(url, json=data)
+        response = requests.post(url, json=data, headers=headers)
         message = response.json().get("message")
         refresh_token = response.json().get("refresh_token")
         access_token = response.json().get("access_token")

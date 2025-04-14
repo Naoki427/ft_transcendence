@@ -13,6 +13,13 @@ document.getElementById("otp-label").textContent = translations.otp_label;
 document.getElementById("otp").placeholder = translations.otp_placeholder;
 document.getElementById("submit-button").textContent = translations.otp_submit;
 
+let csrftoken = null;
+
+document.addEventListener("DOMContentLoaded", function() {
+    csrftoken = document.cookie.match(/csrftoken=([^;]+)/)?.[1];
+});
+
+
 document.getElementById("submit-button").addEventListener("click", async () => {
     const token = document.getElementById('otp').value;
     await AuthByOtp(token);
@@ -22,8 +29,10 @@ async function AuthByOtp(token) {
     try {
         const response = await fetch(`${window.location.origin}/api/login2fa/`, {
             method: "POST",
+            credentials: 'include',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
             },
             body: JSON.stringify({ userid: userid, token: token })
         });

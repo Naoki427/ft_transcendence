@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     applyTranslations();
 
+    //トーナメントに参加ボタン
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -30,10 +31,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             form.style.display = 'none';
             spinner.style.display = 'block';
             errorMessage.style.display = 'none';
+            //トーナメントにエントリー
             startTournament()
         }});
 });
 
+//参加をキャンセル
 document.getElementById('cancelSearchBtn').addEventListener('click', function () {
     if (tournamentSocket && tournamentSocket.readyState === WebSocket.OPEN) {
         tournamentSocket.close();
@@ -43,6 +46,10 @@ document.getElementById('cancelSearchBtn').addEventListener('click', function ()
     document.getElementById('searchingContainer').style.display = 'none';
     document.getElementById('tournamentForm').style.display = 'block';
 });
+
+document.getElementById('homeButton').addEventListener('click', function () {
+    window.location.href = "/pages/home/";
+})
 
 function applyTranslations() {
     // トーナメントページの翻訳を適用
@@ -56,11 +63,13 @@ function applyTranslations() {
 }
 
 async function startTournament() {
+    //トークンからユーザーデータを取得
     const data = await getUserInfo();
     const userid = data.userid;
     const userImage = data.profile_image_url;
     const tournamentSize =  4;
     const userAlias = document.getElementById('userAlias').value || "no name";
+    //トーナメント用のwebsocketに接続
     const url = "wss://" + window.location.host + "/ws/tournament/";
     const scoreContainerElement = document.getElementById('score-container');
     tournamentSocket = new WebSocket(url);

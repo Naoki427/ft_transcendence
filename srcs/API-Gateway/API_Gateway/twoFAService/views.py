@@ -10,9 +10,9 @@ import json
 from django.http import JsonResponse
 
 
-def normal_request(url, data):
+def normal_request(url, data, headers=None):
     try:
-        response = requests.post(url, json=data)
+        response = requests.post(url, json=data, headers=headers)
         message = response.json().get("message", "Something went wrong")
         return response.status_code, message
     except requests.RequestException as e:
@@ -33,10 +33,10 @@ def get2FAstatus(userid, device_name, ip_address):
     except requests.RequestException as e:
         return None, str(e), None, None
 
-def AuthOtp(userid,token):
+def AuthOtp(userid,token,headers):
     url = "https://innerproxy/2fa/auth-otp/"
     data = {"userid": userid, "token": token}
-    return normal_request(url, data)
+    return normal_request(url, data, headers)
 
 def Toggle2FA(userid, enable):
     url = "https://innerproxy/2fa/toggle-2fa/"

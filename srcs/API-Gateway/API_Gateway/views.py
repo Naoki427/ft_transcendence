@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.conf import settings
 import requests
+from django.middleware.csrf import get_token
 import os
 from .UserService.views import CheckUserInfo, RegisterUserInfo, InitialDeleteUserInfo, getUserIDbyEmail, GetUserInfo, UpdateUserInfo
 from .AuthService.views import CheckPassword, RegisterAuthInfo, AuthPassword, GetToken, checkJwt, refresh, GetIdByToken, LogOut
@@ -100,7 +101,7 @@ def login_view(request):
         return error_response_from_other_service(message, status)
 
     if not is_2fa_needed:
-        status, message, refresh_token, access_token = GetToken(userid,username,password)
+        status, message, refresh_token, access_token = GetToken(userid)
         if status != 200 or not refresh_token or not access_token:
             return error_response("Something went wrong")
         response = JsonResponse({"message": "Login successful", "is_2fa_needed": False }) 
@@ -117,10 +118,17 @@ def login2fa_view(request):
         userid = request.data.get("userid")
         token = request.data.get("token")
 
-        status, message = AuthOtp(userid, token)
+        csrf_token = get_token(request)
+
+        headers = {
+            "X-CSRFToken": csrf_token,
+            "Content-Type": "application/json",
+        }
+
+        status, message = AuthOtp(userid, token, headers)
         if status != 200:
             return error_response(message)
-        status, message, refresh_token, access_token = GetToken(userid)
+        status, message, refresh_token, access_token = GetToken(userid,headers)
         if status != 200 or not refresh_token or not access_token:
             return error_response(message)
         response = JsonResponse({"message": "Login successful"}) 

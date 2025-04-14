@@ -62,8 +62,6 @@ def Get2FAStatus(request):
         data = json.loads(request.body)
         userid = data.get("userid")
 
-        print(f"Debug: Received Get2FAStatus request for userid={userid}")
-
         if userid is None:
             return error_response("Missing userid")
 
@@ -84,6 +82,9 @@ def Get2FAStatus(request):
         if not twoFA.first_login:
             return success_response("Unknown device detected", data={"is_2fa_needed": True,"img_url": None})
 
+        if twoFA and twoFA.first_login:
+            twoFA.first_login = False
+            twoFA.save()
         qr_url = twoFA.get_qr_code_url()
         img_url = generate_qr_code(qr_url)
         return success_response("This is the first time to log in for this user", data={"is_2fa_needed": True, "img_url": img_url})

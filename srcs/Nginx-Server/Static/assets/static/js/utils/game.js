@@ -103,13 +103,13 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
         const overlay = document.createElement('div');
         overlay.className = 'overlay';
         const homeButton = document.createElement('button');
-        homeButton.className = translations.tournament_back_home;
-        homeButton.textContent = 'Back to Home';
+        homeButton.className = 'home-button';
+        homeButton.textContent = translations.tournament_back_home;
         homeButton.addEventListener('click', () => {
             if (tournamentSocket instanceof WebSocket) {
                 tournamentSocket.close();
             }
-            window.location.href = '/';
+            window.location.href = '/pages/home/';
         });
         overlay.appendChild(homeButton);
         document.body.appendChild(overlay);
@@ -169,6 +169,7 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                                 'type': 'lose',
                                 'loser-id': `${player1ID}`
                             }));
+                            tournamentSocket.close();
                         }
                     }
                     else
@@ -185,6 +186,7 @@ export function pongGame(roomName, userid, pair , tournamentSocket = null) {
                                 'type': 'lose',
                                 'loser-id': `${player2ID}`
                             }));
+                            tournamentSocket.close();
                         }
                     }
                     else
