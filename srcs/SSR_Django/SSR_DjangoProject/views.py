@@ -14,6 +14,9 @@ def landing_page(request):
 def signup_page(request):
     return render(request, "Unauthorized/signup.html")
 
+def login_page(request):
+    return render(request, "Unauthorized/login.html")
+
 def get_qr_page(request, userid, img_url):
     decoded_img_url = base64.b64decode(img_url).decode('utf-8')
     return render(request, "Unauthorized/qr.html", {"userid": userid, "img_url": decoded_img_url})

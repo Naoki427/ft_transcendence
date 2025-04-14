@@ -8,3 +8,4 @@ django-environ
 python-dotenv
 requests
 PyJWT
+djangorestframework-simplejwt[django-redis]
