@@ -5,33 +5,60 @@
 <head>
     <title>ft_transcendence - Pong Game</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/randommatch.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/Authorized/game.css' %}">
     <!-- Google Fonts for Retro Style -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="retro-container" id="matchmakingContainer">
-        <h1 class="game-title">ft_transcendence</h1>
-        <div class="game-console">
-            <div id="status" class="retro-status">戦うんだbro</div>
-            <button id="matchButton" class="retro-btn">対戦</button>
+    <div class="background" id="backcolor">
+        <div id="loading-screen"><h1 id="loading-text">Loading...</h1></div>
+        <div class="container" style="display: none;">
+            <div class="retro-container" id="matchmakingContainer">
+                <h1 class="game-title">ft_transcendence</h1>
+                <div class="game-console">
+                    <div id="status" class="retro-status">戦うんだbro</div>
+                    <div class="form-group">
+                        <label for="userAlias" class="retro-label" id="tournament-alias-label">ユーザーエイリアスを入力してください:</label>
+                        <input type="text" class="retro-input" id="userAlias" placeholder="no name">
+                    </div>
+                    <button id="matchButton" class="retro-btn">対戦</button>
+                </div>
+                <div id="error-message" class="alert alert-danger" style="display: none;">
+                    ユーザーエイリアスは10文字以内で入力してください。
+                </div>
+            </div>
+    
+            <div id="match_countdown"></div>
+    
+            <div id="gameContainer">
+                <div id="countdown">READY</div>
+                <div id="score-container">
+                    <div class="playerContainer">
+                        <div id="player1image" class="playerimage"></div>
+                        <div id="player1name" class="playername"></div>
+                        <div id="player1score" class="playerscore"></div>
+                    </div>
+                    <div class="playerContainer">
+                        <div id="player2image" class="playerimage"></div>
+                        <div id="player2name" class="playername"></div>
+                        <div id="player2score" class="playerscore"></div>
+                    </div>
+                </div>
+                <div id="message" class="hidden"></div>
+                <canvas id="gameCanvas"></canvas>
+            </div>
+            
+            <div id="winnerContainer" class="winner-container">
+                <div class="winner-info">
+                    <div id="winnerImage" class="winner-image"></div>
+                    <div id="winnerName" class="winner-name"></div>
+                    <div class="congratulations-message">Congratulations on your victory!</div>
+                    <button class="home-button" id="homeButton">Go Back Home</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="retro-container hidden" id="gameContainer">
-        <div id="countdown" class="retro-countdown">3</div>
-        <div id="message" class="hidden retro-message"></div>
-        <div id="score-container">
-            <div id="score-player1" class="score-box">
-                <span class="player-label" id="player1-label">Player 1</span>
-                <span class="player-score">0</span>
-            </div>
-            <div id="score-player2" class="score-box">
-                <span class="player-label" id="player2-label">Player 2</span>
-                <span class="player-score">0</span>
-            </div>
-        </div>
-        <canvas id="gameCanvas"></canvas>
-    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script type="module" src="{% static 'js/utils/translations.js' %}"></script>
     <script type="module" src="{% static 'js/Authorized/randommatch.js' %}"></script>

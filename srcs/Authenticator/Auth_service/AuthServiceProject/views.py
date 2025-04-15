@@ -96,7 +96,6 @@ def AuthPassword(request):
         return error_response(str(e))
 
 
-@csrf_exempt
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def GetToken(request):

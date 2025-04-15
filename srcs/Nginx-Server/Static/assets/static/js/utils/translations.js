@@ -98,6 +98,8 @@ export const translations_format = {
         languageChanged: "Language changed successfully",
         twoFactorEnabled: "Two-Factor Authentication enabled",
         twoFactorDisabled: "Two-Factor Authentication disabled"
+        //login page
+        
     },
     1: { // 日本語 (Japanese)
         signup: "サインアップ",

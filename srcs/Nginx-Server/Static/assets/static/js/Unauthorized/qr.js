@@ -1,4 +1,7 @@
 import { translations_format } from '../utils/translations.js';
+import { redirectIfAuthenticated } from "/static/js/utils/authJWT.js";
+
+document.addEventListener('DOMContentLoaded', redirectIfAuthenticated);
 
 // Get language preference from localStorage or default to English (0)
 const languagePreference = localStorage.getItem('language') ? parseInt(localStorage.getItem('language')) : 0;

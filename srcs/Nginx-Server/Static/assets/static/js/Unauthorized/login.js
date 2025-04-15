@@ -1,6 +1,9 @@
 import { translations_format } from "/static/js/utils/translations.js";
 import { loginflow } from "/static/js/utils/loginflow.js";
 import { getDeviceName } from "/static/js/utils/getDeviceName.js";
+import { redirectIfAuthenticated } from "/static/js/utils/authJWT.js";
+
+document.addEventListener('DOMContentLoaded', redirectIfAuthenticated);
 
 
 const deviceName = getDeviceName();
