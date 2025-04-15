@@ -14,69 +14,72 @@
 </head>
 <body>
     <div class="background" id="backcolor">
-        <div class="retro-container" id="formContainer">
-            <h1 class="game-title">ft_transcendence</h1>
-            <div class="game-console">
-                <h2 class="menu-title" id="tournament-title">トーナメントに参加</h2>
-                <form id="tournamentForm" class="retro-form">
-                    <div class="form-group">
-                        <label for="userAlias" class="retro-label" id="tournament-alias-label">ユーザーエイリアスを入力してください:</label>
-                        <input type="text" class="retro-input" id="userAlias" placeholder="no name">
+        <div id="loading-screen"><h1 id="loading-text">Loading...</h1></div>
+        <div class="container" style="display: none;">
+            <div class="retro-container" id="formContainer">
+                <h1 class="game-title">ft_transcendence</h1>
+                <div class="game-console">
+                    <h2 class="menu-title" id="tournament-title">トーナメントに参加</h2>
+                    <form id="tournamentForm" class="retro-form">
+                        <div class="form-group">
+                            <label for="userAlias" class="retro-label" id="tournament-alias-label">ユーザーエイリアスを入力してください:</label>
+                            <input type="text" class="retro-input" id="userAlias" placeholder="no name">
+                        </div>
+                        <button type="submit" class="retro-btn" id="tournament-join-btn">トーナメントに参加</button>
+                    </form>
+                    <div id="searchingContainer" class="text-center" style="display: none; margin-top: 30px;">
+                        <div class="spinner-border text-success" role="status" style="width: 4rem; height: 4rem;">
+                            <span class="visually-hidden"></span>
+                        </div>
+                        <p class="mt-3" style="color: #0f0; font-family: 'Press Start 2P', cursive; text-shadow: 0 0 5px #0f0;" id="search-message">
+                            対戦相手を探しています...
+                        </p>
+                        <button id="cancelSearchBtn"
+                            class="retro-btn mt-3"
+                            style="display: block; margin: 20px auto 0; width: fit-content;">
+                            キャンセル
+                        </button>
+                    </div>                
+                    <div id="error-message" class="alert alert-danger" style="display: none;">
+                        ユーザーエイリアスは10文字以内で入力してください。
                     </div>
-                    <button type="submit" class="retro-btn" id="tournament-join-btn">トーナメントに参加</button>
-                </form>
-                <div id="searchingContainer" class="text-center" style="display: none; margin-top: 30px;">
-                    <div class="spinner-border text-success" role="status" style="width: 4rem; height: 4rem;">
-                        <span class="visually-hidden"></span>
-                    </div>
-                    <p class="mt-3" style="color: #0f0; font-family: 'Press Start 2P', cursive; text-shadow: 0 0 5px #0f0;" id="search-message">
-                        対戦相手を探しています...
-                    </p>
-                    <button id="cancelSearchBtn"
-                        class="retro-btn mt-3"
-                        style="display: block; margin: 20px auto 0; width: fit-content;">
-                        キャンセル
-                    </button>
-                </div>                
-                <div id="error-message" class="alert alert-danger" style="display: none;">
-                    ユーザーエイリアスは10文字以内で入力してください。
                 </div>
+                <div id="form-message" class="retro-message"></div>
             </div>
-            <div id="form-message" class="retro-message"></div>
-        </div>
-
-        <div  id="tournamentTableFour" style="display: none;">
-            <div id="tournamentContainer">
-                <div id="userLeft4">
-                    <div id="userinfoLeft4-1" class="userinfo">
-                        <div id="usernameLeft4-1", class="usernameLeft"></div>
-                        <div id="userimageLeft4-1", class="userimageLeft">
+    
+            <div  id="tournamentTableFour" style="display: none;">
+                <div id="tournamentContainer">
+                    <div id="userLeft4">
+                        <div id="userinfoLeft4-1" class="userinfo">
+                            <div id="usernameLeft4-1", class="usernameLeft"></div>
+                            <div id="userimageLeft4-1", class="userimageLeft">
+                            </div>
+                        </div>
+                        <div id="userinfoLeft4-2" class="userinfo">
+                            <div id="usernameLeft4-2", class="usernameLeft"></div>
+                            <div id="userimageLeft4-2", class="userimageLeft">
+                            </div>
                         </div>
                     </div>
-                    <div id="userinfoLeft4-2" class="userinfo">
-                        <div id="usernameLeft4-2", class="usernameLeft"></div>
-                        <div id="userimageLeft4-2", class="userimageLeft">
-                        </div>
+                    <div id="brockLeft4">
+                        <img src="{% static 'images/Left-n.png' %}" alt="LeftBrock" id="LeftBrokcImage">
                     </div>
-                </div>
-                <div id="brockLeft4">
-                    <img src="{% static 'images/Left-n.png' %}" alt="LeftBrock" id="LeftBrokcImage">
-                </div>
-                <div id="Trophy4">
-                    <img src="{% static 'images/Trophy.png' %}" alt="Trophy">
-                </div>
-                <div id="brockRight4">
-                    <img src="{% static 'images/Right-n.png' %}" alt="RightRrock" id="RightBrokcImage">
-                </div>
-                <div id="userRight4">
-					<div id="userinfoRight4-1" class="userinfo">
-                        <div id="userimageRight4-1", class="userimageRight"></div>
-                        <div id="usernameRight4-1", class="usernameRight">
-                        </div>
+                    <div id="Trophy4">
+                        <img src="{% static 'images/Trophy.png' %}" alt="Trophy">
                     </div>
-                    <div id="userinfoRight4-2" class="userinfo">
-                        <div id="userimageRight4-2", class="userimageRight"></div>
-                        <div id="usernameRight4-2", class="usernameRight">
+                    <div id="brockRight4">
+                        <img src="{% static 'images/Right-n.png' %}" alt="RightRrock" id="RightBrokcImage">
+                    </div>
+                    <div id="userRight4">
+                        <div id="userinfoRight4-1" class="userinfo">
+                            <div id="userimageRight4-1", class="userimageRight"></div>
+                            <div id="usernameRight4-1", class="usernameRight">
+                            </div>
+                        </div>
+                        <div id="userinfoRight4-2" class="userinfo">
+                            <div id="userimageRight4-2", class="userimageRight"></div>
+                            <div id="usernameRight4-2", class="usernameRight">
+                            </div>
                         </div>
                     </div>
                 </div>

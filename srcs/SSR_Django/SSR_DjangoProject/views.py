@@ -6,6 +6,7 @@ import requests
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 def landing_page(request):
@@ -21,6 +22,7 @@ def get_qr_page(request, userid, img_url):
     decoded_img_url = base64.b64decode(img_url).decode('utf-8')
     return render(request, "Unauthorized/qr.html", {"userid": userid, "img_url": decoded_img_url})
 
+@ensure_csrf_cookie
 def otp_page(request, userid):
     return render(request, "Unauthorized/otp.html",  {"userid": userid})
 

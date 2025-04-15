@@ -1,5 +1,8 @@
 import { pongGame } from "/static/js/utils/game.js";
 import { translations_format } from "/static/js/utils/translations.js";
+import { checkAuthorization } from "/static/js/utils/authJWT.js";
+
+document.addEventListener('DOMContentLoaded', checkAuthorization);
 
 const domain = window.location.origin;
 const lang = parseInt(localStorage.getItem("language"), 10) || 0;

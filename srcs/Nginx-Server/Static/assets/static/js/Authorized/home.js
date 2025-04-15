@@ -1,5 +1,5 @@
-import { checkAuthorization } from "/static/js/utils/authJWT.js";
 import { translations_format } from "/static/js/utils/translations.js"
+import { checkAuthorization } from "/static/js/utils/authJWT.js";
 
 document.addEventListener('DOMContentLoaded', checkAuthorization);
 

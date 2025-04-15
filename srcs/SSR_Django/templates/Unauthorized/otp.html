@@ -18,14 +18,14 @@
         <h1 class="game-title">ft_transcendence</h1>
         <div class="game-console">
             <h2 id="otp-title" class="menu-title">ワンタイムパスワード入力</h2>
-            <form method="post" class="retro-form">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label id="otp-label" for="otp" class="retro-label">OTP</label>
-                    <input type="text" class="retro-input" id="otp" name="otp" placeholder="OTPを入力してください" required>
-                </div>
-                <button id="submit-button" type="button" class="retro-btn">送信</button>
-            </form>
+    <!-- <form method="post" class="retro-form"> を削除して div に -->
+        <div class="retro-form">
+            <div class="form-group">
+                <label id="otp-label" for="otp" class="retro-label">OTP</label>
+                <input type="text" class="retro-input" id="otp" name="otp" placeholder="OTPを入力してください" required>
+            </div>
+            <button id="submit-button" type="button" class="retro-btn">送信</button>
+        </div>    
         </div>
     </div>
 

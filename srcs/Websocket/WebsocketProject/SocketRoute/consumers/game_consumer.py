@@ -4,6 +4,7 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import uuid
 import asyncio
+import random 
 
 screen_width = 580
 screen_height = 800
@@ -35,9 +36,9 @@ class Ball:
 		
 		if self.y < -50 or self.y > 850:
 			self.point = False
-			self.vx = 10
-			self.vy = 10
-			self.x = 300
+			self.vx = random.choice([-20, 20])
+			self.vy = random.choice([-20, 20])
+			self.x = random.randint(100, 500)
 			self.y = 400
 
 
@@ -49,18 +50,23 @@ class Ball:
 
 class GameConsumer(AsyncWebsocketConsumer):
 	rooms = {}
-	running = True
 	lock = asyncio.Lock()
+	ball_update_tasks = {} 
 	async def connect(self):
 		self.room_name = self.scope['url_route']['kwargs']['room_name']
 		self.room_group_name = f'game_{self.room_name}'
+		self.running = True
 
 		if self.room_group_name not in self.rooms:
 			self.rooms[self.room_group_name] = {
 				'score': {'player1': 0, 'player2': 0},
-				'ball': Ball(300, 400, 10, 10),
+				'ball': Ball(300, 400, 20, 20),
 				'players': {}
 			}
+
+		if self.room_group_name not in self.__class__.ball_update_tasks:
+			self.__class__.ball_update_tasks[self.room_group_name] = asyncio.create_task(self.update_ball_position())
+
 		if 'player1' not in self.rooms[self.room_group_name]['players']:
 			self.rooms[self.room_group_name]['players']['player1'] = self.channel_name
 			self.player = 'player1'
@@ -84,13 +90,25 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 		await self.update_score()
 
-		asyncio.create_task(self.update_ball_position())
 		
 	async def disconnect(self, close_code):
+		self.running = False 
 		await self.channel_layer.group_discard(
 			self.room_group_name,
 			self.channel_name
 		)
+		if self.room_group_name in self.rooms:
+			players = self.rooms[self.room_group_name]['players']
+			if self.player in players:
+				del players[self.player]
+		
+			if not players:
+				del self.rooms[self.room_group_name]
+
+				task = self.__class__.ball_update_tasks.get(self.room_group_name)
+				if task:
+					task.cancel()
+					del self.__class__.ball_update_tasks[self.room_group_name]
 
 	async def update_ball_position(self):
 		while self.running:

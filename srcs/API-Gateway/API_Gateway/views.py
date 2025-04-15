@@ -117,11 +117,9 @@ def login2fa_view(request):
     try:
         userid = request.data.get("userid")
         token = request.data.get("token")
-
-        csrf_token = get_token(request)
-
         headers = {
-            "X-CSRFToken": csrf_token,
+            #csrf対応をやるなら
+            # "X-CSRFToken": csrf_token,
             "Content-Type": "application/json",
         }
 

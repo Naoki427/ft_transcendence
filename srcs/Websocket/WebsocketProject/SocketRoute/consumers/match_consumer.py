@@ -1,21 +1,18 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
 import uuid
-import asyncio
 
 class MatchConsumer(AsyncWebsocketConsumer):
     waiting_users = []
     user_info = {}
+    aliveusers = {}
 
     async def connect(self):
         await self.accept()
-        self.user_id = self.scope['user'].id
         self.channel_id = str(uuid.uuid4())
         self.user_info[self.channel_id] = {
             'channel_name': self.channel_name,
-            'user_id': self.user_id
+            'channel_id': self.channel_id,
         }
 
     async def disconnect(self, close_code):
@@ -25,38 +22,56 @@ class MatchConsumer(AsyncWebsocketConsumer):
             del self.user_info[self.channel_id]
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        action = text_data_json['action']
+        data = json.loads(text_data)
+        if data['type'] == 'join':
+            user = self.user_info[self.channel_id]
+            user['alias'] = data['alias']
+            user['userid'] = data['userid']
+            user['image'] = data['image']
 
-        if action == 'join':
+            # 重複参加防止
+            if any(u['userid'] == user['userid'] for u in [self.user_info[cid] for cid in self.waiting_users]):
+                await self.send(text_data=json.dumps({'error': 'Already in waiting list'}))
+                return
+
             self.waiting_users.append(self.channel_id)
-            await self.match_users()
 
-    async def match_users(self):
-        if len(self.waiting_users) >= 2:
-            uuid1 = self.waiting_users.pop(0)
-            uuid2 = self.waiting_users.pop(0)
-            user1_info = self.user_info[uuid1]
-            user2_info = self.user_info[uuid2]
-            group_name = f'match_{uuid1}_{uuid2}'
+            if len(self.waiting_users) >= 2:
+                match_users = [self.user_info[self.waiting_users[0]], self.user_info[self.waiting_users[1]]]
+                group_name = f"match_{match_users[0]['channel_id']}_{match_users[1]['channel_id']}"
+                self.aliveusers[group_name] = match_users
+                await self.send_roomname(match_users, group_name)
 
-            await self.channel_layer.group_add(group_name, user1_info['channel_name'])
-            await self.channel_layer.group_add(group_name, user2_info['channel_name'])
+                self.waiting_users.pop(0)
+                self.waiting_users.pop(0)
 
-            await self.channel_layer.group_send(
-                group_name,
-                {
-                    'type': 'match_message',
-                    'message': f'User {uuid1} matched with User {uuid2}',
-                    'room_name' : f'{uuid1}_{uuid2}'
+    async def send_roomname(self, aliveusers, group_name):
+        for user in aliveusers:
+            await self.channel_layer.group_add(group_name, user['channel_name'])
+
+        await self.channel_layer.group_send(
+            group_name,
+            {
+                'type': 'room_message',
+                'room_name': group_name,
+                'pair': {
+                    'user1': {
+                        'userid': aliveusers[0]['userid'],
+                        'alias': aliveusers[0]['alias'],
+                        'image': aliveusers[0]['image']
+                    },
+                    'user2': {
+                        'userid': aliveusers[1]['userid'],
+                        'alias': aliveusers[1]['alias'],
+                        'image': aliveusers[1]['image']
+                    }
                 }
-            )
+            }
+        )
 
-    async def match_message(self, event):
-        message = event['message']
-        room_name = event['room_name']
+    async def room_message(self, event):
         await self.send(text_data=json.dumps({
-            'message': message,
-            'room_name': room_name
+            'room_name': event['room_name'],
+            'pair': event['pair']
         }))
         await self.close()

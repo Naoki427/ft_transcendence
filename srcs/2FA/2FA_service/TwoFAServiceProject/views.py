@@ -95,7 +95,6 @@ def Get2FAStatus(request):
         print(f"Error in Get2FAStatus: {e}")
         return error_response(str(e))
 
-@csrf_exempt
 @api_view(["POST"])
 def AuthOtp(request):
     try:

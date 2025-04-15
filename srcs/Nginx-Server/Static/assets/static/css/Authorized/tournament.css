@@ -132,11 +132,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
 }
 
-.userimage {
-	height: 144px;
-	width: 144px;
-	object-fit: contain; 
-}
 
 #match_countdown {
 	display: none;

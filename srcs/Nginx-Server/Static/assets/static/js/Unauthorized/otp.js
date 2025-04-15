@@ -1,4 +1,7 @@
 import { translations_format } from "/static/js/utils/translations.js";
+import { redirectIfAuthenticated } from "/static/js/utils/authJWT.js";
+
+document.addEventListener('DOMContentLoaded', redirectIfAuthenticated);
 
 const pathSegments = window.location.pathname.split('/');
 const userid = pathSegments[2]; 
@@ -13,19 +16,20 @@ document.getElementById("otp-label").textContent = translations.otp_label;
 document.getElementById("otp").placeholder = translations.otp_placeholder;
 document.getElementById("submit-button").textContent = translations.otp_submit;
 
-let csrftoken = null;
+function getCSRFToken() {
+    const match = document.cookie.match(/csrftoken=([^;]+)/);
+    console.log(document.cookie);
+    return match ? match[1] : null;
+}
 
-document.addEventListener("DOMContentLoaded", function() {
-    csrftoken = document.cookie.match(/csrftoken=([^;]+)/)?.[1];
-});
-
-
-document.getElementById("submit-button").addEventListener("click", async () => {
+document.getElementById("submit-button").addEventListener("click", async (event) => {
     const token = document.getElementById('otp').value;
-    await AuthByOtp(token);
+    const csrftoken = getCSRFToken();
+    console.log("Sending with csrf-token:", csrftoken);
+    await AuthByOtp(token, csrftoken);
 });
 
-async function AuthByOtp(token) {
+async function AuthByOtp(token, csrftoken) {
     try {
         const response = await fetch(`${window.location.origin}/api/login2fa/`, {
             method: "POST",
