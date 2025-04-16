@@ -89,16 +89,16 @@ async function signupflow(username, email, password, is_2fa_enabled, language, d
 
         const data = await response.json()
         console.log("data message",data.message);
-        if(data.status != 200) {
+        if (response.ok) {
+            deviceName = getDeviceName()
+            loginflow(email, password, deviceName)
+        }
+        else {
           document.getElementById("loading-screen").classList.add("d-none");
           const messageDiv = document.getElementById('message');
           messageDiv.style.display = 'block'
           messageDiv.textContent = data.message;
           messageDiv.style.backgroundColor = '#f44336';
-        }
-        if (response.ok) {
-            deviceName = getDeviceName()
-            loginflow(email, password, deviceName)
         }
     } catch (error) {
         console.error("Error: ", error);

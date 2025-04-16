@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2FA Setup</title>
+    <title>ft_transcendence - QR</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/Unauthorized/qr.css' %}">
@@ -12,23 +12,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="card-body text-center">
-                <h2 id="scan-qr-title" class="card-title">Scan this QR Code</h2>
-                <p id="scan-qr-instruction" class="card-text">Scan this QR code to enable 2FA:</p>
-                <img id="qrImage" alt="QR Code" src="" class="img-fluid"> <!-- JS で QRコードを表示 -->
-                <p id="scan-qr-app-instruction" class="card-text">Use Google Authenticator or Authy to scan this QR code.</p>
-                <button id="qr-ok-btn" class="btn btn-primary">OK</button>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="row w-100 justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="card retro-card text-center">
+                    <div class="card-body">
+                        <h2 id="scan-qr-title" class="card-title">Scan this QR Code</h2>
+                        <p id="scan-qr-instruction" class="card-text">Scan this QR code to enable 2FA:</p>
+                        <img id="qrImage" alt="QR Code" src="" class="img-fluid mx-auto d-block">
+                        <p id="scan-qr-app-instruction" class="card-text">Use Google Authenticator or Authy to scan this QR code.</p>
+                        <button id="qr-ok-btn" class="btn btn-primary">OK</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="{% static 'js/Unauthorized/qr.js' %}"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ export function checkAuthorization() {
     .then(data => {
         if (data.access_token) {
             document.getElementById("loading-screen").style.display = "none";
-            document.querySelector(".container").style.display = "block";
+            document.querySelector(".container").style.display = "flex";
         } else {
             console.log(data);
             window.location.href = `${window.location.origin}`;

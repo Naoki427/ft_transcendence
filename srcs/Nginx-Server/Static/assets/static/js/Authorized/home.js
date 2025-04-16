@@ -11,6 +11,7 @@ document.getElementById("tournament-btn").textContent = translations.tournament;
 document.getElementById("random-match-btn").textContent = translations.randommatch;
 document.getElementById("settings-btn").textContent = translations.setting;
 document.getElementById("loading-text").textContent = translations.loading;
+document.getElementById("logout-btn").textContent = translations.logout;
 
 function handleClick(page) {
     let url = '';
@@ -24,7 +25,7 @@ function handleClick(page) {
         case 'Settings':
             url = '/pages/setting/';
             break;
-        case 'Log Out': // ← 大文字小文字注意
+        case 'Log Out':
             logOut();
             return;
         default:
