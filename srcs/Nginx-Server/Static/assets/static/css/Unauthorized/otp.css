@@ -1,49 +1,36 @@
-/* Retro Game Style CSS */
 body {
     background-color: #000;
     font-family: 'Press Start 2P', cursive, Arial, sans-serif;
     color: #fff;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.retro-container {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
     position: relative;
-}
-
-.game-title {
-    font-size: 2.5rem;
+  }
+  
+  .retro-title {
+    font-size: 2rem;
     color: #0f0;
     text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-bottom: 40px;
-    text-align: center;
+    letter-spacing: 2px;
     animation: pulse 2s infinite;
-}
-
-.game-console {
+  }
+  
+  .retro-subtitle {
+    color: #0f0;
+    font-size: 1rem;
+    text-shadow: 0 0 5px #0f0;
+  }
+  
+  .retro-card {
     background-color: #111;
-    border: 4px solid #444;
+    border: 3px solid #444;
     border-radius: 10px;
-    padding: 40px;
-    width: 100%;
-    max-width: 600px;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
     position: relative;
-}
-
-.game-console::before {
+  }
+  
+  .retro-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -52,89 +39,60 @@ body {
     height: 2px;
     background: linear-gradient(to right, transparent, #0f0, transparent);
     opacity: 0.7;
-}
-
-.menu-title {
-    color: #0f0;
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-    text-shadow: 0 0 5px #0f0;
-    position: relative;
-}
-
-.retro-form {
-    width: 100%;
-}
-
-.retro-label {
+  }
+  
+  .retro-label {
     color: #0f0;
     font-size: 0.7rem;
-    margin-bottom: 8px;
-    display: block;
     text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
-}
-
-.retro-input {
+    margin-bottom: 5px;
+  }
+  
+  .retro-input {
     background-color: #000;
     color: #0f0;
     border: 2px solid #0f0;
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 15px;
-    font-family: 'Press Start 2P', cursive;
     font-size: 0.7rem;
+    font-family: 'Press Start 2P', cursive;
     box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
-}
-
-.retro-input:focus {
+    padding: 8px;
+  }
+  
+  .retro-input:focus {
     outline: none;
     box-shadow: 0 0 10px #0f0;
-}
-
-.retro-btn {
+  }
+  
+  .retro-btn {
     background-color: #000;
     color: #0f0;
     border: 2px solid #0f0;
-    padding: 15px 20px;
     font-family: 'Press Start 2P', cursive;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    font-size: 0.7rem;
+    padding: 10px;
     text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
     box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-}
-
-.retro-btn:hover {
+    transition: all 0.3s ease;
+  }
+  
+  .retro-btn:hover {
     background-color: #0f0;
     color: #000;
     transform: scale(1.05);
     box-shadow: 0 0 15px #0f0;
-}
-
-.retro-btn:active {
+  }
+  
+  .retro-btn:active {
     transform: scale(0.98);
-}
-
-/* Animation */
-@keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.7;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-/* Scanline effect */
-body::after {
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+  
+  body::after {
     content: '';
     position: fixed;
     top: 0;
@@ -146,4 +104,5 @@ body::after {
     z-index: 999;
     pointer-events: none;
     opacity: 0.15;
-}
+  }
+  

@@ -12,48 +12,49 @@
 <body>
     <div class="background" id="backcolor">
         <div id="loading-screen"><h1 id="loading-text">Loading...</h1></div>
-        <div class="container" style="display: none;">
-            <div class="retro-container" id="matchmakingContainer">
-                <h1 class="game-title">ft_transcendence</h1>
-                <div class="game-console">
-                    <div id="status" class="retro-status">戦うんだbro</div>
-                    <div class="form-group">
-                        <label for="userAlias" class="retro-label" id="tournament-alias-label">ユーザーエイリアスを入力してください:</label>
-                        <input type="text" class="retro-input" id="userAlias" placeholder="no name">
+            <div class="container" style="display: none;">
+                <div class="retro-container" id="matchmakingContainer">
+                    <h1 class="game-title">ft_transcendence</h1>
+                    <div class="game-console">
+                        <div id="status" class="retro-status">戦うんだbro</div>
+                        <div class="form-group">
+                            <label for="userAlias" class="retro-label" id="tournament-alias-label">ユーザーエイリアスを入力してください:</label>
+                            <input type="text" class="retro-input" id="userAlias" placeholder="no name">
+                        </div>
+                        <button id="matchButton" class="retro-btn">対戦</button>
                     </div>
-                    <button id="matchButton" class="retro-btn">対戦</button>
-                </div>
-                <div id="error-message" class="alert alert-danger" style="display: none;">
-                    ユーザーエイリアスは10文字以内で入力してください。
-                </div>
-            </div>
-    
-            <div id="match_countdown"></div>
-    
-            <div id="gameContainer">
-                <div id="countdown">READY</div>
-                <div id="score-container">
-                    <div class="playerContainer">
-                        <div id="player1image" class="playerimage"></div>
-                        <div id="player1name" class="playername"></div>
-                        <div id="player1score" class="playerscore"></div>
-                    </div>
-                    <div class="playerContainer">
-                        <div id="player2image" class="playerimage"></div>
-                        <div id="player2name" class="playername"></div>
-                        <div id="player2score" class="playerscore"></div>
+                    <div id="error-message" class="alert alert-danger" style="display: none;">
+                        ユーザーエイリアスは10文字以内で入力してください。
                     </div>
                 </div>
-                <div id="message" class="hidden"></div>
-                <canvas id="gameCanvas"></canvas>
-            </div>
-            
-            <div id="winnerContainer" class="winner-container">
-                <div class="winner-info">
-                    <div id="winnerImage" class="winner-image"></div>
-                    <div id="winnerName" class="winner-name"></div>
-                    <div class="congratulations-message">Congratulations on your victory!</div>
-                    <button class="home-button" id="homeButton">Go Back Home</button>
+        
+                <div id="match_countdown"></div>
+        
+                <div id="gameContainer">
+                    <div id="countdown">READY</div>
+                    <div id="score-container">
+                        <div class="playerContainer">
+                            <div id="player1image" class="playerimage"></div>
+                            <div id="player1name" class="playername"></div>
+                            <div id="player1score" class="playerscore"></div>
+                        </div>
+                        <div class="playerContainer">
+                            <div id="player2image" class="playerimage"></div>
+                            <div id="player2name" class="playername"></div>
+                            <div id="player2score" class="playerscore"></div>
+                        </div>
+                    </div>
+                    <div id="message" class="hidden"></div>
+                    <canvas id="gameCanvas"></canvas>
+                </div>
+                
+                <div id="winnerContainer" class="winner-container">
+                    <div class="winner-info">
+                        <div id="winnerImage" class="winner-image"></div>
+                        <div id="winnerName" class="winner-name"></div>
+                        <div class="congratulations-message">Congratulations on your victory!</div>
+                        <button class="home-button" id="homeButton">Go Back Home</button>
+                    </div>
                 </div>
             </div>
         </div>

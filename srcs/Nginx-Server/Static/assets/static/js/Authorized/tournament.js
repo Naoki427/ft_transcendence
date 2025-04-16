@@ -90,6 +90,7 @@ async function startTournament() {
 
         if(data.participants_info) {
             document.getElementById('formContainer').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'none';
             document.getElementById('backcolor').style.backgroundColor = 'black'
             const tournamentTableFour = document.getElementById('tournamentTableFour');
             if(tournamentSize == 4) {
@@ -220,7 +221,7 @@ async function countdown(seconds) {
     const countdownElement = document.getElementById('match_countdown');
     countdownElement.style.display = 'block';
     for (let i = seconds; i >= 0; i--) {
-      countdownElement.textContent = `試合開始まで...${i}`;
+      countdownElement.textContent = `${translations.tournament_countdown}${i}`;
       await sleep(1000);
     }
     countdownElement.style.display = 'none';

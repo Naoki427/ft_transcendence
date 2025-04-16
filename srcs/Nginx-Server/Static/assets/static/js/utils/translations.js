@@ -22,7 +22,7 @@ export const translations_landingpage = {
 export const translations_format = {
     0: { // English
         signup: "Sign Up",
-        login: "Log in",
+        login: "Login",
         email: "Email",
         password: "Password",
         loading: "Processing...",
@@ -57,6 +57,7 @@ export const translations_format = {
         savechanges: "Save Changes",
         battlehistory: "Battle History",
         battlestats_description: "Your battle statistics and history will be displayed here.",
+        logout: "Logout",
         // QR code page
         scan_qr_code: "Scan this QR Code",
         scan_qr_instruction: "Scan this QR code to enable 2FA:",
@@ -83,6 +84,7 @@ export const translations_format = {
         tournament_dup: "This user is already participating",
         tournament_alias_err: "User alias must be within 10 characters",
         tournament_back_home: "Return to Home",
+        tournament_countdown: "STARTING IN...",
         // Settings page
         profileSettings: "Profile Settings",
         profileImage: "Profile Image",
@@ -97,8 +99,9 @@ export const translations_format = {
         updateFailed: "Failed to update profile",
         languageChanged: "Language changed successfully",
         twoFactorEnabled: "Two-Factor Authentication enabled",
-        twoFactorDisabled: "Two-Factor Authentication disabled"
+        twoFactorDisabled: "Two-Factor Authentication disabled",
         //login page
+        accessPanel: "ACCESS PANEL",
         
     },
     1: { // 日本語 (Japanese)
@@ -138,6 +141,7 @@ export const translations_format = {
         savechanges: "変更を保存",
         battlehistory: "戦歴",
         battlestats_description: "あなたのバトル統計と履歴がここに表示されます。",
+        logout: "ログアウト",
         // QR code page
         scan_qr_code: "このQRコードをスキャンしてください",
         scan_qr_instruction: "2FAを有効にするには、このQRコードをスキャンしてください：",
@@ -164,6 +168,7 @@ export const translations_format = {
         tournament_dup: "このユーザーはすでに参加しています",
         tournament_alias_err: "ユーザーエイリアスは10文字以内で入力してください",
         tournament_back_home: "ホームに戻る",
+        tournament_countdown: "試合開始まで...",
         // Settings page
         profileSettings: "プロフィール設定",
         profileImage: "プロフィール画像",
@@ -178,7 +183,10 @@ export const translations_format = {
         updateFailed: "プロフィールの更新に失敗しました",
         languageChanged: "言語が正常に変更されました",
         twoFactorEnabled: "二要素認証が有効になりました",
-        twoFactorDisabled: "二要素認証が無効になりました"
+        twoFactorDisabled: "二要素認証が無効になりました",
+        //login page
+        accessPanel: "ログインパネル",
+
     },
     2: { // Français (French)
         signup: "S'inscrire",
@@ -217,6 +225,7 @@ export const translations_format = {
         savechanges: "Enregistrer les modifications",
         battlehistory: "Historique des batailles",
         battlestats_description: "Vos statistiques de bataille et votre historique seront affichés ici.",
+        logout: "Déconnexion",
         // QR code page
         scan_qr_code: "Scannez ce code QR",
         scan_qr_instruction: "Scannez ce code QR pour activer la 2FA :",
@@ -243,6 +252,7 @@ export const translations_format = {
         tournament_dup: "Cet utilisateur participe déjà",
         tournament_alias_err: "L'alias doit comporter 10 caractères maximum",
         tournament_back_home: "Retour à l'accueil",
+        tournament_countdown: "DÉBUT DANS...",
         // Settings page
         profileSettings: "Paramètres du Profil",
         profileImage: "Image de Profil",
@@ -257,6 +267,8 @@ export const translations_format = {
         updateFailed: "Échec de la mise à jour du profil",
         languageChanged: "Langue changée avec succès",
         twoFactorEnabled: "Authentification à deux facteurs activée",
-        twoFactorDisabled: "Authentification à deux facteurs désactivée"
+        twoFactorDisabled: "Authentification à deux facteurs désactivée",
+        //login page
+        accessPanel: "PANNEAU D'ACCÈS",
     }
 };
