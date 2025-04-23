@@ -44,7 +44,7 @@ make
 ```
 
 起動後、ブラウザで以下のURLにアクセスしてください：  
-https::/localhost:8443
+https://localhost:8443
 ## 画面イメージ (Screenshots)
 ![signin](./readme-images/signin.png)
 ![game](./readme-images/game.png)
