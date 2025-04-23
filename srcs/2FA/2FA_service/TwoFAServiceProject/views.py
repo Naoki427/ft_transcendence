@@ -42,7 +42,6 @@ def register(request):
         if userid is None or is_2fa_enabled is None:
             return error_response("Missing userid or 2FA setting")
         
-        print(f"DEBUG: IS_2FA_ENABLED: {is_2fa_enabled}")
 
         twoFA = TwoFactorAuth(userid=userid, username=username, is_2fa_enabled=is_2fa_enabled)
         twoFA.save()
@@ -52,7 +51,6 @@ def register(request):
     except json.JSONDecodeError:
         return error_response("Invalid JSON format")
     except Exception as e:
-        print(f"Error in 2FA register: {e}")
         return error_response(str(e))
 
 @csrf_exempt
@@ -92,7 +90,6 @@ def Get2FAStatus(request):
     except json.JSONDecodeError:
         return error_response("Invalid JSON format")
     except Exception as e:
-        print(f"Error in Get2FAStatus: {e}")
         return error_response(str(e))
 
 @api_view(["POST"])

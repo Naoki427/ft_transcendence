@@ -128,7 +128,6 @@ def GetUserInfo(request):
     try:
         data = json.loads(request.body)
         user_id = data.get("user_id")
-        print("user_id = ", user_id)
         user = CustomUser.objects.filter(id=user_id).first()
         user_info = {
             'username': user.username,
