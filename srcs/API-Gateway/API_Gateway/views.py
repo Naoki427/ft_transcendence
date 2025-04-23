@@ -163,7 +163,6 @@ def get_user_info_view(request):
     if not access_token:
         return error_response("Access token not found")
     status, message, user_id = GetIdByToken(access_token)
-    print("user_id in view = ",user_id)
     return GetUserInfo(user_id)
 
 @api_view(["POST"])

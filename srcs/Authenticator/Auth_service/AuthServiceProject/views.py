@@ -54,7 +54,6 @@ def register(request):
         auth_user.set_password(password)
         auth_user.save()
 
-        print(f"Debug: User registered successfully with userid={userid}")
 
         return success_response("User Registered successfully")
 
@@ -85,7 +84,6 @@ def AuthPassword(request):
         if not auth_user.check_password(password):
             return error_response("Invalid password")
 
-        print(f"Debug: Authentication successful for userid={userid}")
 
         return success_response("Authentication successful")
 
@@ -127,7 +125,6 @@ def CheckJWT(request):
     secret_key = settings.SECRET_KEY
     try:    
         decoded_token = jwt.decode(token, secret_key, algorithms=["HS256"])
-        print(decoded_token)
         return JsonResponse({"message": "Token is valid"}, status=200)
     except jwt.ExpiredSignatureError:
         return JsonResponse({"message": "Token has expired"}, status=401)
@@ -163,7 +160,6 @@ def GetIdByToken(request):
     secret_key = settings.SECRET_KEY
     decoded_token = jwt.decode(token, secret_key, algorithms=["HS256"])
     user_id = decoded_token.get('user_id')
-    print("userid in api = ",user_id)
     if user_id:
         return success_response("ID acquisition successful", data={"user_id": user_id})
     else:
