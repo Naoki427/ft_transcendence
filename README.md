@@ -39,6 +39,7 @@ git clone git@github.com:Naoki427/ft_transcendence.git
 cd ft_transcendence
 ```
 #### Makefileで起動
+.envファイルが存在しない場合、自動で`.env.example`からコピーされます。
 ```bash
 make
 ```

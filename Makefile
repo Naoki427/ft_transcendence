@@ -1,7 +1,9 @@
 all:
+	@if [ ! -f .env ]; then cp .env.example .env; fi
 	docker compose  up --build
 
-up: 
+up:
+	@if [ ! -f .env ]; then cp .env.example .env; fi
 	docker compose  up
 	
 build:
